@@ -92,35 +92,95 @@ const updateList = (req, res, next) => {
 
 // Services
 const addServices = (req, res, next) => {
-    res.render('/pages/Services/addServices')
+    res.render('./pages/Services/addServices')
 }
 
 const servicesList = (req, res, next) => {
     res.render('./pages/Services/servicesList')
 }
 
+// Tours Plans & Hiking
+const addTour = (req, res, next) => {
+    res.render('./pages/Tours/addTours')
+}
+
+const tourList = (req, res, next) =>{
+    res.render('./pages/Tours/toursList')
+}
+
+// Bundles and Offers
+const addBundle = (req, res, next) => {
+    res.render('./pages/BundleOffers/addBundle')
+}
+
+const bundleList = (req, res, next) => {
+    res.render('./pages/BundleOffers/bundlesList')
+}
+
+// Slider Images
+const addImagesSlider = (req, res, next) => {
+    res.render('./pages/SliderImages/addSliderImages')
+}
+
+const sliderImages = (req, res, next) => {
+    res.render('./pages/SliderImages/sliderImagesList')
+}
+
+// Customer Feedback
+const feedback = (req, res, next) => {
+    res.render('./pages/Feedback/customerFeedback')
+}
+
+// Users
+const addUser = (req, res, next) => {
+    res.render('./pages/Users/addUser')
+}
+
+const userList = (req, res, next) => {
+    res.render('./pages/Users/usersList')
+}
+
 module.exports = {
+    // Dashboard
     indexView,
-    addArea,
-    listAreas,
+
+    // Areas
+    addArea, listAreas,
+
+    // Customers
     customersList,
-    hotelClients,
-    hotelList,
-    hotelApproved,
-    hotelUnapproved,
-    addGalleryHotel,
-    appartmentsHouses,
-    appartmentsApproved,
-    approvedappartmentsUnapproved,
-    addGalleryAppartment,
-    appartmentList,
-    housesList,
-    addVehicle,
-    vehicleList,
-    aboutUs,
-    contactUs,
-    addUpdates,
-    updateList,
-    addServices,
-    servicesList
+    
+    // Hotels Clients
+    hotelClients, hotelList, hotelApproved, hotelUnapproved, addGalleryHotel,
+    
+    // Appartments / Houses
+    appartmentsHouses, appartmentsApproved, approvedappartmentsUnapproved, addGalleryAppartment, appartmentList, housesList,
+    
+    // Vehicle
+    addVehicle, vehicleList,
+    
+    // Company Info
+    aboutUs, contactUs,
+    
+    // Updates / Blog
+    addUpdates, updateList,
+    
+    // Services
+    addServices, servicesList,
+    
+    // Tours Plans & Hiking
+    addTour, tourList,
+    
+    // Bundles and Offers
+    addBundle, bundleList,
+
+    // Slider Images
+    addImagesSlider, sliderImages,
+
+    // Customer Feedback
+    feedback,
+
+    // Users
+    addUser, userList
+
 }
