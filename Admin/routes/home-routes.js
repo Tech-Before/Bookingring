@@ -5,7 +5,7 @@ const {
     indexView,
 
     // Areas
-    addArea, listAreas,
+    addArea, listAreas, editArea,
 
     // Customers
     customersList,
@@ -52,6 +52,7 @@ router.get('/', indexView)
 // Areas
 router.get('/pages/Areas/addAreas', addArea)
 router.get('/pages/Areas/areaList', listAreas)
+router.get('/pages/Areas/editArea', editArea)
 
 // Customers
 router.get('/pages/Customers/customer', customersList)

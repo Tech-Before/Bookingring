@@ -12,6 +12,10 @@ const listAreas = (req, res, next) => {
     res.render('./pages/Areas/areaList');
 }
 
+const editArea = (req, res, next) => {
+    res.render('./pages/Areas/editArea')
+}
+
 // Customers
 const customersList = (req, res, next) => {
     res.render('./pages/Customers/customer')
@@ -145,7 +149,7 @@ module.exports = {
     indexView,
 
     // Areas
-    addArea, listAreas,
+    addArea, listAreas, editArea,
 
     // Customers
     customersList,
