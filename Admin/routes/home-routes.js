@@ -8,7 +8,7 @@ const {
     addArea, listAreas, editArea,
 
     // Customers
-    customersList,
+    customersList, viewCustomer, editMembership,
     
     // Hotels Clients
     hotelClients, hotelList, hotelApproved, hotelUnapproved, addGalleryHotel,
@@ -56,6 +56,8 @@ router.get('/pages/Areas/editArea', editArea)
 
 // Customers
 router.get('/pages/Customers/customer', customersList)
+router.get('/pages/Customers/viewCustomer', viewCustomer)
+router.get('/pages/Customers/editMembership', editMembership)
 
 // Hotels Clients
 router.get('/pages/Hotels/addHotel', hotelClients)

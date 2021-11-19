@@ -21,6 +21,14 @@ const customersList = (req, res, next) => {
     res.render('./pages/Customers/customer')
 }
 
+const editMembership = (req, res, next) => {
+    res.render('./pages/Customers/editMembership')
+}
+
+const viewCustomer = (req, res, next) => {
+    res.render('./pages/Customers/viewCustomer')
+}
+
 // Hotels Clients
 const hotelClients = (req, res, next) => {
     res.render('./pages/Hotels/addHotel')
@@ -144,6 +152,7 @@ const userList = (req, res, next) => {
     res.render('./pages/Users/usersList')
 }
 
+
 module.exports = {
     // Dashboard
     indexView,
@@ -152,7 +161,7 @@ module.exports = {
     addArea, listAreas, editArea,
 
     // Customers
-    customersList,
+    customersList, viewCustomer, editMembership,
     
     // Hotels Clients
     hotelClients, hotelList, hotelApproved, hotelUnapproved, addGalleryHotel,
