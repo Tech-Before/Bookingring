@@ -75,12 +75,12 @@ const appartmentsHouses = (req, res, next) => {
     res.render('./pages/Appartments/addAppartment')
 }
 
-const appartmentsApproved = (req, res, next) => {
-    res.render('./pages/Appartments/appartmentApprovedList')
+const appartmentHouseList = (req, res, next) => {
+    res.render('./pages/Appartments/appartmentHouseList')
 }
 
-const approvedappartmentsUnapproved = (req, res, next) => {
-    res.render('./pages/Appartments/appartmentUnapprovedList')
+const editAppartmentHouse = (req, res, next) => {
+    res.render('./pages/Appartments/editAppartmentHouse')
 }
 
 const addGalleryAppartment = (req, res, next) => {
@@ -93,6 +93,19 @@ const appartmentList = (req, res, next) => {
 
 const housesList = (req, res, next) => {
     res.render('./pages/Appartments/housesList')
+}
+
+const addGalleryHouses = (req, res, next) => {
+    res.render('./pages/Appartments/addGalleryHouses')
+}
+
+// Rooms
+const addRoom = (req, res, next) => {
+    res.render('./pages/Rooms/addRoom')
+}
+
+const roomList = (req, res, next) => {
+    res.render('./pages/Rooms/roomList')
 }
 
 // Vehicle
@@ -185,9 +198,13 @@ module.exports = {
     
     // Hotels Clients
     hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages,
-    // Appartments / Houses
-    appartmentsHouses, appartmentsApproved, approvedappartmentsUnapproved, addGalleryAppartment, appartmentList, housesList,
     
+    // Appartments / Houses 
+    appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, housesList, addGalleryAppartment, addGalleryHouses,
+    
+    // Rooms
+    addRoom, roomList,
+
     // Vehicle
     addVehicle, vehicleList,
     
