@@ -1,0 +1,53 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Hotels</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item">Hotel</li>
+              <li class="breadcrumb-item active">Add Hotel Gallery</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+        <div class="col-md-3"></div>
+          <div class="col-md-6">
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Add Hotel Gallery</h3>
+              </div>
+              <div class="card-body">
+                <form method="POST">
+                        <label>Select Hotel</label>
+                        <select class="form-control select2" style="width: 100%;" name="">
+                            <option value="1">Contental</option>
+                            <option value="2">Serena</option>
+                            <option value="3">Zaiqa Mahal</option>
+                        </select>
+                    
+                    <hr>
+                    <div class="form-group">
+                        <a class="btn btn-secondary btn-sm" name="cancel" type="submit" onclick="history.back(-1)">Cancel</a>
+                        <a class="btn btn-success btn-sm" name="cancel" type="submit" href="/pages/Hotels/addHotelImages">Add Gallery</a>
+                    </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>

@@ -38,6 +38,14 @@ const hotelList = (req, res, next) => {
     res.render('./pages/Hotels/hotelsList')
 }
 
+const viewHotel = (req, res, next) => {
+    res.render('./pages/Hotels/viewHotel')
+}
+
+const editHotel = (req, res, next) => {
+    res.render('./pages/Hotels/editHotel')
+}
+
 const hotelApproved = (req, res, next) => {
     res.render('./pages/Hotels/approvedHotels')
 }
@@ -48,6 +56,18 @@ const hotelUnapproved = (req, res, next) => {
 
 const addGalleryHotel = (req, res, next) => {
     res.render('./pages/Hotels/addHotelGallery')
+}
+
+const addHotelImages = (req, res, next) => {
+    res.render('./pages/Hotels/addHotelImages')
+}
+
+const galleryList = (req, res, next) => {
+    res.render('./pages/Hotels/galleryList')
+}
+
+const viewHotelImages = (req, res, next) => {
+    res.render('./pages/Hotels/viewHotelImages')
 }
 
 // Appartments / Houses
@@ -164,8 +184,7 @@ module.exports = {
     customersList, viewCustomer, editMembership,
     
     // Hotels Clients
-    hotelClients, hotelList, hotelApproved, hotelUnapproved, addGalleryHotel,
-    
+    hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages,
     // Appartments / Houses
     appartmentsHouses, appartmentsApproved, approvedappartmentsUnapproved, addGalleryAppartment, appartmentList, housesList,
     

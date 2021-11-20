@@ -11,7 +11,7 @@ const {
     customersList, viewCustomer, editMembership,
     
     // Hotels Clients
-    hotelClients, hotelList, hotelApproved, hotelUnapproved, addGalleryHotel,
+    hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages,
     
     // Appartments / Houses
     appartmentsHouses, appartmentsApproved, approvedappartmentsUnapproved, addGalleryAppartment, appartmentList, housesList,
@@ -62,9 +62,14 @@ router.get('/pages/Customers/editMembership', editMembership)
 // Hotels Clients
 router.get('/pages/Hotels/addHotel', hotelClients)
 router.get('/pages/Hotels/hotelsList', hotelList)
+router.get('/pages/Hotels/viewHotel', viewHotel)
+router.get('/pages/Hotels/editHotel', editHotel)
 router.get('/pages/Hotels/approvedHotels', hotelApproved)
 router.get('/pages/Hotels/unapprovedHotels', hotelUnapproved)
 router.get('/pages/Hotels/addHotelGallery', addGalleryHotel)
+router.get('/pages/Hotels/addHotelImages', addHotelImages)
+router.get('/pages/Hotels/galleryList', galleryList)
+router.get('/pages/Hotels/viewHotelImages', viewHotelImages)
 
 // Appartments / Houses
 router.get('/pages/Appartments/addAppartment', appartmentsHouses)

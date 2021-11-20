@@ -4,12 +4,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Customer</h1>
+            <h1>Hotels</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item">Customer</li>
-              <li class="breadcrumb-item active">Membership</li>
+              <li class="breadcrumb-item">Hotel</li>
+              <li class="breadcrumb-item active">Add Hotel Gallery</li>
             </ol>
           </div>
         </div>
@@ -20,27 +20,22 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-12">
+        <div class="col-md-3"></div>
+          <div class="col-md-6">
             <div class="card card-success">
               <div class="card-header">
-                <h3 class="card-title">Edit Membership</h3>
+                <h3 class="card-title">Add Hotel Gallery</h3>
               </div>
               <div class="card-body">
                 <form method="POST">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Select Membership</label>
-                            <select class="form-control select2">
-                                <option value="1">Silver Member</option>
-                                <option value="2">Gold Membership</option>
-                                <option value="3">Platinum Membership</option>
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label>Select Images</label>
+                        <input type="file" multiple name="areaName" placeholder="Example: Kalam" class="form-control" required>
                     </div>
                     <hr>
                     <div class="form-group">
                         <a class="btn btn-secondary btn-sm" name="cancel" type="submit" onclick="history.back(-1)">Cancel</a>
-                        <button class="btn btn-success btn-sm" type="submit" name="">Edit Membership</button>
+                        <button class="btn btn-success btn-sm" type="submit" name="">Add Gallery</button>
                     </div>
                 </form>
               </div>

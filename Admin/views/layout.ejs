@@ -179,6 +179,12 @@
                   <p>Add Gallery</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="/pages/Hotels/galleryList" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Hotel Gallery</p>
+                </a>
+              </li>
             </ul>
           </li>
 
@@ -496,7 +502,7 @@
 <!-- Bootstrap4 Duallistbox -->
 <script src="/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 <!-- InputMask -->
-<script src="../../plugins/moment/moment.min.js"></script>
+<script src="/plugins/moment/moment.min.js"></script>
 <script src="/plugins/inputmask/jquery.inputmask.min.js"></script>
 <!-- date-range-picker -->
 <script src="/plugins/daterangepicker/daterangepicker.js"></script>
@@ -542,20 +548,8 @@
     $("#tableData").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
+    }).buttons().container().appendTo('#tableData .col-md-6:eq(0)');
   });
 </script>
-
-
-
 </body>
 </html>
