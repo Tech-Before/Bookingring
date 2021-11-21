@@ -21,15 +21,9 @@ const {
 
     // Vehicle
     addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery,
-    
-    // Company Info
-    aboutUs, contactUs,
-    
+
     // Updates / Blog
-    addUpdates, updateList,
-    
-    // Services
-    addServices, servicesList,
+    addUpdates, updateList, editBlog, deleteBlog,
     
     // Tours Plans & Hiking
     addTour, tourList,
@@ -99,18 +93,11 @@ router.get('/pages/Vehicles/editVehicle', editVehicle)
 router.get('/pages/Vehicles/addVehicleGallery', addVehicleGallery)
 router.get('/pages/Vehicles/editVehicleGallery', editVehicleGallery)
 
-// Company Info
-router.get('/pages/CompanyInfo/aboutUs', aboutUs)
-router.get('/pages/CompanyInfo/contactUs', contactUs)
-
-
 // Updates / Blog
 router.get('/pages/Updates/addUpdates', addUpdates)
 router.get('/pages/Updates/updateList', updateList)
-
-// Services
-router.get('/pages/Services/addServices', addServices)
-router.get('/pages/Services/servicesList', servicesList)
+router.get('/pages/Updates/editBlog', editBlog)
+router.get('/pages/Updates/deleteBlog', deleteBlog)
 
 // Tours Plans & Hiking
 router.get('/pages/Tours/addTours', addTour)
@@ -128,8 +115,6 @@ router.get('/pages/Feedback/customerFeedback', feedback)
 // Users
 router.get('/pages/Users/addUser', addUser)
 router.get('/pages/Users/usersList', userList)
-
-
 
 module.exports = {
     routes: router

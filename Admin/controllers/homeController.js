@@ -150,15 +150,6 @@ const editVehicleGallery = (req, res, next) => {
     res.render('./pages/Vehicles/editVehicleGallery')
 }
 
-// Company Info
-const aboutUs = (req, res, next) => {
-    res.render('./pages/CompanyInfo/aboutUs')
-}
-
-const contactUs = (req, res, next) => {
-    res.render('./pages/CompanyInfo/contactUs')
-}
-
 // Updates / Blog
 const addUpdates = (req, res, next) => {
     res.render('./pages/Updates/addUpdates')
@@ -168,13 +159,12 @@ const updateList = (req, res, next) => {
     res.render('./pages/Updates/updateList')
 }
 
-// Services
-const addServices = (req, res, next) => {
-    res.render('./pages/Services/addServices')
+const editBlog = (req, res, next) => {
+    res.render('./pages/Updates/editBlog')
 }
 
-const servicesList = (req, res, next) => {
-    res.render('./pages/Services/servicesList')
+const deleteBlog = (req, res, next) => {
+    res.render('./pages/Updates/deleteBlog')
 }
 
 // Tours Plans & Hiking
@@ -240,16 +230,10 @@ module.exports = {
 
     // Vehicle
     addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery,
-    
-    // Company Info
-    aboutUs, contactUs,
-    
+
     // Updates / Blog
-    addUpdates, updateList,
-    
-    // Services
-    addServices, servicesList,
-    
+    addUpdates, updateList, editBlog, deleteBlog,
+   
     // Tours Plans & Hiking
     addTour, tourList,
     
