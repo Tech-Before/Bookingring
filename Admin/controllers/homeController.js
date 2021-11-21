@@ -137,6 +137,19 @@ const vehicleList = (req, res, next) => {
     res.render('./pages/Vehicles/vehicleList')
 }
 
+
+const editVehicle = (req, res, next) => {
+    res.render('./pages/Vehicles/editVehicle')
+}
+
+const addVehicleGallery = (req, res, next) => {
+    res.render('./pages/Vehicles/addVehicleGallery')
+}
+
+const editVehicleGallery = (req, res, next) => {
+    res.render('./pages/Vehicles/editVehicleGallery')
+}
+
 // Company Info
 const aboutUs = (req, res, next) => {
     res.render('./pages/CompanyInfo/aboutUs')
@@ -226,7 +239,7 @@ module.exports = {
     addRoom, roomList, editRoom, addRoomGallery, editRoomGallery,
 
     // Vehicle
-    addVehicle, vehicleList,
+    addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery,
     
     // Company Info
     aboutUs, contactUs,

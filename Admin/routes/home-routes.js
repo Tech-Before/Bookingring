@@ -20,7 +20,7 @@ const {
     addRoom, roomList, editRoom, addRoomGallery, editRoomGallery,
 
     // Vehicle
-    addVehicle, vehicleList,
+    addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery,
     
     // Company Info
     aboutUs, contactUs,
@@ -95,10 +95,14 @@ router.get('/pages/Rooms/editRoomGallery', editRoomGallery)
 // Vehicle
 router.get('/pages/Vehicles/addVehicles', addVehicle)
 router.get('/pages/Vehicles/vehicleList', vehicleList)
+router.get('/pages/Vehicles/editVehicle', editVehicle)
+router.get('/pages/Vehicles/addVehicleGallery', addVehicleGallery)
+router.get('/pages/Vehicles/editVehicleGallery', editVehicleGallery)
 
 // Company Info
 router.get('/pages/CompanyInfo/aboutUs', aboutUs)
 router.get('/pages/CompanyInfo/contactUs', contactUs)
+
 
 // Updates / Blog
 router.get('/pages/Updates/addUpdates', addUpdates)
