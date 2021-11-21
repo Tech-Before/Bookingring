@@ -4,12 +4,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Appartments</h1>
+            <h1>Houses Gallery</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item">Appartments</li>
-              <li class="breadcrumb-item active">Add Appartments Gallery</li>
+              <li class="breadcrumb-item">Houses</li>
+              <li class="breadcrumb-item active">Houses Gallery</li>
             </ol>
           </div>
         </div>
@@ -20,22 +20,32 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-        <div class="col-md-3"></div>
-          <div class="col-md-6">
+          <div class="col-md-12">
             <div class="card card-success">
               <div class="card-header">
-                <h3 class="card-title">Add Appartments Gallery</h3>
+                <h3 class="card-title">Houses Gallery</h3>
               </div>
               <div class="card-body">
                 <form method="POST">
-                    <div class="form-group">
-                        <label>Select Images</label>
-                        <input type="file" multiple name="areaName" placeholder="Example: Kalam" class="form-control" required>
+                    <div class="row">
+                        <div class="col-md-4">
+                                <img src="/images/Hotel1.jpg" class="img-thumbnail" width="304" height="236">
+                                <button class="btn btn-danger btn-sm" style="width: 90%">Delete</button>
+                        </div>
+
+                        <div class="col-md-4">
+                                <img src="/images/Hotel2.jpg" class="img-thumbnail" width="304" height="236">
+                                <button class="btn btn-danger btn-sm" style="width: 90%">Delete</button>
+                        </div>
+
+                        <div class="col-md-4">
+                                <img src="/images/Hotel3.jpg" class="img-thumbnail" width="304" height="236">
+                                <button class="btn btn-danger btn-sm" style="width: 90%">Delete</button>
+                        </div>
                     </div>
                     <hr>
                     <div class="form-group">
                         <a class="btn btn-secondary btn-sm" name="cancel" type="submit" onclick="history.back(-1)">Cancel</a>
-                        <button class="btn btn-success btn-sm" type="submit" name="">Add Gallery</button>
                     </div>
                 </form>
               </div>

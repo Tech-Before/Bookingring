@@ -1,105 +1,81 @@
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Appartments | Houses</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item">Appartments | Houses</li>
-              <li class="breadcrumb-item active">Appartments | Houses List</li>
-            </ol>
-          </div>
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Houses</h1>
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card card-success">
-                <div class="card-header">
-                    <h3 class="card-title">Hotels List</h3>
-                  </div>
-                  <!-- /.card-header -->
-                  <div class="card-body">
-                    <table id="tableData" class="table table-striped table-hover">
-                      <thead>
-                        <tr>
-                            <th>S#</th>
-                            <th>Name</th>
-                            <th>Contact</th>
-                            <th>Parking</th>
-                            <th>Area</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Continental</td>
-                            <td>0946712845</td>
-                            <td><span class="badge badge-danger"><i class="fa fa-times"></i></span></td>
-                            <td>Kalam</td>
-                            <td><span class="badge badge-primary">Approved</span></td>
-                            <td>
-                                <a href="/pages/Hotels/viewHotel" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
-                                <a href="/pages/Hotels/editHotel" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>2</td>
-                            <td>Continental</td>
-                            <td>0946712845</td>
-                            <td><span class="badge badge-primary"><i class="fa fa-check"></i></span></td>
-                            <td>Kalam</td>
-                            <td><span class="badge badge-primary">Approved</span></td>
-                            <td>
-                                <a href="/pages/Hotels/viewHotel" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
-                                <a href="/pages/Hotels/editHotel" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>3</td>
-                            <td>Continental</td>
-                            <td>0946712845</td>
-                            <td><span class="badge badge-primary"><i class="fa fa-check"></i></span></td>
-                            <td>Kalam</td>
-                            <td><span class="badge badge-danger">Unapproved</span></td>
-                            <td>
-                                <a href="/pages/Hotels/viewHotel" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
-                                <a href="/pages/Hotels/editHotel" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
-                            </td>
-                        </tr>
-
-
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                            <th>S#</th>
-                            <th>Name</th>
-                            <th>Contact</th>
-                            <th>Parking</th>
-                            <th>Area</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
-            </div>
-          </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <!-- <li class="breadcrumb-item">Appartments</li> -->
+            <li class="breadcrumb-item active">Houses List</li>
+          </ol>
         </div>
-        <!-- /.row -->
       </div>
-      <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-success">
+              <div class="card-header">
+                  <h3 class="card-title">Houses List</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <table id="tableData" class="table table-striped table-hover">
+                    <thead>
+                      <tr>
+                          <th>S#</th>
+                          <th>Name</th>
+                          <th>Contact</th>
+                          <th>Parking</th>
+                          <th>A | H</th>
+                          <th>Area</th>
+                          <th>Status</th>
+                          <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                          <td>1</td>
+                          <td>Example</td>
+                          <td>0946712845</td>
+                          <td><span class="badge badge-danger"><i class="fa fa-times"></i></span></td>
+                          <td><span class="badge badge-info">House</span></td>
+                          <td>Kalam</td>
+                          <td><span class="badge badge-primary">Available</span></td>
+                          <td>
+                              <a href="/pages/Appartments/addGalleryHouses" class="btn btn-info btn-sm">Add <i class="fa fa-picture-o"></i></a>
+                              <a href="/pages/Appartments/editGalleryHouses" class="btn btn-success btn-sm">Edit <i class="fa fa-picture-o"></i></a>
+                          </td>
+                      </tr>
+
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th>S#</th>
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Parking</th>
+                        <th>A | H</th>
+                        <th>Area</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>

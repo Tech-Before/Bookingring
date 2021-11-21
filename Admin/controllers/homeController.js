@@ -87,6 +87,10 @@ const addGalleryAppartment = (req, res, next) => {
     res.render('./pages/Appartments/addGalleryAppartments')
 }
 
+const editGalleryAppartments = (req, res, next) => {
+    res.render('./pages/Appartments/editGalleryAppartments')
+}
+
 const appartmentList = (req, res, next) => {
     res.render('./pages/Appartments/appartmentList')
 }
@@ -97,6 +101,10 @@ const housesList = (req, res, next) => {
 
 const addGalleryHouses = (req, res, next) => {
     res.render('./pages/Appartments/addGalleryHouses')
+}
+
+const editGalleryHouses = (req, res, next) => {
+    res.render('./pages/Appartments/editGalleryHouses')
 }
 
 // Rooms
@@ -200,7 +208,7 @@ module.exports = {
     hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages,
     
     // Appartments / Houses 
-    appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, housesList, addGalleryAppartment, addGalleryHouses,
+    appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGalleryAppartment, addGalleryHouses, editGalleryHouses,
     
     // Rooms
     addRoom, roomList,
