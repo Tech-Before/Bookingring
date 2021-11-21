@@ -116,6 +116,18 @@ const roomList = (req, res, next) => {
     res.render('./pages/Rooms/roomList')
 }
 
+const editRoom = (req, res, next) => {
+    res.render('./pages/Rooms/editRoom')
+}
+
+const addRoomGallery = (req, res, next) => {
+    res.render('./pages/Rooms/addRoomGallery')
+}
+
+const editRoomGallery = (req, res, next) => {
+    res.render('./pages/Rooms/editRoomGallery')
+}
+
 // Vehicle
 const addVehicle = (req, res, next) => {
     res.render('./pages/Vehicles/addVehicles')
@@ -211,7 +223,7 @@ module.exports = {
     appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGalleryAppartment, addGalleryHouses, editGalleryHouses,
     
     // Rooms
-    addRoom, roomList,
+    addRoom, roomList, editRoom, addRoomGallery, editRoomGallery,
 
     // Vehicle
     addVehicle, vehicleList,

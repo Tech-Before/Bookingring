@@ -17,7 +17,7 @@ const {
     appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGalleryAppartment, addGalleryHouses, editGalleryHouses,
     
     // Rooms
-    addRoom, roomList,
+    addRoom, roomList, editRoom, addRoomGallery, editRoomGallery,
 
     // Vehicle
     addVehicle, vehicleList,
@@ -88,6 +88,9 @@ router.get('/pages/Appartments/editGalleryHouses', editGalleryHouses)
 // Rooms
 router.get('/pages/Rooms/addRoom', addRoom)
 router.get('/pages/Rooms/roomList', roomList)
+router.get('/pages/Rooms/editRoom', editRoom)
+router.get('/pages/Rooms/addRoomGallery', addRoomGallery)
+router.get('/pages/Rooms/editRoomGallery', editRoomGallery)
 
 // Vehicle
 router.get('/pages/Vehicles/addVehicles', addVehicle)
