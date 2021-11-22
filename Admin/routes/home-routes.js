@@ -1,6 +1,9 @@
 const { render } = require('ejs');
 const express = require('express');
 const {
+    // Login
+    // login,
+
     // Dashboard
     indexView,
 
@@ -26,7 +29,7 @@ const {
     addUpdates, updateList, editBlog, deleteBlog,
     
     // Tours Plans & Hiking
-    addTour, tourList,
+    addTour, tourList, viewTour, editTour,
     
     // Bundles and Offers
     addBundle, bundleList,
@@ -35,13 +38,16 @@ const {
     addImagesSlider, sliderImages,
 
     // Customer Feedback
-    feedback,
+    feedback, viewFeedbackQuery,
 
     // Users
-    addUser, userList
+    addUser, userList, editUser
 
 } = require('../controllers/homeController')
 const router = express.Router();
+
+// Login
+// router.get('/pages/login', login);
 
 // Dashboard
 router.get('/', indexView)
@@ -102,6 +108,8 @@ router.get('/pages/Updates/deleteBlog', deleteBlog)
 // Tours Plans & Hiking
 router.get('/pages/Tours/addTours', addTour)
 router.get('/pages/Tours/toursList', tourList)
+router.get('/pages/Tours/viewTour', viewTour)
+router.get('/pages/Tours/editTour', editTour)
 
 // Bundles and Offers
 router.get('/pages/BundleOffers/addBundle', addBundle)
@@ -110,11 +118,15 @@ router.get('/pages/BundleOffers/bundlesList', bundleList)
 // Slider Images
 router.get('/pages/SliderImages/addSliderImages', addImagesSlider)
 router.get('/pages/SliderImages/sliderImagesList', sliderImages)
+
+// Feedback
 router.get('/pages/Feedback/customerFeedback', feedback)
+router.get('/pages/Feedback/viewFeedbackQuery', viewFeedbackQuery)
 
 // Users
 router.get('/pages/Users/addUser', addUser)
 router.get('/pages/Users/usersList', userList)
+router.get('/pages/Users/editUser', editUser)
 
 module.exports = {
     routes: router

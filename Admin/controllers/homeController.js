@@ -1,3 +1,8 @@
+// Login
+// const login = (req, res, next) => {
+//     res.render('./pages/login')
+// }
+
 // Dashboard
 const indexView = (req, res, next) => {
     res.render('./pages/Home/home');
@@ -176,6 +181,14 @@ const tourList = (req, res, next) =>{
     res.render('./pages/Tours/toursList')
 }
 
+const viewTour = (req, res, next) => {
+    res.render('./pages/Tours/viewTour')
+}
+
+const editTour = (req, res, next) => {
+    res.render('./pages/Tours/editTour')
+}
+
 // Bundles and Offers
 const addBundle = (req, res, next) => {
     res.render('./pages/BundleOffers/addBundle')
@@ -199,6 +212,10 @@ const feedback = (req, res, next) => {
     res.render('./pages/Feedback/customerFeedback')
 }
 
+const viewFeedbackQuery = (req, res, next) => {
+    res.render('./pages/Feedback/viewFeedbackQuery')
+}
+
 // Users
 const addUser = (req, res, next) => {
     res.render('./pages/Users/addUser')
@@ -208,8 +225,15 @@ const userList = (req, res, next) => {
     res.render('./pages/Users/usersList')
 }
 
+const editUser = (req, res, next) => {
+    res.render('./pages/Users/editUser')
+}
+
 
 module.exports = {
+    // Login
+    // login,
+    
     // Dashboard
     indexView,
 
@@ -235,7 +259,7 @@ module.exports = {
     addUpdates, updateList, editBlog, deleteBlog,
    
     // Tours Plans & Hiking
-    addTour, tourList,
+    addTour, tourList, viewTour, editTour,
     
     // Bundles and Offers
     addBundle, bundleList,
@@ -244,9 +268,9 @@ module.exports = {
     addImagesSlider, sliderImages,
 
     // Customer Feedback
-    feedback,
+    feedback, viewFeedbackQuery,
 
     // Users
-    addUser, userList
+    addUser, userList, editUser
 
 }
