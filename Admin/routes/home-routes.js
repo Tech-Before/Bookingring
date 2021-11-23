@@ -2,7 +2,7 @@ const { render } = require('ejs');
 const express = require('express');
 const {
     // Login
-    // login,
+    login,
 
     // Dashboard
     indexView,
@@ -47,86 +47,86 @@ const {
 const router = express.Router();
 
 // Login
-// router.get('/pages/login', login);
+router.get('/login', login);
 
 // Dashboard
 router.get('/', indexView)
 
 // Areas
-router.get('/pages/Areas/addAreas', addArea)
-router.get('/pages/Areas/areaList', listAreas)
-router.get('/pages/Areas/editArea', editArea)
+router.get('/Areas/addAreas', addArea)
+router.get('/Areas/areaList', listAreas)
+router.get('/Areas/editArea', editArea)
 
 // Customers
-router.get('/pages/Customers/customer', customersList)
-router.get('/pages/Customers/viewCustomer', viewCustomer)
-router.get('/pages/Customers/editMembership', editMembership)
+router.get('/Customers/customer', customersList)
+router.get('/Customers/viewCustomer', viewCustomer)
+router.get('/Customers/editMembership', editMembership)
 
 // Hotels Clients
-router.get('/pages/Hotels/addHotel', hotelClients)
-router.get('/pages/Hotels/hotelsList', hotelList)
-router.get('/pages/Hotels/viewHotel', viewHotel)
-router.get('/pages/Hotels/editHotel', editHotel)
-router.get('/pages/Hotels/approvedHotels', hotelApproved)
-router.get('/pages/Hotels/unapprovedHotels', hotelUnapproved)
-router.get('/pages/Hotels/addHotelGallery', addGalleryHotel)
-router.get('/pages/Hotels/addHotelImages', addHotelImages)
-router.get('/pages/Hotels/galleryList', galleryList)
-router.get('/pages/Hotels/viewHotelImages', viewHotelImages)
+router.get('/Hotels/addHotel', hotelClients)
+router.get('/Hotels/hotelsList', hotelList)
+router.get('/Hotels/viewHotel', viewHotel)
+router.get('/Hotels/editHotel', editHotel)
+router.get('/Hotels/approvedHotels', hotelApproved)
+router.get('/Hotels/unapprovedHotels', hotelUnapproved)
+router.get('/Hotels/addHotelGallery', addGalleryHotel)
+router.get('/Hotels/addHotelImages', addHotelImages)
+router.get('/Hotels/galleryList', galleryList)
+router.get('/Hotels/viewHotelImages', viewHotelImages)
 
 // Appartments / Houses
-router.get('/pages/Appartments/addAppartment', appartmentsHouses)
-router.get('/pages/Appartments/appartmentHouseList', appartmentHouseList)
-router.get('/pages/Appartments/editAppartmentHouse', editAppartmentHouse)
-router.get('/pages/Appartments/addGalleryAppartments', addGalleryAppartment)
-router.get('/pages/Appartments/editGalleryAppartments', editGalleryAppartments)
-router.get('/pages/Appartments/appartmentList', appartmentList)
-router.get('/pages/Appartments/housesList', housesList)
-router.get('/pages/Appartments/addGalleryHouses', addGalleryHouses)
-router.get('/pages/Appartments/editGalleryHouses', editGalleryHouses)
+router.get('/Appartments/addAppartment', appartmentsHouses)
+router.get('/Appartments/appartmentHouseList', appartmentHouseList)
+router.get('/Appartments/editAppartmentHouse', editAppartmentHouse)
+router.get('/Appartments/addGalleryAppartments', addGalleryAppartment)
+router.get('/Appartments/editGalleryAppartments', editGalleryAppartments)
+router.get('/Appartments/appartmentList', appartmentList)
+router.get('/Appartments/housesList', housesList)
+router.get('/Appartments/addGalleryHouses', addGalleryHouses)
+router.get('/Appartments/editGalleryHouses', editGalleryHouses)
 
 // Rooms
-router.get('/pages/Rooms/addRoom', addRoom)
-router.get('/pages/Rooms/roomList', roomList)
-router.get('/pages/Rooms/editRoom', editRoom)
-router.get('/pages/Rooms/addRoomGallery', addRoomGallery)
-router.get('/pages/Rooms/editRoomGallery', editRoomGallery)
+router.get('/Rooms/addRoom', addRoom)
+router.get('/Rooms/roomList', roomList)
+router.get('/Rooms/editRoom', editRoom)
+router.get('/Rooms/addRoomGallery', addRoomGallery)
+router.get('/Rooms/editRoomGallery', editRoomGallery)
 
 // Vehicle
-router.get('/pages/Vehicles/addVehicles', addVehicle)
-router.get('/pages/Vehicles/vehicleList', vehicleList)
-router.get('/pages/Vehicles/editVehicle', editVehicle)
-router.get('/pages/Vehicles/addVehicleGallery', addVehicleGallery)
-router.get('/pages/Vehicles/editVehicleGallery', editVehicleGallery)
+router.get('/Vehicles/addVehicles', addVehicle)
+router.get('/Vehicles/vehicleList', vehicleList)
+router.get('/Vehicles/editVehicle', editVehicle)
+router.get('/Vehicles/addVehicleGallery', addVehicleGallery)
+router.get('/Vehicles/editVehicleGallery', editVehicleGallery)
 
 // Updates / Blog
-router.get('/pages/Updates/addUpdates', addUpdates)
-router.get('/pages/Updates/updateList', updateList)
-router.get('/pages/Updates/editBlog', editBlog)
-router.get('/pages/Updates/deleteBlog', deleteBlog)
+router.get('/Updates/addUpdates', addUpdates)
+router.get('/Updates/updateList', updateList)
+router.get('/Updates/editBlog', editBlog)
+router.get('/Updates/deleteBlog', deleteBlog)
 
 // Tours Plans & Hiking
-router.get('/pages/Tours/addTours', addTour)
-router.get('/pages/Tours/toursList', tourList)
-router.get('/pages/Tours/viewTour', viewTour)
-router.get('/pages/Tours/editTour', editTour)
+router.get('/Tours/addTours', addTour)
+router.get('/Tours/toursList', tourList)
+router.get('/Tours/viewTour', viewTour)
+router.get('/Tours/editTour', editTour)
 
 // Bundles and Offers
-router.get('/pages/BundleOffers/addBundle', addBundle)
-router.get('/pages/BundleOffers/bundlesList', bundleList)
+router.get('/BundleOffers/addBundle', addBundle)
+router.get('/BundleOffers/bundlesList', bundleList)
 
 // Slider Images
-router.get('/pages/SliderImages/addSliderImages', addImagesSlider)
-router.get('/pages/SliderImages/sliderImagesList', sliderImages)
+router.get('/SliderImages/addSliderImages', addImagesSlider)
+router.get('/SliderImages/sliderImagesList', sliderImages)
 
 // Feedback
-router.get('/pages/Feedback/customerFeedback', feedback)
-router.get('/pages/Feedback/viewFeedbackQuery', viewFeedbackQuery)
+router.get('/Feedback/customerFeedback', feedback)
+router.get('/Feedback/viewFeedbackQuery', viewFeedbackQuery)
 
 // Users
-router.get('/pages/Users/addUser', addUser)
-router.get('/pages/Users/usersList', userList)
-router.get('/pages/Users/editUser', editUser)
+router.get('/Users/addUser', addUser)
+router.get('/Users/usersList', userList)
+router.get('/Users/editUser', editUser)
 
 module.exports = {
     routes: router

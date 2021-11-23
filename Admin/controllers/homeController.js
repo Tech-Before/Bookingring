@@ -1,7 +1,7 @@
 // Login
-// const login = (req, res, next) => {
-//     res.render('./pages/login')
-// }
+const login = (req, res, next) => {
+    res.render('./login')
+}
 
 // Dashboard
 const indexView = (req, res, next) => {
@@ -232,8 +232,8 @@ const editUser = (req, res, next) => {
 
 module.exports = {
     // Login
-    // login,
-    
+    login,
+
     // Dashboard
     indexView,
 
