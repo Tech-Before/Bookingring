@@ -8,7 +8,7 @@ const {
     indexView,
 
     // Areas
-    addArea, listAreas, editArea,
+    addArea, listAreas, editArea, postAddArea, postEditArea,
 
     // Customers
     customersList, viewCustomer, editMembership,
@@ -55,7 +55,10 @@ router.get('/', indexView)
 // Areas
 router.get('/Areas/addAreas', addArea)
 router.get('/Areas/areaList', listAreas)
-router.get('/Areas/editArea', editArea)
+router.get('/Areas/editArea/:id', editArea)
+router.post('/Areas/addAreas', postAddArea)
+router.post('/Areas/editArea/', postEditArea)
+
 
 // Customers
 router.get('/Customers/customer', customersList)

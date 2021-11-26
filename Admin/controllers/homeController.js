@@ -1,3 +1,5 @@
+const Areas = require('../models/Area')
+
 // Login
 const login = (req, res, next) => {
     res.render('./login')
@@ -14,12 +16,66 @@ const addArea = (req, res, next) => {
 }
 
 const listAreas = (req, res, next) => {
-    res.render('./pages/Areas/areaList');
+    Areas.find({})
+    .then(areas => {
+        res.render('./pages/Areas/areaList', {
+            areas: areas,
+            pageTitle: 'Areas List',
+            path: '/Areas/area-list'
+        });
+    })
+    .catch(err => console.log(err));
 }
 
 const editArea = (req, res, next) => {
-    res.render('./pages/Areas/editArea')
+
+    const areaId = req.params.id;
+    Areas.findById(areaId)
+        .then(area => {
+            if (!area) {
+                return res.redirect('/');
+            }
+            res.render('./pages/Areas/editArea', {
+                pageTitle: 'Edit Area',
+                path: '/admin/edit-area',
+                area: area
+            });
+        })
+        .catch(err => console.log(err));
 }
+
+const postAddArea = (req, res, next) => {
+    const name = req.body.areaName;
+    const area = new Areas({
+        name: name
+    });
+    area
+    .save()
+    .then(result => {
+    // console.log(result);
+    console.log('Added Area');
+    res.redirect('/');
+    })
+    .catch(err => {
+    console.log(err);
+    });
+};
+
+const postEditArea = (req, res, next) => {
+    const areaId = req.body.areaId;
+    const updatedName = req.body.areaName;
+    Areas.findById(areaId)
+        .then(area => {
+            area.name = updatedName;
+            return area.save();
+        })
+        .then(result => {
+            console.log('UPDATED Area!');
+            res.redirect('/');
+        })
+        .catch(err => console.log(err));
+};
+  
 
 // Customers
 const customersList = (req, res, next) => {
@@ -238,7 +294,7 @@ module.exports = {
     indexView,
 
     // Areas
-    addArea, listAreas, editArea,
+    addArea, listAreas, editArea, postAddArea, postEditArea,
 
     // Customers
     customersList, viewCustomer, editMembership,
