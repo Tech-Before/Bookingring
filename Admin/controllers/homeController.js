@@ -231,8 +231,19 @@ const deleteBlog = (req, res, next) => {
 
 // Tours Plans & Hiking
 const addTour = (req, res, next) => {
-    res.render('./pages/Tours/addTours')
+
+    Areas.find()
+    .then(areas => {
+        res.render('./pages/Tours/addTours', {
+            areas: areas,
+            pageTitle: 'Add tour',
+            path: '/Tours/tour-list'
+        });
+    })
+    .catch(err => console.log(err));
+
 }
+
 const tourList = (req, res, next) =>{
     Tours.find()
     .then(tours => {
@@ -249,7 +260,26 @@ const viewTour = (req, res, next) => {
 }
 
 const editTour = (req, res, next) => {
-    res.render('./pages/Tours/editTour')
+
+    const tourId = req.params.id;
+    Tours.findById(tourId)
+        .then(tour => {
+            if (!tour) {
+                return res.redirect('/');
+            }
+            return Areas.find().then( areas => {
+                return { tour: tour, areas: areas }
+            })
+        }).
+        then( data => {
+            res.render('./pages/Tours/editTour', {
+                pageTitle: 'Edit Tour',
+                path: '/admin/edit-tour',
+                data: data
+            });
+        })
+        .catch(err => console.log(err));
+
 }
 
 const postAddTour = (req, res)=>{
@@ -287,6 +317,42 @@ const postAddTour = (req, res)=>{
         .catch(err => {
             console.log(err);
         });
+}
+
+const postEditTour = (req, res, next)=>{
+
+    const tourId = req.body.tourId;
+    const tourType = req.body.tourType;
+    const startDate = req.body.startDate;
+    const endDate = req.body.endDate;
+    const fromPlace = req.body.fromPlace;
+    const toPlace = req.body.toPlace;
+    const days = req.body.days;
+    const nights = req.body.nights;
+    const availableSeats = req.body.seats;
+    const chargesPerHead = req.body.charges;
+    const description = req.body.desc;
+
+    Tours.findById(tourId)
+        .then(tour => {
+            tour.tourType = tourType;
+            tour.startDate = startDate;
+            tour.endDate = endDate;
+            tour.fromPlace = fromPlace;
+            tour.toPlace = toPlace;
+            tour.days = days;
+            tour.nights = nights;
+            tour.availableSeats = availableSeats;
+            tour.chargesPerHead = chargesPerHead;
+            tour.description = description;
+            return tour.save();
+        })
+        .then(result => {
+            console.log('UPDATED Tour!');
+            res.redirect('/');
+        })
+        .catch(err => console.log(err));
+
 }
 
 // Bundles and Offers
@@ -359,7 +425,7 @@ module.exports = {
     addUpdates, updateList, editBlog, deleteBlog,
    
     // Tours Plans & Hiking
-    addTour, tourList, viewTour, editTour, postAddTour,
+    addTour, tourList, viewTour, editTour, postAddTour, postEditTour,
     
     // Bundles and Offers
     addBundle, bundleList,

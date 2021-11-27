@@ -29,7 +29,7 @@ const {
     addUpdates, updateList, editBlog, deleteBlog,
     
     // Tours Plans & Hiking
-    addTour, tourList, viewTour, editTour, postAddTour,
+    addTour, tourList, viewTour, editTour, postAddTour, postEditTour,
     
     // Bundles and Offers
     addBundle, bundleList,
@@ -112,9 +112,10 @@ router.get('/Updates/deleteBlog', deleteBlog)
 router.get('/Tours/addTours', addTour)
 router.get('/Tours/toursList', tourList)
 router.get('/Tours/viewTour', viewTour)
-router.get('/Tours/editTour', editTour)
+router.get('/Tours/editTour/:id', editTour)
 
 router.post('/Tours/addTours', postAddTour)
+router.post('/Tours/editTour/', postEditTour)
 
 // Bundles and Offers
 router.get('/BundleOffers/addBundle', addBundle)

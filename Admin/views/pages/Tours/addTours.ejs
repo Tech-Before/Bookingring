@@ -55,18 +55,18 @@
                         <div class="form-group col-md-6">
                             <label>Tour/Hike From Place</label>
                             <select class="form-control select2" style="width: 100%; height: 100%;" name="fromPlace">
-                                <option value="kalam">Kalam</option>
-                                <option value="malamjaba">Malamjabba</option>
-                                <option value="madyan">Madyan</option>
+                                <% for(let i = 0; i < areas.length; i++) { %>
+                                  <option value="<%= areas[i].name %>"><%= areas[i].name %></option>
+                                <% } %>
                             </select>
                         </div>
 
                         <div class="form-group col-md-6">
                             <label>Tour/Hike To Place</label>
                             <select class="form-control select2" style="width: 100%; height: 100%;" name="toPlace">
-                                <option value="kalam">Kalam</option>
-                                <option value="malamjaba">Malamjabba</option>
-                                <option value="madyan">Madyan</option>
+                                <% for(let i = 0; i < areas.length; i++) { %>
+                                  <option value="<%= areas[i].name %>"><%= areas[i].name %></option>
+                                <% } %>
                             </select>
                         </div>
 
