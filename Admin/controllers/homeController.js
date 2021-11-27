@@ -1,4 +1,5 @@
 const Areas = require('../models/Area')
+const Tours = require('../models/Tour')
 
 // Login
 const login = (req, res, next) => {
@@ -16,7 +17,7 @@ const addArea = (req, res, next) => {
 }
 
 const listAreas = (req, res, next) => {
-    Areas.find({})
+    Areas.find()
     .then(areas => {
         res.render('./pages/Areas/areaList', {
             areas: areas,
@@ -50,15 +51,15 @@ const postAddArea = (req, res, next) => {
         name: name
     });
     area
-    .save()
-    .then(result => {
-    // console.log(result);
-    console.log('Added Area');
-    res.redirect('/');
-    })
-    .catch(err => {
-    console.log(err);
-    });
+        .save()
+        .then(result => {
+            // console.log(result);
+            console.log('Added Area');
+            res.redirect('/');
+        })
+        .catch(err => {
+            console.log(err);
+        });
 };
 
 const postEditArea = (req, res, next) => {
@@ -232,17 +233,60 @@ const deleteBlog = (req, res, next) => {
 const addTour = (req, res, next) => {
     res.render('./pages/Tours/addTours')
 }
-
 const tourList = (req, res, next) =>{
-    res.render('./pages/Tours/toursList')
+    Tours.find()
+    .then(tours => {
+        res.render('./pages/Tours/toursList', {
+            tours: tours,
+            pageTitle: 'Tours List',
+            path: '/Tours/tour-list'
+        });
+    })
+    .catch(err => console.log(err));
 }
-
 const viewTour = (req, res, next) => {
     res.render('./pages/Tours/viewTour')
 }
 
 const editTour = (req, res, next) => {
     res.render('./pages/Tours/editTour')
+}
+
+const postAddTour = (req, res)=>{
+
+    const tourType = req.body.tourType;
+    const startDate = req.body.startDate;
+    const endDate = req.body.endDate;
+    const fromPlace = req.body.fromPlace;
+    const toPlace = req.body.toPlace;
+    const days = req.body.days;
+    const nights = req.body.nights;
+    const availableSeats = req.body.seats;
+    const chargesPerHead = req.body.charges;
+    const description = req.body.desc;
+   
+    const tour = new Tours({
+        tourType: tourType,
+        startDate: startDate,
+        endDate: endDate,
+        fromPlace: fromPlace,
+        toPlace: toPlace,
+        days: days,
+        nights: nights,
+        availableSeats: availableSeats,
+        chargesPerHead: chargesPerHead,
+        description: description
+    });
+    tour
+        .save()
+        .then(result => {
+            // console.log(result);
+            console.log('Added Tour');
+            res.redirect('/');
+        })
+        .catch(err => {
+            console.log(err);
+        });
 }
 
 // Bundles and Offers
@@ -315,7 +359,7 @@ module.exports = {
     addUpdates, updateList, editBlog, deleteBlog,
    
     // Tours Plans & Hiking
-    addTour, tourList, viewTour, editTour,
+    addTour, tourList, viewTour, editTour, postAddTour,
     
     // Bundles and Offers
     addBundle, bundleList,
