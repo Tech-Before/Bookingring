@@ -1,3 +1,6 @@
+const Areas = require('../models/Area')
+const Tours = require('../models/Tour')
+
 // Login
 const login = (req, res, next) => {
     res.render('./login')
@@ -14,12 +17,66 @@ const addArea = (req, res, next) => {
 }
 
 const listAreas = (req, res, next) => {
-    res.render('./pages/Areas/areaList');
+    Areas.find()
+    .then(areas => {
+        res.render('./pages/Areas/areaList', {
+            areas: areas,
+            pageTitle: 'Areas List',
+            path: '/Areas/area-list'
+        });
+    })
+    .catch(err => console.log(err));
 }
 
 const editArea = (req, res, next) => {
-    res.render('./pages/Areas/editArea')
+
+    const areaId = req.params.id;
+    Areas.findById(areaId)
+        .then(area => {
+            if (!area) {
+                return res.redirect('/');
+            }
+            res.render('./pages/Areas/editArea', {
+                pageTitle: 'Edit Area',
+                path: '/admin/edit-area',
+                area: area
+            });
+        })
+        .catch(err => console.log(err));
 }
+
+const postAddArea = (req, res, next) => {
+    const name = req.body.areaName;
+    const area = new Areas({
+        name: name
+    });
+    area
+        .save()
+        .then(result => {
+            // console.log(result);
+            console.log('Added Area');
+            res.redirect('/');
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
+const postEditArea = (req, res, next) => {
+    const areaId = req.body.areaId;
+    const updatedName = req.body.areaName;
+    Areas.findById(areaId)
+        .then(area => {
+            area.name = updatedName;
+            return area.save();
+        })
+        .then(result => {
+            console.log('UPDATED Area!');
+            res.redirect('/');
+        })
+        .catch(err => console.log(err));
+};
+  
 
 // Customers
 const customersList = (req, res, next) => {
@@ -174,19 +231,128 @@ const deleteBlog = (req, res, next) => {
 
 // Tours Plans & Hiking
 const addTour = (req, res, next) => {
-    res.render('./pages/Tours/addTours')
+
+    Areas.find()
+    .then(areas => {
+        res.render('./pages/Tours/addTours', {
+            areas: areas,
+            pageTitle: 'Add tour',
+            path: '/Tours/tour-list'
+        });
+    })
+    .catch(err => console.log(err));
+
 }
 
 const tourList = (req, res, next) =>{
-    res.render('./pages/Tours/toursList')
+    Tours.find()
+    .then(tours => {
+        res.render('./pages/Tours/toursList', {
+            tours: tours,
+            pageTitle: 'Tours List',
+            path: '/Tours/tour-list'
+        });
+    })
+    .catch(err => console.log(err));
 }
-
 const viewTour = (req, res, next) => {
     res.render('./pages/Tours/viewTour')
 }
 
 const editTour = (req, res, next) => {
-    res.render('./pages/Tours/editTour')
+
+    const tourId = req.params.id;
+    Tours.findById(tourId)
+        .then(tour => {
+            if (!tour) {
+                return res.redirect('/');
+            }
+            return Areas.find().then( areas => {
+                return { tour: tour, areas: areas }
+            })
+        }).
+        then( data => {
+            res.render('./pages/Tours/editTour', {
+                pageTitle: 'Edit Tour',
+                path: '/admin/edit-tour',
+                data: data
+            });
+        })
+        .catch(err => console.log(err));
+
+}
+
+const postAddTour = (req, res)=>{
+
+    const tourType = req.body.tourType;
+    const startDate = req.body.startDate;
+    const endDate = req.body.endDate;
+    const fromPlace = req.body.fromPlace;
+    const toPlace = req.body.toPlace;
+    const days = req.body.days;
+    const nights = req.body.nights;
+    const availableSeats = req.body.seats;
+    const chargesPerHead = req.body.charges;
+    const description = req.body.desc;
+   
+    const tour = new Tours({
+        tourType: tourType,
+        startDate: startDate,
+        endDate: endDate,
+        fromPlace: fromPlace,
+        toPlace: toPlace,
+        days: days,
+        nights: nights,
+        availableSeats: availableSeats,
+        chargesPerHead: chargesPerHead,
+        description: description
+    });
+    tour
+        .save()
+        .then(result => {
+            // console.log(result);
+            console.log('Added Tour');
+            res.redirect('/');
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+
+const postEditTour = (req, res, next)=>{
+
+    const tourId = req.body.tourId;
+    const tourType = req.body.tourType;
+    const startDate = req.body.startDate;
+    const endDate = req.body.endDate;
+    const fromPlace = req.body.fromPlace;
+    const toPlace = req.body.toPlace;
+    const days = req.body.days;
+    const nights = req.body.nights;
+    const availableSeats = req.body.seats;
+    const chargesPerHead = req.body.charges;
+    const description = req.body.desc;
+
+    Tours.findById(tourId)
+        .then(tour => {
+            tour.tourType = tourType;
+            tour.startDate = startDate;
+            tour.endDate = endDate;
+            tour.fromPlace = fromPlace;
+            tour.toPlace = toPlace;
+            tour.days = days;
+            tour.nights = nights;
+            tour.availableSeats = availableSeats;
+            tour.chargesPerHead = chargesPerHead;
+            tour.description = description;
+            return tour.save();
+        })
+        .then(result => {
+            console.log('UPDATED Tour!');
+            res.redirect('/');
+        })
+        .catch(err => console.log(err));
+
 }
 
 // Bundles and Offers
@@ -238,7 +404,7 @@ module.exports = {
     indexView,
 
     // Areas
-    addArea, listAreas, editArea,
+    addArea, listAreas, editArea, postAddArea, postEditArea,
 
     // Customers
     customersList, viewCustomer, editMembership,
@@ -259,7 +425,7 @@ module.exports = {
     addUpdates, updateList, editBlog, deleteBlog,
    
     // Tours Plans & Hiking
-    addTour, tourList, viewTour, editTour,
+    addTour, tourList, viewTour, editTour, postAddTour, postEditTour,
     
     // Bundles and Offers
     addBundle, bundleList,

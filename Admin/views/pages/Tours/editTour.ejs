@@ -26,75 +26,81 @@
                 <h3 class="card-title">Edit Tour/Hike Details</h3>
               </div>
               <div class="card-body">
-                <form method="POST">
+                <form action="/Tours/editTour/" method="POST">
                     <h5><b>Tour/Hike</b></h5>
                     <hr>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>Select Tour or Hike</label>
-                            <select class="form-control select2" style="width: 100%; height: 100%;" name="">
-                                <option value="1">Tour</option>
-                                <option value="2">Hike</option>
+                            <select class="form-control select2" style="width: 100%; height: 100%;" name="tourType">
+                                <option value="tour" <%= data.tour.tourType === 'tour' ? 'selected' : '' %> >Tour</option>
+                                <option value="hike"<%= data.tour.tourType === 'hike' ? 'selected' : '' %> >Hike</option>
                             </select>
                         </div>
 
                         <div class="form-group col-md-3">
                             <label>Tour/Hike Start Date</label>
-                            <input type="date" class="form-control" name="" required>
+                            <input type="date" class="form-control" name="startDate" value="<%= data.tour.startDate %>" required>
                         </div>
 
                         <div class="form-group col-md-3">
                             <label>Tour/Hike Return Date</label>
-                            <input type="date" class="form-control" name="" required>
+                            <input type="date" class="form-control" name="endDate" value="<%= data.tour.endDate %>" required>
                         </div>
                     </div>
                     
                     <hr>
 
                     <div class="row">
+                      
                         <div class="form-group col-md-6">
                             <label>Tour/Hike From Place</label>
-                            <select class="form-control select2" style="width: 100%; height: 100%;" name="">
-                                <option value="1">Kalam</option>
-                                <option value="2">Malamjabba</option>
-                                <option value="3">Madyan</option>
+                            <select class="form-control select2" style="width: 100%; height: 100%;" name="fromPlace">
+
+                                <% for(let i=0; i < data.areas.length; i++) { %>
+                                  <option value="<%= data.areas[i].name %>" <%= data.areas[i].name === data.tour.fromPlace ? "selected" : "" %> ><%= data.areas[i].name %></option>
+                                <% } %>
+
                             </select>
                         </div>
 
                         <div class="form-group col-md-6">
                             <label>Tour/Hike To Place</label>
-                            <select class="form-control select2" style="width: 100%; height: 100%;" name="">
-                                <option value="1">Kalam</option>
-                                <option value="2">Malamjabba</option>
-                                <option value="3">Madyan</option>
+                            <select class="form-control select2" style="width: 100%; height: 100%;" name="toPlace">
+
+                              <% for(let i=0; i<data.areas.length; i++) { %>
+                                <option value="<%= data.areas[i].name %>" <%= data.areas[i].name === data.tour.toPlace ? 'selected' : '' %> ><%= data.areas[i].name %></option>
+                              <% } %>
+
                             </select>
                         </div>
 
                         <div class="form-group col-md-3">
                             <label>Tour/Hike Days</label>
-                            <input type="number" name="" placeholder="Example: 3" class="form-control" required>
+                            <input type="number" name="days" value="<%= data.tour.days %>" placeholder="" class="form-control" required>
                         </div>
 
                         <div class="form-group col-md-3">
                             <label>Tour/Hike Nights</label>
-                            <input type="number" name="" placeholder="Example: 2" class="form-control" required>
+                            <input type="number" value="<%= data.tour.nights %>" name="nights" placeholder="" class="form-control" required>
                         </div>
 
                         <div class="form-group col-md-3">
                             <label>Available Seats/Vacancies</label>
-                            <input type="number" name="" placeholder="Example: 15" class="form-control" required>
+                            <input type="number" name="seats" placeholder="" value="<%= data.tour.availableSeats %>" class="form-control" required>
                         </div>
 
                         <div class="form-group col-md-3">
                             <label>Charges (Per Head Charges)</label>
-                            <input type="number" name="" placeholder="Example: 1800" class="form-control" required>
+                            <input type="number" name="charges" value="<%= data.tour.chargesPerHead %>" placeholder="" class="form-control" required>
                         </div>
 
                         <div class="form-group col-md-12">
                             <label>Description</label>
-                            <textarea name="" id="" cols="10" rows="10" class="form-control" placeholder="Enter Description" required></textarea>
+                            <textarea name="desc" id="" cols="10" rows="10" class="form-control" placeholder="" required><%= data.tour.description %> </textarea>
                         </div>
                     </div>
+                    <input type="hidden" value="<%= data.tour.id %>" name="tourId" />
                     <hr>
                     <div class="form-group">
                         <a class="btn btn-secondary btn-sm" name="cancel" type="submit" onclick="history.back(-1)">Cancel</a>

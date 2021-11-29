@@ -36,15 +36,21 @@
                       </tr>
                       </thead>
                       <tbody>
-                      <tr>
-                        <td>1.</td>
-                        <td>Miandam</td>
-                        <td>
-                            <a href="/Areas/editArea" class="btn btn-success btn-sm">Edit &nbsp;<i class="fa fa-pencil"></i></a>
-                        </td>
-                      </tr>
+                        
+                        <% for(let count = 0; count < areas.length; count++ ){ %>
+                          
+                          <tr>
+                            <td><%= count + 1 %></td>
+                            <td><%= areas[count].name %> </td>
+                            <td>
+                                <a href=<%= "/Areas/editArea/" + areas[count].id %> class="btn btn-success btn-sm">Edit &nbsp;<i class="fa fa-pencil"></i></a>
+                            </td>
+                          </tr>
 
-                      <tr>
+                        <% } %>
+                      
+
+                      <!-- <tr>
                         <td>2.</td>
                         <td>Mahodhand</td>
                         <td>
@@ -58,7 +64,7 @@
                         <td>
                             <a href="/Areas/editArea" class="btn btn-success btn-sm">Edit &nbsp;<i class="fa fa-pencil"></i></a>
                         </td>
-                      </tr>
+                      </tr> -->
                       </tbody>
                       <tfoot>
                       <tr>
