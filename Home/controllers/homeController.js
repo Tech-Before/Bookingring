@@ -1,5 +1,5 @@
-const indexView = (req, res, next) => res.render('./pages/Dashbaord/home');
+const home = (req, res, next) => res.render('./pages/home');
 
 module.exports = {
-    indexView
+    home
 }

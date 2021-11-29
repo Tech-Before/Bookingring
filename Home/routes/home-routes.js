@@ -1,11 +1,12 @@
 const express = require('express');
 
 const {
-    indexView
+    home
 } = require('../controllers/homeController');
 const router = express.Router();
 
-router.get('/', indexView)
+
+router.get('/', home)
 
 // Areas
 // router.get('/Areas/addAreas', addArea)
