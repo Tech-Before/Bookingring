@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
@@ -23,7 +24,7 @@ app.use(homeRoutes.routes)
 // app.listen(port, ()=> console.log(`App listening on ${port}`))
 mongoose
   .connect(
-    'mongodb+srv://mrobot:bookingring1234543216789009876@cluster0.xjk47.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+    process.env.DB_Credentials
   )
   .then(result => {
     app.listen(port, ()=> console.log(`App listening on Port: ${port}`));

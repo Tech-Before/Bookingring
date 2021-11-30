@@ -256,7 +256,20 @@ const tourList = (req, res, next) =>{
     .catch(err => console.log(err));
 }
 const viewTour = (req, res, next) => {
-    res.render('./pages/Tours/viewTour')
+
+    const tourId = req.params.id;
+    Tours.findById(tourId)
+        .then( tour => {
+            if (!tour) {
+                return res.redirect('/');
+            }
+            res.render('./pages/Tours/viewTour', {
+                pageTitle: 'View Tour',
+                path: '/tours/tour',
+                tour: tour
+            });
+        })
+        .catch(err => console.log(err));
 }
 
 const editTour = (req, res, next) => {

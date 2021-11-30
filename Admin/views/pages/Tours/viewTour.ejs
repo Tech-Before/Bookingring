@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Tour/Hike</h1>
+            <h1><%= tour.tourType %></h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -35,52 +35,52 @@
                       <tbody>
                             <tr>
                                 <td><b>Tour / Hike </b></td>
-                                <td>Tour</td>
+                                <td><%= tour.tourType %></td>
                             </tr>
 
                             <tr>
                                 <td><b>From Date</b></td>
-                                <td>11/30/2021</td>
+                                <td><%= tour.startDate %></td>
                             </tr>
 
                             <tr>
                                 <td><b>Return Date: </b></td>
-                                <td>12/04/2021</td>
+                                <td><%= tour.endDate %></td>
                             </tr>
 
                             <tr>
                                 <td><b>From Place: </b></td>
-                                <td>Mingora</td>
+                                <td><%= tour.fromPlace %></td>
                             </tr>
 
                             <tr>
                                 <td><b>To Place: </b></td>
-                                <td>Kalam</td>
+                                <td><%= tour.toPlace %></td>
                             </tr>
 
                             <tr>
                                 <td><b>Duration: </b></td>
-                                <td>4-Days & 3-Nights</td>
+                                <td><%= tour.days + '-days' %> & <%= tour.nights + '-nights' %></td>
                             </tr>
 
                             <tr>
                                 <td><b>Total Vacancies </b></td>
-                                <td>20</td>
+                                <td><%= tour.availableSeats %></td>
                             </tr>
 
                             <tr>
                                 <td><b>Available Vacancies </b></td>
-                                <td>13</td>
+                                <td><%= tour.availableSeats %></td>
                             </tr>
 
                             <tr>
                                 <td><b>Remaining Vacancies </b></td>
-                                <td>7</td>
+                                <td><%= tour.availableSeats %></td>
                             </tr>
 
                             <tr>
                                 <td><b>Charges Per Head </b></td>
-                                <td>Pkr. 1800</td>
+                                <td>Pkr. <%= tour.chargesPerHead %></td>
                             </tr>
                       </tbody>
                     </table>

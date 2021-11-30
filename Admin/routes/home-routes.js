@@ -111,7 +111,7 @@ router.get('/Updates/deleteBlog', deleteBlog)
 // Tours Plans & Hiking
 router.get('/Tours/addTours', addTour)
 router.get('/Tours/toursList', tourList)
-router.get('/Tours/viewTour', viewTour)
+router.get('/Tours/viewTour/:id', viewTour)
 router.get('/Tours/editTour/:id', editTour)
 
 router.post('/Tours/addTours', postAddTour)
