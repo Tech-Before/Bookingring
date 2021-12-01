@@ -46,11 +46,12 @@
                               <td><%= i + 1 %></td>
                               <td><%= hotels[i].hotelName %></td>
                               <td><%= hotels[i].contact %></td>
-                              <td><% if(hotels[i].parking) { %>
-                                <span class="badge badge-primary"><i class="fa fa-check"></i></span>
-                                <% }else{ %>
-                                <span class="badge badge-danger"><i class="fa fa-times"></i></span>
-                                <% } %>
+                              <td>
+                                <% if(hotels[i].parking) { %>
+                                  <span class="badge badge-primary"><i class="fa fa-check"></i></span>
+                                  <% }else{ %>
+                                    <span class="badge badge-danger"><i class="fa fa-times"></i></span>
+                                    <% } %>
                               </td>
                               <td><%= hotels[i].area %></td>
                               <td> <% if(hotels[i].approvedStatus) { %>

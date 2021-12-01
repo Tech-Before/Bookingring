@@ -55,12 +55,20 @@
                               <% } %> 
                             </select>
                         </div>
-
                         <div class="form-group col-md-6">
                             <label>Hotel Address</label>
                             <input type="text" name="address" value="<%= data.hotel.address %>" class="form-control" required>
                         </div>
+                        <div class="form-group col-md-6">
+                          <label>Status</label>
+                          <select class="form-control select2" style="width: 100%; height: 100%;" name="status">
+                            <option value="true" <%= data.hotel.approvedStatus ? 'selected' : '' %> >Approved</option>
+                            <option value="false" <%= !data.hotel.approvedStatus ? 'selected' : '' %> >Unapproved</option>
+                          </select>
+                      </div>
+
                     </div>
+
 
                     <hr>
                     <h5><b>Owner Info &amp; Login Details</b></h5><hr>
@@ -91,8 +99,7 @@
                             <input type="password" name="loginPassword" value="<%= data.hotel.loginPassword %>" placeholder="Example: example@gmail.com" class="form-control" required>
                         </div>
                     </div>
-
-
+                    
                     <hr>
                     <div class="form-group">
                         <a class="btn btn-secondary btn-sm" name="cancel" type="submit" onclick="history.back(-1)">Cancel</a>

@@ -155,11 +155,33 @@ const editHotel = (req, res, next) => {
 }
 
 const hotelApproved = (req, res, next) => {
-    res.render('./pages/Hotels/approvedHotels')
+    Hotels.find({approvedStatus: true})
+    .then(hotels => {
+        if (!hotels) {
+            redirect('/')
+        }
+        res.render('./pages/Hotels/approvedHotels', {
+            hotels: hotels,
+            pageTitle: 'Approved Hotels',
+            path: '/Hotels/approved-hotels'
+        });
+    })
+    .catch(err => console.log(err));
 }
 
 const hotelUnapproved = (req, res, next) => {
-    res.render('./pages/Hotels/unapprovedHotels')
+    Hotels.find({approvedStatus: false})
+    .then(hotels => {
+        if (!hotels) {
+            redirect('/')
+        }
+        res.render('./pages/Hotels/unapprovedHotels', {
+            hotels: hotels,
+            pageTitle: 'Approved Hotels',
+            path: '/Hotels/approved-hotels'
+        });
+    })
+    .catch(err => console.log(err));
 }
 
 const addGalleryHotel = (req, res, next) => {
@@ -228,7 +250,7 @@ const postEditHotel = (req, res, next)=>{
     const ownerContact = req.body.ownerContact;
     const loginEmail = req.body.loginEmail;
     const loginPassword = req.body.loginPassword;
-    const approvedStatus = false;
+    const approvedStatus = req.body.status;
 
     Hotels.findById(hotelId)
         .then(hotel => {
