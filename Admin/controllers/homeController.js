@@ -1,5 +1,6 @@
 const Areas = require('../models/Area')
 const Tours = require('../models/Tour')
+const Hotels = require('../models/Hotel')
 
 // Login
 const login = (req, res, next) => {
@@ -93,19 +94,64 @@ const viewCustomer = (req, res, next) => {
 
 // Hotels Clients
 const hotelClients = (req, res, next) => {
-    res.render('./pages/Hotels/addHotel')
+    Areas.find()
+    .then(areas => {
+        res.render('./pages/Hotels/addHotel', {
+            areas: areas,
+            pageTitle: 'add hotel',
+            path: '/Hotels/add-hotel'
+        });
+    })
+    .catch(err => console.log(err));
 }
 
+
 const hotelList = (req, res, next) => {
-    res.render('./pages/Hotels/hotelsList')
+    Hotels.find()
+    .then(hotels => {
+        res.render('./pages/Hotels/hotelsList', {
+            hotels: hotels,
+            pageTitle: 'Hotels List',
+            path: '/Hotels/hotels-list'
+        });
+    })
+    .catch(err => console.log(err));
 }
 
 const viewHotel = (req, res, next) => {
-    res.render('./pages/Hotels/viewHotel')
+    const hotelId = req.params.id;
+    Hotels.findById(hotelId)
+        .then(hotel => {
+            res.render('./pages/Hotels/viewHotel', {
+                hotel: hotel,
+                pageTitle: 'Hotels List',
+                path: '/Hotels/hotel-view'
+            });
+        })
+        .catch(err => console.log(err));
 }
 
 const editHotel = (req, res, next) => {
-    res.render('./pages/Hotels/editHotel')
+
+    const hotelId = req.params.id;
+    Hotels.findById(hotelId)
+        .then(hotel => {
+            if (!hotel) {
+                return res.redirect('/');
+            }
+            return Areas.find().then( areas => {
+                return { hotel: hotel, areas: areas }
+            })
+        }).
+        then( data => {
+            res.render('./pages/Hotels/editHotel', {
+                pageTitle: 'Edit Tour',
+                path: '/admin/edit-tour',
+                data: data
+            });
+        })
+        .catch(err => console.log(err));
+
 }
 
 const hotelApproved = (req, res, next) => {
@@ -131,6 +177,82 @@ const galleryList = (req, res, next) => {
 const viewHotelImages = (req, res, next) => {
     res.render('./pages/Hotels/viewHotelImages')
 }
+
+const postAddHotel = (req, res, next) => {
+    const name = req.body.hotelName;
+    const contact = req.body.contact;
+    const parking = req.body.parking;
+    const area = req.body.area;
+    const address = req.body.address;
+    const ownerName = req.body.ownerName;
+    const ownerCNIC = req.body.ownerCNIC;
+    const ownerContact = req.body.ownerContact;
+    const loginEmail = req.body.loginEmail;
+    const loginPassword = req.body.loginPassword;
+    // const approvedStatus = req.body.status;
+    const hotel = new Hotels({
+        hotelName: name,
+        contact: contact,
+        parking: parking,
+        area: area,
+        address: address,
+        ownerName: ownerName,
+        ownerCNIC: ownerCNIC,
+        ownerContact: ownerContact,
+        loginEmail: loginEmail,
+        loginPassword: loginPassword,
+        approvedStatus: false
+    });
+    hotel
+        .save()
+        .then(result => {
+            // console.log(result);
+            console.log('Added Hotel');
+            res.redirect('/');
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
+const postEditHotel = (req, res, next)=>{
+
+    const hotelId = req.body.hotelId;
+    const name = req.body.hotelName;
+    const contact = req.body.contact;
+    const parking = req.body.parking;
+    const area = req.body.area;
+    const address = req.body.address;
+    const ownerName = req.body.ownerName;
+    const ownerCNIC = req.body.ownerCNIC;
+    const ownerContact = req.body.ownerContact;
+    const loginEmail = req.body.loginEmail;
+    const loginPassword = req.body.loginPassword;
+    const approvedStatus = false;
+
+    Hotels.findById(hotelId)
+        .then(hotel => {
+            hotel.hotelName = name,
+            hotel.contact = contact,
+            hotel.parking = parking,
+            hotel.area = area,
+            hotel.address = address,
+            hotel.ownerName = ownerName,
+            hotel.ownerCNIC = ownerCNIC,
+            hotel.ownerContact = ownerContact,
+            hotel.loginEmail = loginEmail,
+            hotel.loginPassword = loginPassword,
+            hotel.approvedStatus = approvedStatus
+            return hotel.save();
+        })
+        .then(result => {
+            console.log('UPDATED Hotel!');
+            res.redirect('/');
+        })
+        .catch(err => console.log(err));
+
+}
+
 
 // Appartments / Houses
 const appartmentsHouses = (req, res, next) => {
@@ -423,7 +545,7 @@ module.exports = {
     customersList, viewCustomer, editMembership,
     
     // Hotels Clients
-    hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages,
+    hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages, postAddHotel, postEditHotel,
     
     // Appartments / Houses 
     appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGalleryAppartment, addGalleryHouses, editGalleryHouses,

@@ -35,63 +35,69 @@
                       <tbody>
                             <tr>
                                 <td><b>Hotel Name: </b></td>
-                                <td>Continental</td>
+                                <td><%= hotel.hotelName %></td>
                             </tr>
 
                             <tr>
                                 <td><b>Hotel Contact #: </b></td>
-                                <td>0946715421</td>
+                                <td><%= hotel.contact %></td>
                             </tr>
 
                             <tr>
                                 <td><b>Hotel Parking: </b></td>
-                                <td><span class="badge badge-primary">Yes</span></td>
+                                <td><% if(hotel.parking) { %>
+                                  <span class="badge badge-primary">Yes</span>
+                                  <% } else { %>
+                                  <span class="badge badge-secondary">No</span>
+                                  <% } %>
+                                </td>
                                 
-                                <!-- For No Parking, use below  -->
-                                <!-- <td align="center"><span class="badge badge-primary">Yes</span></td> -->
                             </tr>
 
                             <tr>
                                 <td><b>Hotel Area: </b></td>
-                                <td>Male</td>
+                                <td><%= hotel.area %></td>
                             </tr>
 
                             <tr>
                                 <td><b>Hotel Address: </b></td>
-                                <td>Saidu Sharif, Swat, Kp.</td>
+                                <td><%= hotel.address %></td>
                             </tr>
 
                             <tr>
                                 <td><b>Owner Name: </b></td>
-                                <td>Someone</td>
+                                <td><%= hotel.ownerName %></td>
                             </tr>
 
                             <tr>
                                 <td><b>Owner CNIC #: </b></td>
-                                <td>1560284514563</td>
+                                <td><%= hotel.ownerCNIC %></td>
                             </tr>
 
                             <tr>
                                 <td><b>Owner Contact: </b></td>
-                                <td>03460973906</td>
+                                <td><%= hotel.ownerContact %></td>
                             </tr>
 
                             <tr>
                                 <td><b>Hotel Login Email: </b></td>
-                                <td>example@gmail.com</td>
+                                <td><%= hotel.loginEmail %></td>
                             </tr>
 
                             <tr>
                                 <td><b>Hotel Login Password: </b></td>
-                                <td>Pass123</td>
+                                <td><%= hotel.loginPassword %></td>
                             </tr>
 
                             <tr>
                                 <td><b>Hotel Status: </b></td>
-                                <td><span class="badge badge-primary">Approved</span></td>
-
-                                <!-- For unapproved Hotel, use below -->
-                                <!-- <span class="badge badge-danger">Unapproved</span> -->
+                                <td>
+                                  <% if(hotel.approvedStatus) { %>
+                                    <span class="badge badge-primary">Approved</span>
+                                    <% } else { %>
+                                      <span class="badge badge-danger">Unapproved</span>
+                                      <% } %>
+                                </td>
                             </tr>
 
                       </tbody>
