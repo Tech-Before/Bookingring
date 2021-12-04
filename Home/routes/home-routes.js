@@ -5,7 +5,7 @@ const {
     home,
 
     // Appartment
-    appartments
+    appartments, hotelRooms
 
 } = require('../controllers/homeController');
 const router = express.Router();
@@ -15,6 +15,7 @@ router.get('/', home)
 
 // Appartment
 router.get('/Appartments/appartments', appartments)
+router.get('/Appartments/hotelRooms', hotelRooms)
 
 module.exports = {
     routes: router
