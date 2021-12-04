@@ -1,15 +1,20 @@
 const express = require('express');
 
 const {
-    home
+    // HomePage
+    home,
+
+    // Appartment
+    appartments
+
 } = require('../controllers/homeController');
 const router = express.Router();
 
-
+// HomePage
 router.get('/', home)
 
-// Areas
-// router.get('/Areas/addAreas', addArea)
+// Appartment
+router.get('/Appartments/appartments', appartments)
 
 module.exports = {
     routes: router

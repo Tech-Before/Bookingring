@@ -1,5 +1,13 @@
-const home = (req, res, next) => res.render('./pages/home');
+// HomePage
+const home = (req, res, next) => res.render('./pages/HomePage/home');
+
+// Appartments
+const appartments = (req, res, next) => res.render('./pages/Appartments/appartments');
 
 module.exports = {
-    home
+    // HomePage
+    home,
+
+    // Appartments
+    appartments
 }
