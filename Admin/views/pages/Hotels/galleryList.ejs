@@ -39,27 +39,34 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Continental</td>
-                            <td>0946712845</td>
-                            <td>Kalam</td>
-                            <td><span class="badge badge-primary">Approved</span></td>
-                            <td>
-                                <a href="/Hotels/viewHotelImages" class="btn btn-info btn-sm">View Gallery <i class="fa fa-eye"></i></a>
-                            </td>
-                        </tr>
 
-                        <tr>
-                            <td>2</td>
-                            <td>Continental</td>
-                            <td>0946712845</td>
-                            <td>Kalam</td>
-                            <td><span class="badge badge-danger">Unapproved</span></td>
+                        <% for(let i=0; i< galleries.length; i++) { %>
+                          <tr>
                             <td>
-                                <a href="/Hotels/viewHotelImages" class="btn btn-info btn-sm">View Gallery <i class="fa fa-eye"></i></a>
+                              <%= i + 1 %>
                             </td>
-                        </tr>
+                            <td>
+                              <%= galleries[i].hotelId.hotelName %>
+                            </td>
+                            <td>
+                              <%= galleries[i].hotelId.contact %>
+                            </td>
+                            <td>
+                              <%= galleries[i].hotelId.area %>
+                            </td>
+                            <td>
+                              <% if(galleries[i].hotelId.approvedStatus) { %>
+                                <span class="badge badge-primary">Approved</span>
+                                <% } else { %>
+                                  <span class="badge badge-danger">Unapproved</span>
+                                  <% } %>
+                            </td>
+                            <td>
+                              <a href="<%= '/Hotels/viewHotelImages/' + galleries[i].hotelId.id %> " class="btn btn-info btn-sm">View Gallery <i class="fa fa-eye"></i></a>
+                            </td>
+                          </tr>
+                          <% } %>
+
                       </tbody>
                       <tfoot>
                         <tr>

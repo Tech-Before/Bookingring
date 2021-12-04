@@ -1,6 +1,7 @@
 const Areas = require('../models/Area')
 const Tours = require('../models/Tour')
 const Hotels = require('../models/Hotel')
+const hotelGallery = require('../models/hotelGallery')
 
 // Login
 const login = (req, res, next) => {
@@ -185,19 +186,62 @@ const hotelUnapproved = (req, res, next) => {
 }
 
 const addGalleryHotel = (req, res, next) => {
-    res.render('./pages/Hotels/addHotelGallery')
+
+    Hotels.find()
+    .then(hotels => {
+        if(!hotels){
+            res.redirect('/')
+        }
+        res.render('./pages/Hotels/addHotelGallery', {
+            hotels: hotels,
+            pageTitle: 'Add Gallery',
+            path: '/Hotels/add-gallery'
+        });
+    })
+    .catch(err => console.log(err));
+
 }
 
 const addHotelImages = (req, res, next) => {
-    res.render('./pages/Hotels/addHotelImages')
+    const hotelId = req.query.hotelId;
+    res.render('./pages/Hotels/addHotelImages', {hotelId: hotelId})
 }
 
 const galleryList = (req, res, next) => {
-    res.render('./pages/Hotels/galleryList')
+
+    hotelGallery.find()
+    .populate('hotelId')
+    .then(galleries => {
+        if(!galleries){
+            res.redirect('/')
+        }
+        res.render('./pages/Hotels/galleryList', {
+            galleries: galleries,
+            pageTitle: 'Gallery List',
+            path: '/Hotels/gallery-list'
+        });
+    })
+    .catch(err => console.log(err));
+
 }
 
 const viewHotelImages = (req, res, next) => {
-    res.render('./pages/Hotels/viewHotelImages')
+    //recieve the hotelId and get all the images list accosiated with it
+    const hotelId = req.params.id;
+
+    hotelGallery.find({hotelId: hotelId})
+    .then(gallery => {
+        if(!gallery){
+            res.redirect('/')
+        }
+        console.log(gallery.images)
+        res.render('./pages/Hotels/viewHotelImages', {
+            gallery: gallery,
+            pageTitle: 'Gallery List',
+            path: '/Hotels/gallery-list'
+        });
+    })
+    .catch(err => console.log(err));
 }
 
 const postAddHotel = (req, res, next) => {
@@ -273,6 +317,27 @@ const postEditHotel = (req, res, next)=>{
         })
         .catch(err => console.log(err));
 
+}
+
+const postAddHotelGallery = (req, res, next)=>{
+    const image = req.file;
+    const hotelId = req.body.hotelId;
+    const imageUrl = image.path;
+    const gallery = new hotelGallery({
+        hotelId: hotelId,
+        images: [imageUrl]
+    })
+
+    gallery
+        .save()
+        .then(result => {
+            // console.log(result);
+            console.log('Created Gallery');
+            res.redirect('/');
+        })
+        .catch(err => {
+            console.log(err)
+        });
 }
 
 
@@ -567,7 +632,7 @@ module.exports = {
     customersList, viewCustomer, editMembership,
     
     // Hotels Clients
-    hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages, postAddHotel, postEditHotel,
+    hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages, postAddHotel, postEditHotel, postAddHotelGallery,
     
     // Appartments / Houses 
     appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGalleryAppartment, addGalleryHouses, editGalleryHouses,

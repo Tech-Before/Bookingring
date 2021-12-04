@@ -27,18 +27,20 @@
                 <h3 class="card-title">Add Hotel Gallery</h3>
               </div>
               <div class="card-body">
-                <form method="POST">
+                <form action="/Hotels/addHotelImages" method="GET">
                         <label>Select Hotel</label>
-                        <select class="form-control select2" style="width: 100%;" name="">
-                            <option value="1">Contental</option>
-                            <option value="2">Serena</option>
-                            <option value="3">Zaiqa Mahal</option>
+                        <select class="form-control select2" style="width: 100%;" name="hotelId">
+                            
+                            <% for(let i = 0; i< hotels.length; i++) { %>
+                              <option value="<%= hotels[i].id%>"><%= hotels[i].hotelName %></option>
+                            <% } %>
+
                         </select>
                     
                     <hr>
                     <div class="form-group">
-                        <a class="btn btn-secondary btn-sm" name="cancel" type="submit" onclick="history.back(-1)">Cancel</a>
-                        <a class="btn btn-success btn-sm" name="cancel" type="submit" href="/Hotels/addHotelImages">Add Gallery</a>
+                        <a class="btn btn-secondary btn-sm" type="submit" onclick="history.back(-1)">Cancel</a>
+                        <button class="btn btn-success btn-sm" name="cancel" type="submit">Add Gallery</button>
                     </div>
                 </form>
               </div>

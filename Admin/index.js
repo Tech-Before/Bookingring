@@ -5,15 +5,40 @@ const path = require('path');
 const homeRoutes = require('./routes/home-routes')
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-
+const multer = require('multer')
 const app = express();
 const port = 3000;
 
+//configuring of file destination and name
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './public/images/');
+  },
+  filename: (req, file, cb) => {
+    let date = new Date().toISOString().replaceAll(":", "-");
+    cb(null, date + '-' + file.originalname);
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
+);
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 
-app.use(express.json());
 
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
