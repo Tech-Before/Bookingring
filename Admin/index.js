@@ -44,6 +44,7 @@ app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, './public')));
+app.use('images', express.static(path.join(__dirname, './public/images')));
 app.use(homeRoutes.routes)
 
 // app.listen(port, ()=> console.log(`App listening on ${port}`))

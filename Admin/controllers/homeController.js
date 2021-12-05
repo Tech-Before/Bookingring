@@ -229,12 +229,11 @@ const viewHotelImages = (req, res, next) => {
     //recieve the hotelId and get all the images list accosiated with it
     const hotelId = req.params.id;
 
-    hotelGallery.find({hotelId: hotelId})
+    hotelGallery.findOne({hotelId: hotelId})
     .then(gallery => {
         if(!gallery){
             res.redirect('/')
         }
-        console.log(gallery.images)
         res.render('./pages/Hotels/viewHotelImages', {
             gallery: gallery,
             pageTitle: 'Gallery List',
@@ -322,7 +321,7 @@ const postEditHotel = (req, res, next)=>{
 const postAddHotelGallery = (req, res, next)=>{
     const image = req.file;
     const hotelId = req.body.hotelId;
-    const imageUrl = image.path;
+    const imageUrl = image.filename;
     const gallery = new hotelGallery({
         hotelId: hotelId,
         images: [imageUrl]
