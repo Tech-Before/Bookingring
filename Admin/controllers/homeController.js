@@ -226,9 +226,8 @@ const galleryList = (req, res, next) => {
 }
 
 const viewHotelImages = (req, res, next) => {
-    //recieve the hotelId and get all the images list accosiated with it
-    const hotelId = req.params.id;
 
+    const hotelId = req.params.id;
     hotelGallery.findOne({hotelId: hotelId})
     .then(gallery => {
         if(!gallery){
@@ -319,14 +318,19 @@ const postEditHotel = (req, res, next)=>{
 }
 
 const postAddHotelGallery = (req, res, next)=>{
-    const image = req.file;
+    const uploads = req.files;
     const hotelId = req.body.hotelId;
-    const imageUrl = image.filename;
+    const hotelImages = [];
+
+    for(let i=0; i< uploads.length; i++){
+        hotelImages.push(uploads[i].filename)
+    }
+
     const gallery = new hotelGallery({
         hotelId: hotelId,
-        images: [imageUrl]
+        images: hotelImages
     })
-
+    
     gallery
         .save()
         .then(result => {
@@ -337,6 +341,31 @@ const postAddHotelGallery = (req, res, next)=>{
         .catch(err => {
             console.log(err)
         });
+}
+
+const postDeleteGalleryImage = (req, res) =>{
+    //recieve the gallery id and the image name
+    const galleryId = req.body.galleryId;
+    const image = req.body.image;
+    // find the gallery and
+    // t.splice(t.indexOf('B'), 1);
+    hotelGallery.findById(galleryId)
+    .then(gallery => {
+        let images = gallery.images;
+        console.log(images)
+        let updatedImages = images.splice(images.indexOf(image), 1)
+        
+      console.log(updatedImages)
+      res.redirect('/')
+    //   return product.save();
+    })
+    // .then(result => {
+    //   console.log('UPDATED PRODUCT!');
+    //   res.redirect('/admin/products');
+    // })
+    .catch(err => console.log(err));
+    // then delete/pop the image from images array
+    // then delete the image from disk as well
 }
 
 
@@ -631,7 +660,7 @@ module.exports = {
     customersList, viewCustomer, editMembership,
     
     // Hotels Clients
-    hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages, postAddHotel, postEditHotel, postAddHotelGallery,
+    hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages, postAddHotel, postEditHotel, postAddHotelGallery, postDeleteGalleryImage,
     
     // Appartments / Houses 
     appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGalleryAppartment, addGalleryHouses, editGalleryHouses,
