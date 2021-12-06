@@ -318,7 +318,7 @@ const postEditHotel = (req, res, next)=>{
 
 }
 
-const postAddHotelGallery = (req, res, next)=>{
+const postAddHotelGallery = async (req, res, next)=>{
     const uploads = req.files;
     const hotelId = req.body.hotelId;
     const hotelImages = [];
@@ -327,12 +327,24 @@ const postAddHotelGallery = (req, res, next)=>{
         hotelImages.push(uploads[i].filename)
     }
 
-    const gallery = new hotelGallery({
-        hotelId: hotelId,
-        images: hotelImages
-    })
-    
-    gallery
+    const filter = { hotelId: hotelId };
+    const update = { images: hotelImages };
+    // let doc = await Character.findOneAndUpdate(filter, update, {
+    // new: true
+    // });
+
+    const existingGallery = await hotelGallery.findOneAndUpdate(filter, update, {
+        new: true
+        });
+    if (existingGallery){
+        console.log('the gallery replaced with the new')
+        res.redirect('/')
+    } else{
+        const gallery = new hotelGallery({
+            hotelId: hotelId,
+            images: hotelImages
+        })
+        gallery
         .save()
         .then(result => {
             // console.log(result);
@@ -342,26 +354,37 @@ const postAddHotelGallery = (req, res, next)=>{
         .catch(err => {
             console.log(err)
         });
+    }
+    
 }
 
 const postDeleteGalleryImage = (req, res) => {
-  //recieve the gallery id and the image name
-  const galleryId = req.body.galleryId;
-  const image = req.body.image;
-  const hotelId = req.body.hotelId;
-  hotelGallery
-    .findById(galleryId)
-    .then((gallery) => {
-      let images = gallery.images;
-      images.splice(images.indexOf(image), 1);
-      return gallery.save();
-    })
-    .then((result) => {
-        delImage(image)
-      console.log("UPDATED Gallery!");
-      res.redirect("/Hotels/viewHotelImages/" + hotelId);
-    })
-    .catch((err) => console.log(err));
+    //recieve the gallery id and the image name
+    const galleryId = req.body.galleryId;
+    const image = req.body.image;
+    const hotelId = req.body.hotelId;
+
+    hotelGallery
+        .findById(galleryId)
+        .then((gallery) => {
+            let images = gallery.images;
+            images.splice(images.indexOf(image), 1);
+            if (images.length === 0) {
+                return hotelGallery.findByIdAndDelete(galleryId)
+            } else {
+                return gallery.save();
+            }
+        })
+        .then((result) => {
+            delImage(image)
+            console.log("UPDATED Gallery!");
+            if (images.length === 0) {
+                res.redirect('/')
+            } else {
+                res.redirect("/Hotels/viewHotelImages/" + hotelId);
+            }
+        })
+        .catch((err) => console.log(err));
 };
 
 
