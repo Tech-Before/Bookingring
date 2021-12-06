@@ -34,6 +34,7 @@
                       <form action="/Hotels/DeleteGalleryImage" method="POST">
                         <input type="hidden" name="galleryId" value="<%= gallery.id %>">
                         <input type="hidden" name="image" value="<%= gallery.images[i] %>">
+                        <input type="hidden" name="hotelId" value="<%= gallery.hotelId %>">
                         <button type="submit" class="btn btn-danger btn-sm" style="width: 90%">Delete</button>
                       </form>
                     </div>

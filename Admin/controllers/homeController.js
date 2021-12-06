@@ -1,3 +1,4 @@
+const delImage = require('../util/file')
 const Areas = require('../models/Area')
 const Tours = require('../models/Tour')
 const Hotels = require('../models/Hotel')
@@ -343,30 +344,25 @@ const postAddHotelGallery = (req, res, next)=>{
         });
 }
 
-const postDeleteGalleryImage = (req, res) =>{
-    //recieve the gallery id and the image name
-    const galleryId = req.body.galleryId;
-    const image = req.body.image;
-    // find the gallery and
-    // t.splice(t.indexOf('B'), 1);
-    hotelGallery.findById(galleryId)
-    .then(gallery => {
-        let images = gallery.images;
-        console.log(images)
-        let updatedImages = images.splice(images.indexOf(image), 1)
-        
-      console.log(updatedImages)
-      res.redirect('/')
-    //   return product.save();
+const postDeleteGalleryImage = (req, res) => {
+  //recieve the gallery id and the image name
+  const galleryId = req.body.galleryId;
+  const image = req.body.image;
+  const hotelId = req.body.hotelId;
+  hotelGallery
+    .findById(galleryId)
+    .then((gallery) => {
+      let images = gallery.images;
+      images.splice(images.indexOf(image), 1);
+      return gallery.save();
     })
-    // .then(result => {
-    //   console.log('UPDATED PRODUCT!');
-    //   res.redirect('/admin/products');
-    // })
-    .catch(err => console.log(err));
-    // then delete/pop the image from images array
-    // then delete the image from disk as well
-}
+    .then((result) => {
+        delImage(image)
+      console.log("UPDATED Gallery!");
+      res.redirect("/Hotels/viewHotelImages/" + hotelId);
+    })
+    .catch((err) => console.log(err));
+};
 
 
 // Appartments / Houses
