@@ -53,7 +53,7 @@ mongoose
     process.env.DB_Credentials
   )
   .then(result => {
-    app.listen(port, ()=> console.log(`App listening on Port: ${port}`));
+    app.listen(port, () => console.log(`App listening on Port: ${port}`));
   })
   .catch(err => {
     console.log(err);
