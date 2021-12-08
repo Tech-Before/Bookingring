@@ -3,6 +3,7 @@ const Areas = require('../models/Area')
 const Tours = require('../models/Tour')
 const Hotels = require('../models/Hotel')
 const hotelGallery = require('../models/hotelGallery')
+const Appartments = require('../models/Appartment')
 
 // Login
 const login = (req, res, next) => {
@@ -390,15 +391,48 @@ const postDeleteGalleryImage = (req, res) => {
 
 // Appartments / Houses
 const appartmentsHouses = (req, res, next) => {
-    res.render('./pages/Appartments/addAppartment')
+    Areas.find()
+    .then(areas => {
+        res.render('./pages/Appartments/addAppartment', {
+            areas: areas,
+            pageTitle: 'add appartment',
+            path: '/Appartments/add-appartment'
+        });
+    })
+    .catch(err => console.log(err));
 }
 
 const appartmentHouseList = (req, res, next) => {
-    res.render('./pages/Appartments/appartmentHouseList')
+    Appartments.find()
+    .then(appartments => {
+        res.render('./pages/Appartments/appartmentHouseList', {
+            appartments: appartments,
+            pageTitle: 'Appartments List',
+            path: '/Appartments/appartment-list'
+        });
+    })
+    .catch(err => console.log(err));
 }
 
 const editAppartmentHouse = (req, res, next) => {
-    res.render('./pages/Appartments/editAppartmentHouse')
+    const appartId = req.params.id;
+    Appartments.findById(appartId)
+        .then(appart => {
+            if (!appart) {
+                return res.redirect('/');
+            }
+            return Areas.find().then( areas => {
+                return { appart: appart, areas: areas }
+            })
+        }).
+        then( data => {
+            res.render('./pages/Appartments/editAppartmentHouse', {
+                pageTitle: 'Edit Appartment/House',
+                path: '/Appartment/edit-Appartment',
+                data: data
+            });
+        })
+        .catch(err => console.log(err));
 }
 
 const addGalleryAppartment = (req, res, next) => {
@@ -423,6 +457,90 @@ const addGalleryHouses = (req, res, next) => {
 
 const editGalleryHouses = (req, res, next) => {
     res.render('./pages/Appartments/editGalleryHouses')
+}
+
+const postAddAppartment = (req, res, next) => {
+    const name = req.body.appartName;
+    const price = req.body.price;
+    const contact = req.body.contact;
+    const parking = req.body.parking;
+    const area = req.body.area;
+    const appartType = req.body.appartType;
+    const address = req.body.address;
+    const ownerName = req.body.ownerName;
+    const ownerCNIC = req.body.ownerCNIC;
+    const ownerContact = req.body.ownerContact;
+    const loginEmail = req.body.loginEmail;
+    const loginPassword = req.body.loginPassword;
+    // const approvedStatus = req.body.status;
+    const appartment = new Appartments({
+        appartmentName: name,
+        contact: contact,
+        price: price,
+        contact: contact,
+        parking: parking,
+        area: area,
+        appartmentType: appartType,
+        address: address,
+        ownerName: ownerName,
+        ownerCNIC: ownerCNIC,
+        ownerContact: ownerContact,
+        loginEmail: loginEmail,
+        loginPassword: loginPassword,
+        availibilityStatus: true
+    });
+    appartment
+        .save()
+        .then(result => {
+            // console.log(result);
+            console.log('appartment added');
+            res.redirect('/');
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+
+const postEditAppartment = (req, res, next)=>{
+
+    const appartId = req.body.appartId;
+    const name = req.body.appartName;
+    const price = req.body.price;
+    const contact = req.body.contact;
+    const parking = req.body.parking;
+    const area = req.body.area;
+    const appartType = req.body.appartType;
+    const address = req.body.address;
+    const ownerName = req.body.ownerName;
+    const ownerCNIC = req.body.ownerCNIC;
+    const ownerContact = req.body.ownerContact;
+    const loginEmail = req.body.loginEmail;
+    const loginPassword = req.body.loginPassword;
+    const availibilityStatus = req.body.status;
+
+    Appartments.findById(appartId)
+        .then(appart => {
+            appart.appartmentName = name;
+            appart.price = price;
+            appart.contact = contact;
+            appart.parking = parking;
+            appart.area = area;
+            appart.appartmentType = appartType;
+            appart.address = address;
+            appart.ownerName = ownerName;
+            appart.ownerCNIC = ownerCNIC;
+            appart.ownerContact = ownerContact;
+            appart.loginEmail = loginEmail;
+            appart.loginPassword = loginPassword;
+            appart.availibilityStatus = availibilityStatus;
+            return appart.save();
+        })
+        .then(result => {
+            console.log('UPDATED appartment/house!');
+            res.redirect('/Appartments/appartmentHouseList');
+        })
+        .catch(err => console.log(err));
+
 }
 
 // Rooms
@@ -682,7 +800,7 @@ module.exports = {
     hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages, postAddHotel, postEditHotel, postAddHotelGallery, postDeleteGalleryImage,
     
     // Appartments / Houses 
-    appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGalleryAppartment, addGalleryHouses, editGalleryHouses,
+    appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGalleryAppartment, addGalleryHouses, editGalleryHouses, postAddAppartment, postEditAppartment,
     
     // Rooms
     addRoom, roomList, editRoom, addRoomGallery, editRoomGallery,
