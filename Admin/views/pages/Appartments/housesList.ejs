@@ -41,20 +41,33 @@
                       </tr>
                     </thead>
                     <tbody>
+                      <% for(let i= 0; i< houses.length; i++){ %> 
                       <tr>
-                          <td>1</td>
-                          <td>Example</td>
-                          <td>0946712845</td>
-                          <td><span class="badge badge-danger"><i class="fa fa-times"></i></span></td>
+                          <td><%= i + 1 %> </td>
+                          <td><%= houses[i].appartmentName %> </td>
+                          <td><%= houses[i].contact %> </td>
+                          <td>
+                            <% if(houses[i].parking) { %>
+                              <span class="badge badge-success"><i class="fa fa-check"></i></span>
+                              <% } else{ %>
+                                <span class="badge badge-danger"><i class="fa fa-times"></i></span>
+                                <% } %>
+                          </td>
                           <td><span class="badge badge-info">House</span></td>
-                          <td>Kalam</td>
-                          <td><span class="badge badge-primary">Available</span></td>
+                          <td><%= houses[i].area %> </td>
+                          <td>
+                            <% if(houses[i].availibilityStatus) { %>
+                              <span class="badge badge-primary">Available</span>
+                            <% } else{ %>
+                              <span class="badge badge-secondary">Unavailable</span>
+                              <% } %> 
+                            </td>
                           <td>
                               <a href="/Appartments/addGalleryHouses" class="btn btn-info btn-sm">Add <i class="fa fa-picture-o"></i></a>
                               <a href="/Appartments/editGalleryHouses" class="btn btn-success btn-sm">Edit <i class="fa fa-picture-o"></i></a>
                           </td>
                       </tr>
-
+                      <% } %> 
                     </tbody>
                     <tfoot>
                       <tr>

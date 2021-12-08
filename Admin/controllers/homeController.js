@@ -4,6 +4,7 @@ const Tours = require('../models/Tour')
 const Hotels = require('../models/Hotel')
 const hotelGallery = require('../models/hotelGallery')
 const Appartments = require('../models/Appartment')
+const appartmentGallery = require('../models/AppartmentGallery')
 
 // Login
 const login = (req, res, next) => {
@@ -48,6 +49,7 @@ const editArea = (req, res, next) => {
         })
         .catch(err => console.log(err));
 }
+
 
 const postAddArea = (req, res, next) => {
     const name = req.body.areaName;
@@ -435,8 +437,9 @@ const editAppartmentHouse = (req, res, next) => {
         .catch(err => console.log(err));
 }
 
-const addGalleryAppartment = (req, res, next) => {
-    res.render('./pages/Appartments/addGalleryAppartments')
+const addGallery = (req, res, next) => {
+    const appartId = req.params.id;
+    res.render('./pages/Appartments/addGalleryAppartments', {appartId: appartId})
 }
 
 const editGalleryAppartments = (req, res, next) => {
@@ -444,11 +447,27 @@ const editGalleryAppartments = (req, res, next) => {
 }
 
 const appartmentList = (req, res, next) => {
-    res.render('./pages/Appartments/appartmentList')
+    Appartments.find({appartmentType: 'appartment'})
+    .then(appartments => {
+        res.render('./pages/Appartments/appartmentList', {
+            aparts: appartments,
+            pageTitle: 'Appartments List',
+            path: '/Appartments/appartment-list'
+        });
+    })
+    .catch(err => console.log(err));
 }
 
 const housesList = (req, res, next) => {
-    res.render('./pages/Appartments/housesList')
+    Appartments.find({appartmentType: 'house'})
+    .then(houses => {
+        res.render('./pages/Appartments/housesList', {
+            houses: houses,
+            pageTitle: 'Appartments List',
+            path: '/Appartments/appartment-list'
+        });
+    })
+    .catch(err => console.log(err));
 }
 
 const addGalleryHouses = (req, res, next) => {
@@ -541,6 +560,47 @@ const postEditAppartment = (req, res, next)=>{
         })
         .catch(err => console.log(err));
 
+}
+
+const postAddAppartmentGallery = async (req, res, next)=>{
+    const uploads = req.files;
+    const appartId = req.body.appartId;
+    const appartmentImages = [];
+    console.log(uploads)
+
+    // for(let i=0; i< uploads.length; i++){
+    //     appartmentImages.push(uploads[i].filename)
+    // }
+
+    // const filter = { appartmentId: appartId };
+    // const update = { images: appartmentImages };
+    // // let doc = await Character.findOneAndUpdate(filter, update, {
+    // // new: true
+    // // });
+
+    // const existingGallery = await hotelGallery.findOneAndUpdate(filter, update, {
+    //     new: true
+    //     });
+    // if (existingGallery){
+    //     console.log('the gallery replaced with the new')
+    //     res.redirect('/')
+    // } else{
+    //     const gallery = new appartmentGallery({
+    //         hotelId: hotelId,
+    //         images: appartmentImages
+    //     })
+    //     gallery
+    //     .save()
+    //     .then(result => {
+    //         // console.log(result);
+    //         console.log('Created Gallery');
+    //         res.redirect('/');
+    //     })
+    //     .catch(err => {
+    //         console.log(err)
+    //     });
+    // }
+    
 }
 
 // Rooms
@@ -800,7 +860,7 @@ module.exports = {
     hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages, postAddHotel, postEditHotel, postAddHotelGallery, postDeleteGalleryImage,
     
     // Appartments / Houses 
-    appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGalleryAppartment, addGalleryHouses, editGalleryHouses, postAddAppartment, postEditAppartment,
+    appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGallery, addGalleryHouses, editGalleryHouses, postAddAppartment, postEditAppartment, postAddAppartmentGallery,
     
     // Rooms
     addRoom, roomList, editRoom, addRoomGallery, editRoomGallery,
