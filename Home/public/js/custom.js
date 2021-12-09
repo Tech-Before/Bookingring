@@ -310,15 +310,15 @@ $(document).ready(function () {
         $(this).parent().wrapAll('<div class="video-wrapper">');
         $(PlaceV).html(
           '<iframe frameborder="0" height="333" src="' +
-            videoLink +
-            '?autoplay=1&showinfo=0" title="YouTube video player" width="547"></iframe>'
+          videoLink +
+          '?autoplay=1&showinfo=0" title="YouTube video player" width="547"></iframe>'
         );
       } else {
         $(this).parent().wrapAll('<div class="video-wrapper">');
         $(PlaceV).html(
           '<iframe src="' +
-            videoLink +
-            '?title=0&amp;byline=0&amp;portrait=0&amp;autoplay=1&amp;color=6dc234" width="500" height="281" frameborder="0"></iframe>'
+          videoLink +
+          '?title=0&amp;byline=0&amp;portrait=0&amp;autoplay=1&amp;color=6dc234" width="500" height="281" frameborder="0"></iframe>'
         );
       }
     });
@@ -328,10 +328,10 @@ $(document).ready(function () {
     var range = $(".input-range"),
       value = $(".range-value");
 
-    value.html(range.attr("value") + " $");
+    value.html(range.attr("value") + " Pkr");
 
     range.on("input", function () {
-      value.html(this.value + " $");
+      value.html(this.value + " Pkr");
     });
   });
 })(jQuery);
