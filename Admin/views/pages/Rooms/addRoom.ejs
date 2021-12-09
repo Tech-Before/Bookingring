@@ -26,12 +26,12 @@
                 <h3 class="card-title">Add Room</h3>
               </div>
               <div class="card-body">
-                <form method="POST">
+                <form action="/Rooms/addRoom" method="POST">
                     <h5><b>Hotel Details</b></h5><hr>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>Select Hotel</label>
-                            <select class="form-control select2" name="">
+                            <select class="form-control select2" name="hotelId">
                                 <option value="1">Continental</option>
                                 <option value="2">Serena</option>
                             </select>
@@ -39,7 +39,7 @@
 
                         <div class="form-group col-md-6">
                             <label>Select Hotel Area</label>
-                            <select class="form-control select2" name="">
+                            <select class="form-control select2" name="areaId">
                                 <option value="1">Behrain - Near Shell Ptrol Station, Madyan Bazar</option>
                                 <option value="2">Kalam - Near Shell Ptrol Station, Madyan Bazar</option>
                                 <option value="3">Madyan - Near Shell Ptrol Station, Madyan Bazar</option>
@@ -52,7 +52,7 @@
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label>Select Beds</label>
-                            <select class="form-control" name="">
+                            <select class="form-control" name="beds">
                                 <option value="1">Single Bedded</option>
                                 <option value="2">2 Bedded</option>
                                 <option value="3">3 Bedded</option>
@@ -63,57 +63,57 @@
 
                         <div class="form-group col-md-4">
                             <label>Hot Water</label>
-                            <select class="form-control" name="">
-                                <option value="1">Yes</option>
-                                <option value="2">No</option>
+                            <select class="form-control" name="hotWater">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
                             </select>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label>Heater</label>
-                            <select class="form-control" name="">
-                                <option value="1">Yes</option>
-                                <option value="2">No</option>
+                            <select class="form-control" name="heater">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
                             </select>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label>Balcony</label>
-                            <select class="form-control" name="">
-                                <option value="1">Yes</option>
-                                <option value="2">No</option>
+                            <select class="form-control" name="balcony">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
                             </select>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label>Room Service</label>
-                            <select class="form-control" name="">
-                                <option value="1">Yes</option>
-                                <option value="2">No</option>
+                            <select class="form-control" name="roomServices">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
                             </select>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label>Room Status</label>
-                            <select class="form-control" name="">
-                                <option value="1">Available</option>
-                                <option value="2">Not Available</option>
+                            <select class="form-control" name="status">
+                                <option value="true">Available</option>
+                                <option value="false">Not Available</option>
                             </select>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label>Location</label>
-                            <input type="text" name="" placeholder="i.e: 3rd Floor" class="form-control" required>
+                            <input type="text" name="location" placeholder="i.e: 3rd Floor" class="form-control" required>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label>Room Charges</label>
-                            <input type="number" name="" placeholder="i.e: 5000" class="form-control" required>
+                            <input type="number" name="charges" placeholder="i.e: 5000" class="form-control" required>
                         </div>
 
                         <div class="form-group col-md-4">
                           <label>Room No</label>
-                          <input type="number" name="" placeholder="i.e: 5" class="form-control" required>
+                          <input type="number" name="roomNo" placeholder="i.e: 5" class="form-control" required>
                       </div>
                     </div>
 

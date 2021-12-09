@@ -20,7 +20,7 @@ const {
     appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGallery, addGalleryHouses, editGalleryHouses, postAddAppartment, postEditAppartment, postAddAppartmentGallery, postDeleteAppartmentGalleryImage,
     
     // Rooms
-    addRoom, roomList, editRoom, addRoomGallery, editRoomGallery,
+    addRoom, roomList, editRoom, addRoomGallery, editRoomGallery, postAddRoom,
 
     // Vehicle
     addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery,
@@ -103,6 +103,8 @@ router.get('/Rooms/roomList', roomList)
 router.get('/Rooms/editRoom', editRoom)
 router.get('/Rooms/addRoomGallery', addRoomGallery)
 router.get('/Rooms/editRoomGallery', editRoomGallery)
+router.post('/Rooms/addRoom', postAddRoom)
+
 
 // Vehicle
 router.get('/Vehicles/addVehicles', addVehicle)

@@ -5,6 +5,7 @@ const Hotels = require('../models/Hotel')
 const hotelGallery = require('../models/hotelGallery')
 const Appartments = require('../models/Appartment')
 const appartmentGallery = require('../models/AppartmentGallery')
+const Rooms = require('../models/Room')
 
 // Login
 const login = (req, res, next) => {
@@ -662,6 +663,44 @@ const editRoomGallery = (req, res, next) => {
     res.render('./pages/Rooms/editRoomGallery')
 }
 
+const postAddRoom = (req, res )=>{
+    const roomNo = req.body.roomNo;
+    const hotelId = req.body.hotelId;
+    const areaId = req.body.areaId;
+    const beds = req.body.beds;
+    const hotWater = req.body.hotWater;
+    const balcony = req.body.balcony;
+    const roomServices = req.body.roomServices;
+    const status = req.body.status;
+    const location = req.body.location;
+    const charges = req.body.charges;
+
+    const room = new Rooms({
+        roomNo: roomNo,
+        hotelId: hotelId,
+        areaId: areaId,
+        beds: beds,
+        hotWater: hotWater,
+        balcony: balcony,
+        roomService: roomServices,
+        status: status,
+        location: location,
+        charges: charges
+    });
+
+    room
+        .save()
+        .then(result => {
+            // console.log(result);
+            console.log('Added Room');
+            res.redirect('/');
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
+}
+
 // Vehicle
 const addVehicle = (req, res, next) => {
     res.render('./pages/Vehicles/addVehicles')
@@ -901,7 +940,7 @@ module.exports = {
     appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGallery, addGalleryHouses, editGalleryHouses, postAddAppartment, postEditAppartment, postAddAppartmentGallery, postDeleteAppartmentGalleryImage,
     
     // Rooms
-    addRoom, roomList, editRoom, addRoomGallery, editRoomGallery,
+    addRoom, roomList, editRoom, addRoomGallery, editRoomGallery, postAddRoom,
 
     // Vehicle
     addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery,
