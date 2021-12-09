@@ -331,17 +331,14 @@ const postAddHotelGallery = async (req, res, next)=>{
     }
 
     const filter = { hotelId: hotelId };
-    const update = { images: hotelImages };
-    // let doc = await Character.findOneAndUpdate(filter, update, {
-    // new: true
-    // });
+    const update = { $push: { images: hotelImages } };
 
     const existingGallery = await hotelGallery.findOneAndUpdate(filter, update, {
         new: true
         });
     if (existingGallery){
-        console.log('the gallery replaced with the new')
-        res.redirect('/')
+        console.log('the gallery updated')
+        res.redirect('/Hotels/viewHotelImages/' + hotelId)
     } else{
         const gallery = new hotelGallery({
             hotelId: hotelId,
@@ -362,15 +359,15 @@ const postAddHotelGallery = async (req, res, next)=>{
 }
 
 const postDeleteGalleryImage = (req, res) => {
-    //recieve the gallery id and the image name
+    
     const galleryId = req.body.galleryId;
     const image = req.body.image;
     const hotelId = req.body.hotelId;
-
+    let images = [];
     hotelGallery
         .findById(galleryId)
         .then((gallery) => {
-            let images = gallery.images;
+            images = gallery.images;
             images.splice(images.indexOf(image), 1);
             if (images.length === 0) {
                 return hotelGallery.findByIdAndDelete(galleryId)
@@ -443,7 +440,23 @@ const addGallery = (req, res, next) => {
 }
 
 const editGalleryAppartments = (req, res, next) => {
-    res.render('./pages/Appartments/editGalleryAppartments')
+
+    const appartId = req.params.id;
+    appartmentGallery.findOne({appartmentId: appartId})
+    .then(gallery => {
+        if(!gallery){
+            res.redirect('/')
+        } else{
+            res.render('./pages/Appartments/editGalleryAppartments', {
+                gallery: gallery,
+                pageTitle: 'Gallery List',
+                path: '/Hotels/gallery-list'
+            });
+        }
+        
+    })
+    .catch(err => console.log(err));
+
 }
 
 const appartmentList = (req, res, next) => {
@@ -566,42 +579,67 @@ const postAddAppartmentGallery = async (req, res, next)=>{
     const uploads = req.files;
     const appartId = req.body.appartId;
     const appartmentImages = [];
-    console.log(uploads)
 
-    // for(let i=0; i< uploads.length; i++){
-    //     appartmentImages.push(uploads[i].filename)
-    // }
+    for(let i=0; i< uploads.length; i++){
+        appartmentImages.push(uploads[i].filename)
+    }
 
-    // const filter = { appartmentId: appartId };
-    // const update = { images: appartmentImages };
-    // // let doc = await Character.findOneAndUpdate(filter, update, {
-    // // new: true
-    // // });
+    const filter = { appartmentId: appartId };
+    const update = { $push: { images: appartmentImages } };
 
-    // const existingGallery = await hotelGallery.findOneAndUpdate(filter, update, {
-    //     new: true
-    //     });
-    // if (existingGallery){
-    //     console.log('the gallery replaced with the new')
-    //     res.redirect('/')
-    // } else{
-    //     const gallery = new appartmentGallery({
-    //         hotelId: hotelId,
-    //         images: appartmentImages
-    //     })
-    //     gallery
-    //     .save()
-    //     .then(result => {
-    //         // console.log(result);
-    //         console.log('Created Gallery');
-    //         res.redirect('/');
-    //     })
-    //     .catch(err => {
-    //         console.log(err)
-    //     });
-    // }
+    const existingGallery = await appartmentGallery.findOneAndUpdate(filter, update, {
+        new: true
+        });
+    if (existingGallery){
+        console.log('the gallery updated')
+        res.redirect('/Appartments/editGallery/' + appartId)
+    } else{
+        const gallery = new appartmentGallery({
+            appartmentId: appartId,
+            images: appartmentImages
+        })
+        gallery
+        .save()
+        .then(result => {
+            // console.log(result);
+            console.log('Created Gallery');
+            res.redirect('/');
+        })
+        .catch(err => {
+            console.log(err)
+        });
+    }
     
 }
+
+const postDeleteAppartmentGalleryImage = (req, res) => {
+    //recieve the gallery id and the image name
+    const galleryId = req.body.galleryId;
+    const image = req.body.image;
+    const appartId = req.body.appartId;
+    let images = [];
+    appartmentGallery
+        .findById(galleryId)
+        .then((gallery) => {
+            images = gallery.images;
+            images.splice(images.indexOf(image), 1);
+            if (images.length === 0) {
+                return appartmentGallery.findByIdAndDelete(galleryId)
+            } else {
+                return gallery.save();
+            }
+        })
+        .then((result) => {
+            delImage(image)
+            console.log("UPDATED Gallery!");
+            if (images.length === 0) {
+                res.redirect('/')
+            } else {
+                res.redirect("/Appartments/editGallery/" + appartId);
+            }
+        })
+        .catch((err) => console.log(err));
+};
 
 // Rooms
 const addRoom = (req, res, next) => {
@@ -860,7 +898,7 @@ module.exports = {
     hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages, postAddHotel, postEditHotel, postAddHotelGallery, postDeleteGalleryImage,
     
     // Appartments / Houses 
-    appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGallery, addGalleryHouses, editGalleryHouses, postAddAppartment, postEditAppartment, postAddAppartmentGallery,
+    appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGallery, addGalleryHouses, editGalleryHouses, postAddAppartment, postEditAppartment, postAddAppartmentGallery, postDeleteAppartmentGalleryImage,
     
     // Rooms
     addRoom, roomList, editRoom, addRoomGallery, editRoomGallery,

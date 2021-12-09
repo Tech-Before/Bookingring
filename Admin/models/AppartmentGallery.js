@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const GallerySchema = new Schema({
-    hotelId: {
+    appartmentId: {
         type: Schema.Types.ObjectId,
-        ref: 'Hotels',
+        ref: 'Appartments',
         required: true
     },
     images: {

@@ -17,7 +17,7 @@ const {
     hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages, postAddHotel, postEditHotel, postAddHotelGallery, postDeleteGalleryImage,
     
     // Appartments / Houses 
-    appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGallery, addGalleryHouses, editGalleryHouses, postAddAppartment, postEditAppartment, postAddAppartmentGallery,
+    appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGallery, addGalleryHouses, editGalleryHouses, postAddAppartment, postEditAppartment, postAddAppartmentGallery, postDeleteAppartmentGalleryImage,
     
     // Rooms
     addRoom, roomList, editRoom, addRoomGallery, editRoomGallery,
@@ -86,7 +86,7 @@ router.get('/Appartments/addAppartment', appartmentsHouses)
 router.get('/Appartments/appartmentHouseList', appartmentHouseList)
 router.get('/Appartments/editAppartmentHouse/:id', editAppartmentHouse)
 router.get('/Appartments/addGallery/:id', addGallery)
-router.get('/Appartments/editGalleryAppartments', editGalleryAppartments)
+router.get('/Appartments/editGallery/:id', editGalleryAppartments)
 router.get('/Appartments/appartmentList', appartmentList)
 router.get('/Appartments/housesList', housesList)
 router.get('/Appartments/addGalleryHouses', addGalleryHouses)
@@ -94,6 +94,8 @@ router.get('/Appartments/editGalleryHouses', editGalleryHouses)
 router.post('/Appartments/addAppartment', postAddAppartment)
 router.post('/Appartments/editAppartmentHouse', postEditAppartment)
 router.post('/Appartments/addGallery', postAddAppartmentGallery)
+router.post('/Appartments/deleteGalleryImage', postDeleteAppartmentGalleryImage)
+
 
 // Rooms
 router.get('/Rooms/addRoom', addRoom)
