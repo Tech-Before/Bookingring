@@ -18,6 +18,7 @@ const gallerytandh = (req, res, next) => res.render('./pages/Tours/gallerytandh'
 
 // News
 const news = (req, res, next) => res.render('./pages/News/news');
+const exploreNews = (req, res, next) => res.render('./pages/News/exploreNews');
 
 // About Us
 const about = (req, res, next) => res.render('./pages/About/about');
@@ -36,7 +37,7 @@ module.exports = {
     tours, hike, gallerytandh,
 
     // News
-    news,
+    news, exploreNews,
 
     // About
     about,

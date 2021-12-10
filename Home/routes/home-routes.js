@@ -11,7 +11,7 @@ const {
     tours, hike, gallerytandh,
 
     // News
-    news,
+    news, exploreNews,
 
     // About Us
     about,
@@ -42,6 +42,7 @@ router.get('/Tours/gallerytandh', gallerytandh)
 
 // News
 router.get('/News/news', news)
+router.get('/News/exploreNews', exploreNews)
 
 // About Us
 router.get('/About/about', about)
