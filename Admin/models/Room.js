@@ -8,10 +8,20 @@ const RoomsSchema = new Schema({
         required: true
     },
     hotelId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Hotels',
+        required: true
+    },
+    hotelName: {
         type: String,
         required: true
     },
     areaId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Areas',
+        required: true
+    },
+    areaName: {
         type: String,
         required: true
     },
@@ -32,7 +42,7 @@ const RoomsSchema = new Schema({
         required: true
     },
     status: {
-        type: String,
+        type: Boolean,
         required: true
     },
     location: {

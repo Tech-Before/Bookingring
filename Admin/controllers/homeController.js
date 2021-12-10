@@ -6,6 +6,7 @@ const hotelGallery = require('../models/hotelGallery')
 const Appartments = require('../models/Appartment')
 const appartmentGallery = require('../models/AppartmentGallery')
 const Rooms = require('../models/Room')
+const roomGallery = require('../models/RoomGallery')
 
 // Login
 const login = (req, res, next) => {
@@ -644,29 +645,94 @@ const postDeleteAppartmentGalleryImage = (req, res) => {
 
 // Rooms
 const addRoom = (req, res, next) => {
-    res.render('./pages/Rooms/addRoom')
+    Areas.find()
+        .then(areas => {
+            if (!areas) {
+                console.log('no area found')
+                return res.redirect('/');
+            }
+            return Hotels.find().then( hotels => {
+                if(!hotels){
+                    console.log('no hotels found')
+                }
+                return { areas: areas, hotels: hotels }
+            })
+        }).
+        then( data => {
+            console.log(data)
+            res.render('./pages/Rooms/addRoom', {
+                pageTitle: 'Rooms',
+                path: '/Rooms/add-room',
+                data: data
+            });
+        })
+        .catch(err => console.log(err));
 }
 
 const roomList = (req, res, next) => {
-    res.render('./pages/Rooms/roomList')
+    Rooms.find()
+    .then(rooms => {
+        res.render('./pages/Rooms/roomList', {
+            rooms: rooms,
+            pageTitle: 'Room List',
+            path: '/Rooms/room-list'
+        });
+    })
+    .catch(err => console.log(err));
 }
 
-const editRoom = (req, res, next) => {
-    res.render('./pages/Rooms/editRoom')
+const editRoom = async (req, res, next) => {
+
+    const id = req.params.id;
+    const areas = await Areas.find();
+    const hotels = await Hotels.find();
+
+    if( areas && hotels){
+        Rooms.findById(id)
+        .then(room => {
+            if (!room) {
+                console.log('no room found')
+                return res.redirect('/');
+            }
+            res.render('./pages/Rooms/editRoom', {
+                areas: areas,
+                hotels: hotels,
+                room: room
+            })
+            
+        })
+        .catch(err => console.log(err));
+    } else{
+        console.log('something went wrong')
+    }
 }
 
 const addRoomGallery = (req, res, next) => {
-    res.render('./pages/Rooms/addRoomGallery')
+    const roomId = req.params.id;
+    res.render('./pages/Rooms/addRoomGallery', {roomId: roomId})
 }
 
 const editRoomGallery = (req, res, next) => {
-    res.render('./pages/Rooms/editRoomGallery')
+    const roomId = req.params.id;
+    roomGallery.findOne({roomId: roomId})
+    .then(gallery => {
+        if(!gallery){
+            res.redirect('/')
+        } else{
+            res.render('./pages/Rooms/editRoomGallery', {
+                gallery: gallery,
+                pageTitle: 'Gallery List',
+                path: '/Rooms/gallery-list'
+            });
+        }
+    })
+    .catch(err => console.log(err));
 }
 
 const postAddRoom = (req, res )=>{
     const roomNo = req.body.roomNo;
-    const hotelId = req.body.hotelId;
-    const areaId = req.body.areaId;
+    const hotel = JSON.parse(req.body.hotel);
+    const area = JSON.parse(req.body.area);
     const beds = req.body.beds;
     const hotWater = req.body.hotWater;
     const balcony = req.body.balcony;
@@ -677,8 +743,10 @@ const postAddRoom = (req, res )=>{
 
     const room = new Rooms({
         roomNo: roomNo,
-        hotelId: hotelId,
-        areaId: areaId,
+        hotelId: hotel.hotelId,
+        hotelName: hotel.hotelName,
+        areaId: area.areaId,
+        areaName: area.areaName,
         beds: beds,
         hotWater: hotWater,
         balcony: balcony,
@@ -699,6 +767,83 @@ const postAddRoom = (req, res )=>{
             console.log(err);
         });
 
+}
+
+const postEditRoom = (req, res )=>{
+
+    const roomId = req.body.roomId;
+    const roomNo = req.body.roomNo;
+    const hotel = JSON.parse(req.body.hotel);
+    const area = JSON.parse(req.body.area);
+    const beds = req.body.beds;
+    const hotWater = req.body.hotWater;
+    const balcony = req.body.balcony;
+    const roomServices = req.body.roomService;
+    const status = req.body.status;
+    const location = req.body.location;
+    const charges = req.body.charges;
+
+    Rooms.findById(roomId).
+        then(room => {
+            room.roomNo = roomNo;
+            room.hotelId = hotel.hotelId;
+            room.hotelName = hotel.hotelName;
+            room.areaId = area.areaId;
+            room.areaName = area.areaName;
+            room.beds = beds;
+            room.hotWater = hotWater;
+            room.balcony = balcony;
+            room.roomService = roomServices;
+            room.status = status;
+            room.location = location;
+            room.charges = charges;
+
+            return room.save()
+        })
+        .then(result => {
+            console.log('room updated');
+            res.redirect('/Rooms/roomList')
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
+}
+
+const postAddRoomGallery = async (req, res) =>{
+    const uploads = req.files;
+    const roomId = req.body.roomId;
+    const roomImages = [];
+
+    for(let i=0; i< uploads.length; i++){
+        roomImages.push(uploads[i].filename)
+    }
+
+    const filter = { roomId: roomId };
+    const update = { $push: { images: roomImages } };
+
+    const existingGallery = await roomGallery.findOneAndUpdate(filter, update, {
+        new: true
+        });
+    if (existingGallery){
+        console.log('the gallery updated')
+        res.redirect('/Rooms/editGallery/' + roomId)
+    } else{
+        const gallery = new roomGallery({
+            roomId: roomId,
+            images: roomImages
+        })
+        gallery
+        .save()
+        .then(result => {
+            // console.log(result);
+            console.log('Created Gallery');
+            res.redirect('/');
+        })
+        .catch(err => {
+            console.log(err)
+        });
+    }
 }
 
 // Vehicle
@@ -940,7 +1085,7 @@ module.exports = {
     appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGallery, addGalleryHouses, editGalleryHouses, postAddAppartment, postEditAppartment, postAddAppartmentGallery, postDeleteAppartmentGalleryImage,
     
     // Rooms
-    addRoom, roomList, editRoom, addRoomGallery, editRoomGallery, postAddRoom,
+    addRoom, roomList, editRoom, addRoomGallery, editRoomGallery, postAddRoom, postEditRoom, postAddRoomGallery,
 
     // Vehicle
     addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery,

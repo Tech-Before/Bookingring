@@ -26,23 +26,28 @@
                 <h3 class="card-title">Edit Room</h3>
               </div>
               <div class="card-body">
-                <form method="POST">
+                <form action="/Rooms/editRoom" method="POST">
                     <h5><b>Hotel Details</b></h5><hr>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>Select Hotel</label>
-                            <select class="form-control select2" name="">
-                                <option value="1">Continental</option>
-                                <option value="2">Serena</option>
+                            <select class="form-control select2" name="hotel">
+                              <% for(let i=0; i<hotels.length; i++){ %>
+                                <option value="<%= JSON.stringify({hotelName: hotels[i].hotelName, hotelId: hotels[i].id}) %>"
+                                  <%= hotels[i].id == room.hotelId ? 'selected' : '' %> > <%= hotels[i].hotelName %>
+                                </option>
+                                <% } %>
                             </select>
                         </div>
 
                         <div class="form-group col-md-6">
                             <label>Select Hotel Area</label>
-                            <select class="form-control select2" name="">
-                                <option value="1">Behrain - Near Shell Ptrol Station, Madyan Bazar</option>
-                                <option value="2">Kalam - Near Shell Ptrol Station, Madyan Bazar</option>
-                                <option value="3">Madyan - Near Shell Ptrol Station, Madyan Bazar</option>
+                            <select class="form-control select2" name="area">
+                              <% for(let i=0; i<areas.length; i++){ %>
+                                <option value="<%= JSON.stringify({areaName: areas[i].name, areaId: areas[i].id}) %>" <%=areas[i].id == room.areaId
+                                  ? 'selected' : '' %> ><%= areas[i].name %>
+                                </option>
+                                <% } %>
                             </select>
                         </div>
                     </div>
@@ -52,70 +57,72 @@
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label>Select Beds</label>
-                            <select class="form-control" name="">
-                                <option value="1">Single Bedded</option>
-                                <option value="2">2 Bedded</option>
-                                <option value="3">3 Bedded</option>
-                                <option value="4">4 Bedded</option>
-                                <option value="5">5 Bedded</option>
+                            <select class="form-control" name="beds">
+                              <% for(let i=1; i<=5; i++) { %>
+                                <option value="<%= i %>" <%=room.beds==i ? 'selected' : '' %> >
+                                   <%= i + ' Bedded' %>
+                                </option>
+                                <% } %>
                             </select>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label>Hot Water</label>
-                            <select class="form-control" name="">
-                                <option value="1">Yes</option>
-                                <option value="2">No</option>
+                            <select class="form-control" name="hotWater">
+                                <option value="true" <%= room.hotWater ? 'selected' : '' %> >Yes</option>
+                                <option value="false" <%= !room.hotWater ? 'selected' : '' %>  >No</option>
                             </select>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label>Heater</label>
-                            <select class="form-control" name="">
-                                <option value="1">Yes</option>
-                                <option value="2">No</option>
+                            <select class="form-control" name="heater">
+                              <option value="true" <%= room.heater ? 'selected' : '' %> >Yes</option>
+                              <option value="false" <%= !room.heater ? 'selected' : '' %>  >No</option>
                             </select>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label>Balcony</label>
-                            <select class="form-control" name="">
-                                <option value="1">Yes</option>
-                                <option value="2">No</option>
+                            <select class="form-control" name="balcony">
+                              <option value="true" <%= room.balcony ? 'selected' : '' %> >Yes</option>
+                              <option value="false" <%= !room.balcony ? 'selected' : '' %>  >No</option>
                             </select>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label>Room Service</label>
-                            <select class="form-control" name="">
-                                <option value="1">Yes</option>
-                                <option value="2">No</option>
+                            <select class="form-control" name="roomService">
+                              <option value="true" <%= room.roomService ? 'selected' : '' %> >Yes</option>
+                              <option value="false" <%= !room.roomService ? 'selected' : '' %>  >No</option>
                             </select>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label>Room Status</label>
-                            <select class="form-control" name="">
-                                <option value="1">Available</option>
-                                <option value="2">Not Available</option>
+                            <select class="form-control" name="status">
+                              <option value="true" <%= room.status ? 'selected' : '' %> >Available</option>
+                              <option value="false" <%= !room.status ? 'selected' : '' %>  >Unavailable</option>
                             </select>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label>Location</label>
-                            <input type="text" name="" placeholder="i.e: 3rd Floor" class="form-control" required>
+                            <input type="text" name="location" value="<%= room.location %>" placeholder="i.e: 3rd Floor" class="form-control" required>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label>Room Charges</label>
-                            <input type="number" name="" placeholder="i.e: 5000" class="form-control" required>
+                            <input type="number" name="charges" value="<%= room.charges %>" placeholder="i.e: 5000" class="form-control" required>
                         </div>
 
                         <div class="form-group col-md-4">
                           <label>Room No</label>
-                          <input type="number" name="" placeholder="i.e: 5" class="form-control" required>
+                          <input type="number" name="roomNo" value="<%= room.roomNo %>" placeholder="i.e: 5" class="form-control" required>
                       </div>
                     </div>
+
+                    <input type="hidden" value="<%= room.id %>" name="roomId">
 
 
                     <hr>

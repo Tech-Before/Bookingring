@@ -20,7 +20,7 @@ const {
     appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGallery, addGalleryHouses, editGalleryHouses, postAddAppartment, postEditAppartment, postAddAppartmentGallery, postDeleteAppartmentGalleryImage,
     
     // Rooms
-    addRoom, roomList, editRoom, addRoomGallery, editRoomGallery, postAddRoom,
+    addRoom, roomList, editRoom, addRoomGallery, editRoomGallery, postAddRoom, postEditRoom, postAddRoomGallery,
 
     // Vehicle
     addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery,
@@ -100,10 +100,13 @@ router.post('/Appartments/deleteGalleryImage', postDeleteAppartmentGalleryImage)
 // Rooms
 router.get('/Rooms/addRoom', addRoom)
 router.get('/Rooms/roomList', roomList)
-router.get('/Rooms/editRoom', editRoom)
-router.get('/Rooms/addRoomGallery', addRoomGallery)
-router.get('/Rooms/editRoomGallery', editRoomGallery)
+router.get('/Rooms/editRoom/:id', editRoom)
+router.get('/Rooms/addGallery/:id', addRoomGallery)
+router.get('/Rooms/editGallery/:id', editRoomGallery)
 router.post('/Rooms/addRoom', postAddRoom)
+router.post('/Rooms/editRoom', postEditRoom)
+router.post('/Rooms/addGallery', postAddRoomGallery)
+
 
 
 // Vehicle
