@@ -659,7 +659,6 @@ const addRoom = (req, res, next) => {
             })
         }).
         then( data => {
-            console.log(data)
             res.render('./pages/Rooms/addRoom', {
                 pageTitle: 'Rooms',
                 path: '/Rooms/add-room',
@@ -845,6 +844,35 @@ const postAddRoomGallery = async (req, res) =>{
         });
     }
 }
+
+const postDeleteRoomGalleryImage = (req, res) => {
+    
+    const galleryId = req.body.galleryId;
+    const image = req.body.image;
+    const roomId = req.body.roomId;
+    let images = [];
+    roomGallery
+        .findById(galleryId)
+        .then((gallery) => {
+            images = gallery.images;
+            images.splice(images.indexOf(image), 1);
+            if (images.length === 0) {
+                return roomGallery.findByIdAndDelete(galleryId)
+            } else {
+                return gallery.save();
+            }
+        })
+        .then((result) => {
+            delImage(image)
+            console.log("UPDATED Gallery!");
+            if (images.length === 0) {
+                res.redirect('/')
+            } else {
+                res.redirect("/Rooms/editGallery/" + roomId);
+            }
+        })
+        .catch((err) => console.log(err));
+};
 
 // Vehicle
 const addVehicle = (req, res, next) => {
@@ -1085,7 +1113,7 @@ module.exports = {
     appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGallery, addGalleryHouses, editGalleryHouses, postAddAppartment, postEditAppartment, postAddAppartmentGallery, postDeleteAppartmentGalleryImage,
     
     // Rooms
-    addRoom, roomList, editRoom, addRoomGallery, editRoomGallery, postAddRoom, postEditRoom, postAddRoomGallery,
+    addRoom, roomList, editRoom, addRoomGallery, editRoomGallery, postAddRoom, postEditRoom, postAddRoomGallery, postDeleteRoomGalleryImage,
 
     // Vehicle
     addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery,
