@@ -7,6 +7,8 @@ const Appartments = require('../models/Appartment')
 const appartmentGallery = require('../models/AppartmentGallery')
 const Rooms = require('../models/Room')
 const roomGallery = require('../models/RoomGallery')
+const Vehicles = require('../models/Vehicles')
+const vehicleGallery = require('../models/vehicleGallery')
 
 // Login
 const login = (req, res, next) => {
@@ -782,8 +784,8 @@ const postEditRoom = (req, res )=>{
     const location = req.body.location;
     const charges = req.body.charges;
 
-    Rooms.findById(roomId).
-        then(room => {
+    Rooms.findById(roomId)
+        .then(room => {
             room.roomNo = roomNo;
             room.hotelId = hotel.hotelId;
             room.hotelName = hotel.hotelName;
@@ -880,21 +882,192 @@ const addVehicle = (req, res, next) => {
 }
 
 const vehicleList = (req, res, next) => {
-    res.render('./pages/Vehicles/vehicleList')
+    Vehicles.find()
+    .then(vehicles => {
+        res.render('./pages/Vehicles/vehicleList', {
+            vehicles: vehicles,
+            pageTitle: 'Vehicle List',
+            path: '/Vehicles/vehicles-list'
+        });
+    })
+    .catch(err => console.log(err));
 }
 
 
 const editVehicle = (req, res, next) => {
-    res.render('./pages/Vehicles/editVehicle')
+    const id = req.params.id;
+    
+    Vehicles.findById(id)
+        .then(vehicle => {
+            if (!vehicle) {
+                console.log('no room found')
+                return res.redirect('/');
+            }
+            res.render('./pages/Vehicles/editVehicle', {
+                vehicle: vehicle
+            })
+
+        })
+        .catch(err => console.log(err));
+    
 }
 
 const addVehicleGallery = (req, res, next) => {
-    res.render('./pages/Vehicles/addVehicleGallery')
+    const vehicleId = req.params.id;
+    res.render('./pages/Vehicles/addVehicleGallery', { vehicleId: vehicleId})
 }
 
 const editVehicleGallery = (req, res, next) => {
-    res.render('./pages/Vehicles/editVehicleGallery')
+
+    const vehicleId = req.params.id;
+    vehicleGallery.findOne({vehicleId: vehicleId})
+    .then(gallery => {
+        if(!gallery){
+            res.redirect('/')
+        } else{
+            res.render('./pages/Vehicles/editVehicleGallery', {
+                gallery: gallery,
+                pageTitle: 'Gallery List',
+                path: '/Vehicle/gallery-list'
+            });
+        }
+    })
+    .catch(err => console.log(err));
+    
 }
+
+const postAddVehicle = (req, res) =>{
+    const category = req.body.category;
+    const vehicleNo = req.body.vehicleNo;
+    const model = req.body.model;
+    const condition = req.body.condition;
+    const status = req.body.status;
+    const ownerName = req.body.ownerName;
+    const ownerCNIC = req.body.ownerCNIC;
+    const ownerContact = req.body.ownerContact;
+    const ownerAddress = req.body.ownerAddress;
+    
+    const vehicle = new Vehicles({
+        vehicleCategory: category,
+        vehicleNo: vehicleNo,
+        model: model,
+        condition: condition,
+        availabilityStatus: status,
+        ownerName: ownerName,
+        ownerCNIC: ownerCNIC,
+        ownerContact: ownerContact,
+        ownerAddress: ownerAddress
+    });
+    vehicle
+        .save()
+        .then(result => {
+            // console.log(result);
+            console.log('Added vehicle');
+            res.redirect('/');
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+
+const postEditVehicle = (req, res)=>{
+    const id = req.body.id;
+    const category = req.body.category;
+    const vehicleNo = req.body.vehicleNo;
+    const model = req.body.model;
+    const condition = req.body.condition;
+    const status = req.body.status;
+    const ownerName = req.body.ownerName;
+    const ownerCNIC = req.body.ownerCNIC;
+    const ownerContact = req.body.ownerContact;
+    const ownerAddress = req.body.ownerAddress;
+    
+    Vehicles.findById(id)
+        .then(vehicle => {
+            vehicle.vehicleCategory = category;
+            vehicle.vehicleNo = vehicleNo;
+            vehicle.model = model;
+            vehicle.condition = condition;
+            vehicle.availabilityStatus = status;
+            vehicle.ownerName = ownerName;
+            vehicle.ownerCNIC = ownerCNIC;
+            vehicle.ownerContact = ownerContact;
+            vehicle.ownerAddress = ownerAddress;
+            return vehicle.save()
+        })
+        .then(result => {
+            console.log('Updated vehicle');
+            res.redirect('/');
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+
+const postAddVehicleGallery = async (req, res) =>{
+    const uploads = req.files;
+    const vehicleId = req.body.vehicleId;
+    const vehicleImages = [];
+
+    for(let i=0; i< uploads.length; i++){
+        vehicleImages.push(uploads[i].filename)
+    }
+
+    const filter = { vehicleId: vehicleId };
+    const update = { $push: { images: vehicleImages } };
+
+    const existingGallery = await vehicleGallery.findOneAndUpdate(filter, update, {
+        new: true
+        });
+    if (existingGallery){
+        console.log('the gallery updated')
+        res.redirect('/Vehicles/editVehicleGallery/' + vehicleId)
+    } else{
+        const gallery = new vehicleGallery({
+            vehicleId: vehicleId,
+            images: vehicleImages
+        })
+        gallery
+        .save()
+        .then(result => {
+            // console.log(result);
+            console.log('Created Gallery');
+            res.redirect('/');
+        })
+        .catch(err => {
+            console.log(err)
+        });
+    }
+}
+
+const postDeleteVehiclesGalleryImage = (req, res) => {
+    
+    const galleryId = req.body.galleryId;
+    const image = req.body.image;
+    const vehicleId = req.body.vehicleId;
+    let images = [];
+    vehicleGallery
+        .findById(galleryId)
+        .then((gallery) => {
+            images = gallery.images;
+            images.splice(images.indexOf(image), 1);
+            if (images.length === 0) {
+                return vehicleGallery.findByIdAndDelete(galleryId)
+            } else {
+                return gallery.save();
+            }
+        })
+        .then((result) => {
+            delImage(image)
+            console.log("UPDATED Gallery!");
+            if (images.length === 0) {
+                res.redirect('/')
+            } else {
+                res.redirect("/Vehicles/editVehicleGallery/" + vehicleId);
+            }
+        })
+        .catch((err) => console.log(err));
+};
 
 // Updates / Blog
 const addUpdates = (req, res, next) => {
@@ -1116,7 +1289,7 @@ module.exports = {
     addRoom, roomList, editRoom, addRoomGallery, editRoomGallery, postAddRoom, postEditRoom, postAddRoomGallery, postDeleteRoomGalleryImage,
 
     // Vehicle
-    addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery,
+    addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery, postAddVehicle, postEditVehicle, postAddVehicleGallery, postDeleteVehiclesGalleryImage,
 
     // Updates / Blog
     addUpdates, updateList, editBlog, deleteBlog,

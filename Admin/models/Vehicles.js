@@ -1,0 +1,44 @@
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+const VehiclesSchema = new Schema({
+    vehicleCategory:{
+        type: String,
+        required: true
+    },
+    vehicleNo: {
+        type: String,
+        required: true
+    },
+    model: {
+        type: String,
+        required: true
+    },
+    condition: {
+        type: String,
+        required: true
+    },
+    availabilityStatus: {
+        type: Boolean,
+        required: true
+    },
+    ownerName: {
+        type: String,
+        required: true
+    },
+    ownerCNIC: {
+        type: String,
+        required: true
+    },
+    ownerContact: {
+        type: String,
+        required: true
+    },
+    ownerAddress: {
+        type: String,
+        required: true
+    }
+});
+
+module.exports = mongoose.model('Vehicles', VehiclesSchema);

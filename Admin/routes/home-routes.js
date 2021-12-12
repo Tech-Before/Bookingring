@@ -23,7 +23,7 @@ const {
     addRoom, roomList, editRoom, addRoomGallery, editRoomGallery, postAddRoom, postEditRoom, postAddRoomGallery, postDeleteRoomGalleryImage,
 
     // Vehicle
-    addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery,
+    addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery, postAddVehicle, postEditVehicle, postAddVehicleGallery, postDeleteVehiclesGalleryImage,
 
     // Updates / Blog
     addUpdates, updateList, editBlog, deleteBlog,
@@ -113,9 +113,13 @@ router.post('/Rooms/deleteImage/', postDeleteRoomGalleryImage)
 // Vehicle
 router.get('/Vehicles/addVehicles', addVehicle)
 router.get('/Vehicles/vehicleList', vehicleList)
-router.get('/Vehicles/editVehicle', editVehicle)
-router.get('/Vehicles/addVehicleGallery', addVehicleGallery)
-router.get('/Vehicles/editVehicleGallery', editVehicleGallery)
+router.get('/Vehicles/editVehicle/:id', editVehicle)
+router.get('/Vehicles/addVehicleGallery/:id', addVehicleGallery)
+router.get('/Vehicles/editVehicleGallery/:id', editVehicleGallery)
+router.post('/Vehicles/addVehicle', postAddVehicle)
+router.post('/Vehicles/editVehicle', postEditVehicle)
+router.post('/Vehicles/addGallery', postAddVehicleGallery)
+router.post('/Vehicles/deleteImage', postDeleteVehiclesGalleryImage)
 
 // Updates / Blog
 router.get('/Updates/addUpdates', addUpdates)
