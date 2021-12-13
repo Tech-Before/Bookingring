@@ -5,7 +5,7 @@ const {
     home,
 
     // Services (Appartments)
-    appartments, allappartments, appartmentGallery, hotels, hotelGallery, hotelRooms, vehicles, galleryAppRoom,
+    appartments, allappartments, appartmentGallery, hotels, hotelGallery, hotelRooms, vehicles, galleryAppRoom, roomBooking,
 
     // Tours
     tours, hike, gallerytandh,
@@ -34,6 +34,7 @@ router.get('/Appartments/hotelGallery', hotelGallery)
 router.get('/Appartments/hotelRooms', hotelRooms)
 router.get('/Appartments/vehicles', vehicles)
 router.get('/Appartments/galleryAppRoom', galleryAppRoom)
+router.get('/Appartments/roomBooking', roomBooking)
 
 // Tours
 router.get('/Tours/tours', tours)

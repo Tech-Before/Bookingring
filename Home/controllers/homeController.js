@@ -10,6 +10,7 @@ const hotelGallery = (req, res, next) => res.render('./pages/Appartments/hotelGa
 const hotelRooms = (req, res, next) => res.render('./pages/Appartments/hotelRooms');
 const vehicles = (req, res, next) => res.render('./pages/Appartments/vehicles');
 const galleryAppRoom = (req, res, next) => res.render('./pages/Appartments/galleryAppRoom');
+const roomBooking = (req, res, next) => res.render('./pages/Appartments/roomBooking');
 
 // Tours
 const tours = (req, res, next) => res.render('./pages/Tours/tours');
@@ -31,7 +32,7 @@ module.exports = {
     home,
 
     // Services (Appartments)
-    appartments, allappartments, appartmentGallery, hotels, hotelGallery, hotelRooms, vehicles, galleryAppRoom,
+    appartments, allappartments, appartmentGallery, hotels, hotelGallery, hotelRooms, vehicles, galleryAppRoom, roomBooking,
 
     // Tours
     tours, hike, gallerytandh,
