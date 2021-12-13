@@ -9,6 +9,7 @@ const Rooms = require('../models/Room')
 const roomGallery = require('../models/RoomGallery')
 const Vehicles = require('../models/Vehicles')
 const vehicleGallery = require('../models/vehicleGallery')
+const sliderGallery = require('../models/sliderGallery')
 
 // Login
 const login = (req, res, next) => {
@@ -1236,12 +1237,84 @@ const bundleList = (req, res, next) => {
 
 // Slider Images
 const addImagesSlider = (req, res, next) => {
-    res.render('./pages/SliderImages/addSliderImages')
+    const galleryId = req.params.id;
+    res.render('./pages/SliderImages/addSliderImages', { galleryId: galleryId})
 }
 
 const sliderImages = (req, res, next) => {
-    res.render('./pages/SliderImages/sliderImagesList')
+    
+    sliderGallery.findOne()
+        .then(gallery => {
+            res.render('./pages/SliderImages/sliderImagesList', { gallery: gallery})
+        })
+        .catch(err => console.log(err));
+    
 }
+
+const postAddSliderImages = async (req, res ) =>{
+
+    const uploads = req.files;
+    const galleryId = req.body.galleryId;
+    const sliderImages = [];
+
+    for(let i=0; i< uploads.length; i++){
+        sliderImages.push(uploads[i].filename)
+    }
+
+    const filter = { id: galleryId };
+    const update = { $push: { images: sliderImages } };
+
+    const existingGallery = await sliderGallery.findOneAndUpdate(filter, update, {
+        new: true
+        });
+    if (existingGallery){
+        console.log('the gallery updated')
+        res.redirect('/SliderImages/sliderImagesList')
+    } else{
+        const gallery = new sliderGallery({
+            images: sliderImages
+        })
+        gallery
+        .save()
+        .then(result => {
+            // console.log(result);
+            console.log('Created Gallery');
+            res.redirect('/');
+        })
+        .catch(err => {
+            console.log(err)
+        });
+    }
+}
+
+const postDeleteSliderGalleryImage = (req, res) => {
+    
+    const galleryId = req.body.galleryId;
+    const image = req.body.image;
+    let images = [];
+    sliderGallery
+        .findById(galleryId)
+        .then((gallery) => {
+            images = gallery.images;
+            images.splice(images.indexOf(image), 1);
+            if (images.length === 0) {
+                return sliderGallery.findByIdAndDelete(galleryId)
+            } else {
+                return gallery.save();
+            }
+        })
+        .then((result) => {
+            delImage(image)
+            console.log("UPDATED Slider Gallery!");
+            if (images.length === 0) {
+                res.redirect('/')
+            } else {
+                res.redirect("/SliderImages/sliderImagesList");
+            }
+        })
+        .catch((err) => console.log(err));
+};
+
 
 // Customer Feedback
 const feedback = (req, res, next) => {
@@ -1301,7 +1374,7 @@ module.exports = {
     addBundle, bundleList,
 
     // Slider Images
-    addImagesSlider, sliderImages,
+    addImagesSlider, sliderImages, postAddSliderImages, postDeleteSliderGalleryImage,
 
     // Customer Feedback
     feedback, viewFeedbackQuery,

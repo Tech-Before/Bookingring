@@ -35,7 +35,7 @@ const {
     addBundle, bundleList,
 
     // Slider Images
-    addImagesSlider, sliderImages,
+    addImagesSlider, sliderImages, postAddSliderImages, postDeleteSliderGalleryImage,
 
     // Customer Feedback
     feedback, viewFeedbackQuery,
@@ -141,8 +141,10 @@ router.get('/BundleOffers/addBundle', addBundle)
 router.get('/BundleOffers/bundlesList', bundleList)
 
 // Slider Images
-router.get('/SliderImages/addSliderImages', addImagesSlider)
+router.get('/SliderImages/addSliderImages/:id', addImagesSlider)
 router.get('/SliderImages/sliderImagesList', sliderImages)
+router.post('/SliderImages/addImages', postAddSliderImages)
+router.post('/SliderGallery/deleteImage', postDeleteSliderGalleryImage)
 
 // Feedback
 router.get('/Feedback/customerFeedback', feedback)
