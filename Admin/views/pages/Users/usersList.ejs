@@ -40,33 +40,20 @@
                         </tr>
                       </thead>
                       <tbody>
+                        <% for(let i= 0; i< users.length; i++) { %> 
                         <tr>
-                            <td>1.</td>
-                            <td>Asif Khan</td>
-                            <td>03460973906</td>
-                            <td>1560284614213</td>
-                            <td>Male</td>
-                            <td>Saidu Sharif</td>
+                            <td><%= i + 1 %> .</td>
+                            <td><%= users[i].name %> </td>
+                            <td><%= users[i].contact %> </td>
+                            <td><%= users[i].CNIC %> </td>
+                            <td><%= users[i].gender %> </td>
+                            <td><%= users[i].location %> </td>
                             <td><span class="badge badge-secondary">Inactive</span></td>
                             <td>
-                                <a href="/Users/editUser" class="btn btn-success btn-sm">Edit &nbsp;<i class="fa fa-pencil"></i></a>
+                                <a href="<%= '/Users/editUser/' + users[i].id %> " class="btn btn-success btn-sm">Edit &nbsp;<i class="fa fa-pencil"></i></a>
                             </td>
                         </tr>
-
-                        <tr>
-                            <td>2.</td>
-                            <td>Saeed Anwar</td>
-                            <td>03123456789</td>
-                            <td>1560274158241</td>
-                            <td>Male</td>
-                            <td>Saidu Sharif</td>
-                            <td><span class="badge badge-primary">Active</span></td>
-                            <td>
-                                <a href="/Users/editUser" class="btn btn-success btn-sm">Edit &nbsp;<i class="fa fa-pencil"></i></a>
-                            </td>
-                        </tr>
-
-                        
+                        <% } %> 
                       </tbody>
                       <tfoot>
                         <tr>

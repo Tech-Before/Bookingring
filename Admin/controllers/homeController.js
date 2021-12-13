@@ -10,6 +10,7 @@ const roomGallery = require('../models/RoomGallery')
 const Vehicles = require('../models/Vehicles')
 const vehicleGallery = require('../models/vehicleGallery')
 const sliderGallery = require('../models/sliderGallery')
+const Users = require('../models/User')
 
 // Login
 const login = (req, res, next) => {
@@ -1113,6 +1114,7 @@ const tourList = (req, res, next) =>{
     })
     .catch(err => console.log(err));
 }
+
 const viewTour = (req, res, next) => {
 
     const tourId = req.params.id;
@@ -1331,11 +1333,97 @@ const addUser = (req, res, next) => {
 }
 
 const userList = (req, res, next) => {
-    res.render('./pages/Users/usersList')
+    Users.find()
+    .then(users => {
+        res.render('./pages/Users/usersList' , {
+            users: users,
+            pageTitle: 'Users List',
+            path: '/Users/users-list'
+        });
+    })
+    .catch(err => console.log(err));
 }
 
 const editUser = (req, res, next) => {
-    res.render('./pages/Users/editUser')
+    const userId = req.params.id;
+    Users.findById(userId)
+    .then(user => {
+        res.render('./pages/Users/editUser' , {
+            user: user,
+            pageTitle: 'Edit User',
+            path: '/Users/edit-user'
+        });
+    })
+    .catch(err => console.log(err));
+}
+
+const postAddUser = (req, res)=>{
+
+    const name = req.body.name;
+    const contact = req.body.contact;
+    const cnic = req.body.cnic;
+    const gender = req.body.gender;
+    const location = req.body.location;
+    const address = req.body.address;
+    const type = req.body.type;
+    const email = req.body.email;
+    const password = req.body.password;
+   
+    const user = new Users({
+        name: name,
+        contact: contact,
+        CNIC: cnic,
+        gender: gender,
+        location: location,
+        address: address,
+        type: type,
+        email: email,
+        password: password
+    });
+
+    user
+        .save()
+        .then(result => {
+            // console.log(result);
+            console.log('Added user');
+            res.redirect('/');
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+
+const postEditUser = (req, res)=>{
+
+    const userId = req.body.userId;
+    const name = req.body.name;
+    const contact = req.body.contact;
+    const cnic = req.body.cnic;
+    const gender = req.body.gender;
+    const location = req.body.location;
+    const address = req.body.address;
+    const type = req.body.type;
+    const email = req.body.email;
+    const password = req.body.password;
+
+    Users.findById(userId)
+        .then(user => {
+            user.name = name;
+            user.contact = contact;
+            user.CNIC = cnic;
+            user.gender = gender;
+            user.location = location;
+            user.address = address;
+            user.type = type;
+            user.email = email;
+            user.password = password;
+            return user.save();
+        })
+        .then(result => {
+            console.log('UPDATED User!');
+            res.redirect('/');
+        })
+        .catch(err => console.log(err));
 }
 
 
@@ -1380,6 +1468,6 @@ module.exports = {
     feedback, viewFeedbackQuery,
 
     // Users
-    addUser, userList, editUser
+    addUser, userList, editUser, postAddUser, postEditUser
 
 }
