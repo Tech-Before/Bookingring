@@ -27,6 +27,11 @@ const about = (req, res, next) => res.render('./pages/About/about');
 // Contact 
 const contact = (req, res, next) => res.render('./pages/Contact/contact');
 
+// User
+const login = (req, res, next) => res.render('./pages/User/login');
+const signup = (req, res, next) => res.render('./pages/User/signup');
+
+
 module.exports = {
     // HomePage
     home,
@@ -44,5 +49,8 @@ module.exports = {
     about,
 
     // Contact
-    contact
+    contact,
+
+    // User
+    login, signup
 }

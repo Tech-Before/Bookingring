@@ -17,7 +17,10 @@ const {
     about,
 
     // Contact
-    contact
+    contact,
+
+    // User
+    login, signup
 
 } = require('../controllers/homeController');
 const router = express.Router();
@@ -50,6 +53,11 @@ router.get('/About/about', about)
 
 // Contact
 router.get('/Contact/contact', contact)
+
+// User
+router.get('/User/login', login)
+router.get('/User/signup', signup)
+
 
 
 module.exports = {
