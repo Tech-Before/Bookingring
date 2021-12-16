@@ -46,11 +46,12 @@
                         
                         <% for(let count = 0; count < areas.length; count++ ){ %>
                           
-                          <tr>
+                          <tr id="<%= areas[count].id %>">
                             <td><%= count + 1 %></td>
                             <td><%= areas[count].name %> </td>
                             <td>
                                 <a href=<%= "/Areas/editArea/" + areas[count].id %> class="btn btn-success btn-sm">Edit &nbsp;<i class="fa fa-pencil"></i></a>
+                                <button class="btn btn-danger btn-sm" onclick="<%= "deleteHandler('/Areas/deleteArea', '" + areas[count].id.toString() + "')" %>"><i class="fa fa-trash"></i></button>
                             </td>
                           </tr>
 

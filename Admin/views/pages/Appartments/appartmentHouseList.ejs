@@ -49,7 +49,7 @@
                       </thead>
                       <tbody>
                         <% for(let i= 0; i< appartments.length; i++) { %> 
-                        <tr>
+                        <tr id="<%= appartments[i].id %>">
                             <td><%= i + 1 %> </td>
                             <td><%= appartments[i].appartmentName %> </td>
                             <td><%= appartments[i].contact %> </td>
@@ -71,6 +71,7 @@
                             </td>
                             <td>
                                 <a href="<%= '/Appartments/editAppartmentHouse/' + appartments[i].id %> " class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+                                <button class="btn btn-danger btn-sm" onclick="<%= "deleteHandler('/Appartments/deleteAppartment', '" + appartments[i].id.toString() + "')" %>"><i class="fa fa-trash"></i></button>
                             </td>
                         </tr>
                         <% } %> 

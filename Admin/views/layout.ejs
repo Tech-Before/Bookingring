@@ -567,6 +567,31 @@
       $("a").submit(function () {
         $("#spinner").css("display", "flex");
       });
+
+      function deleteHandler(url, id) {
+          if (confirm('The selected Item will be deleted Permanantly')) {
+            fetch(url, {
+              // Adding method type
+              method: "POST",
+              // Adding body or contents to send
+              body: JSON.stringify({
+                id: id
+              }),
+              // Adding headers to the request
+              headers: {
+                "Content-type": "application/json; charset=UTF-8"
+              }
+            })
+              // Checking Status
+              .then(response => {
+                if (response.status === 200) {
+                  $('#' + id).remove();
+                } else {
+                  alert('something went wrong')
+                }
+              })
+          }
+        }
     </script>
 
 

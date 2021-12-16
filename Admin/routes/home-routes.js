@@ -8,28 +8,28 @@ const {
     indexView,
 
     // Areas
-    addArea, listAreas, editArea, postAddArea, postEditArea,
+    addArea, listAreas, editArea, postAddArea, postEditArea, postDeleteArea,
 
     // Customers
     customersList, viewCustomer, editMembership,
     
     // Hotels Clients
-    hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages, postAddHotel, postEditHotel, postAddHotelGallery, postDeleteGalleryImage,
+    hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages, postAddHotel, postEditHotel, postAddHotelGallery, postDeleteGalleryImage, postDeleteHotel,
     
     // Appartments / Houses 
-    appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGallery, addGalleryHouses, editGalleryHouses, postAddAppartment, postEditAppartment, postAddAppartmentGallery, postDeleteAppartmentGalleryImage,
+    appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGallery, addGalleryHouses, editGalleryHouses, postAddAppartment, postEditAppartment, postAddAppartmentGallery, postDeleteAppartmentGalleryImage, postDeleteAppartment,
     
     // Rooms
     addRoom, roomList, editRoom, addRoomGallery, editRoomGallery, postAddRoom, postEditRoom, postAddRoomGallery, postDeleteRoomGalleryImage,
 
     // Vehicle
-    addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery, postAddVehicle, postEditVehicle, postAddVehicleGallery, postDeleteVehiclesGalleryImage,
+    addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery, postAddVehicle, postEditVehicle, postAddVehicleGallery, postDeleteVehiclesGalleryImage, postDeleteVehicle,
 
     // Updates / Blog
     addUpdates, updateList, editBlog, deleteBlog,
     
     // Tours Plans & Hiking
-    addTour, tourList, viewTour, editTour, postAddTour, postEditTour,
+    addTour, tourList, viewTour, editTour, postAddTour, postEditTour, postDeleteTour,
     
     // Bundles and Offers
     addBundle, bundleList,
@@ -58,6 +58,7 @@ router.get('/Areas/areaList', listAreas)
 router.get('/Areas/editArea/:id', editArea)
 router.post('/Areas/addAreas', postAddArea)
 router.post('/Areas/editArea/', postEditArea)
+router.post('/Areas/deleteArea', postDeleteArea)
 
 
 // Customers
@@ -80,6 +81,7 @@ router.post('/Hotels/addHotel', postAddHotel)
 router.post('/Hotels/editHotel/', postEditHotel)
 router.post('/Hotels/addHotelGallery', postAddHotelGallery)
 router.post('/Hotels/DeleteGalleryImage', postDeleteGalleryImage)
+router.post('/Hotels/deleteHotel', postDeleteHotel)
 
 // Appartments / Houses
 router.get('/Appartments/addAppartment', appartmentsHouses)
@@ -95,6 +97,7 @@ router.post('/Appartments/addAppartment', postAddAppartment)
 router.post('/Appartments/editAppartmentHouse', postEditAppartment)
 router.post('/Appartments/addGallery', postAddAppartmentGallery)
 router.post('/Appartments/deleteGalleryImage', postDeleteAppartmentGalleryImage)
+router.post('/Appartments/deleteAppartment', postDeleteAppartment)
 
 
 // Rooms
@@ -120,6 +123,7 @@ router.post('/Vehicles/addVehicle', postAddVehicle)
 router.post('/Vehicles/editVehicle', postEditVehicle)
 router.post('/Vehicles/addGallery', postAddVehicleGallery)
 router.post('/Vehicles/deleteImage', postDeleteVehiclesGalleryImage)
+router.post('/Vehicles/deleteVehicle', postDeleteVehicle)
 
 // Updates / Blog
 router.get('/Updates/addUpdates', addUpdates)
@@ -132,6 +136,7 @@ router.get('/Tours/addTours', addTour)
 router.get('/Tours/toursList', tourList)
 router.get('/Tours/viewTour/:id', viewTour)
 router.get('/Tours/editTour/:id', editTour)
+router.post('/Tours/deleteTour',postDeleteTour)
 
 router.post('/Tours/addTours', postAddTour)
 router.post('/Tours/editTour/', postEditTour)

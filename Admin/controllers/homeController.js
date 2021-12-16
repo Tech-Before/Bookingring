@@ -67,7 +67,7 @@ const postAddArea = (req, res, next) => {
         .then(result => {
             // console.log(result);
             console.log('Added Area');
-            res.redirect('/');
+            res.redirect('/Areas/addAreas');
         })
         .catch(err => {
             console.log(err);
@@ -84,10 +84,21 @@ const postEditArea = (req, res, next) => {
         })
         .then(result => {
             console.log('UPDATED Area!');
-            res.redirect('/');
+            res.redirect('/Areas/areaList');
         })
         .catch(err => console.log(err));
 };
+
+const postDeleteArea = (req, res) =>{
+    const areaId = req.body.id;
+    console.log(areaId)
+    Areas.findByIdAndDelete(areaId)
+        .then(() => {
+            console.log('Deleted area');
+            res.sendStatus(200);
+        })
+        .catch(err => res.sendStatus(204));
+}
 
 
 // Customers
@@ -282,7 +293,7 @@ const postAddHotel = (req, res, next) => {
         .then(result => {
             // console.log(result);
             console.log('Added Hotel');
-            res.redirect('/');
+            res.redirect('/Hotels/hotelsList');
         })
         .catch(err => {
             console.log(err);
@@ -321,7 +332,7 @@ const postEditHotel = (req, res, next) => {
         })
         .then(result => {
             console.log('UPDATED Hotel!');
-            res.redirect('/');
+            res.redirect('/Hotels/hotelsList');
         })
         .catch(err => console.log(err));
 
@@ -355,7 +366,7 @@ const postAddHotelGallery = async (req, res, next) => {
             .then(result => {
                 // console.log(result);
                 console.log('Created Gallery');
-                res.redirect('/');
+                res.redirect('/Hotels/viewHotelImages/' + hotelId);
             })
             .catch(err => {
                 console.log(err)
@@ -363,6 +374,27 @@ const postAddHotelGallery = async (req, res, next) => {
     }
 
 }
+
+const postDeleteHotel = (req, res) =>{
+
+    const hotelId = req.body.id;
+    Hotels.findByIdAndDelete(hotelId)
+        .then(() => {
+            hotelGallery.findOneAndDelete({hotelId: hotelId }, function (err, docs) {
+                if (err){
+                    res.sendStatus(204)
+                    console.log('Hotel deleted but gallery is still there')
+                    console.log(err)
+                }
+                else{
+                    console.log('Deleted Hotel and its gallery');
+                    res.sendStatus(200);     
+                }
+            });
+        })
+        .catch(err => res.sendStatus(204));
+}
+
 
 const postDeleteGalleryImage = (req, res) => {
 
@@ -532,7 +564,7 @@ const postAddAppartment = (req, res, next) => {
         .then(result => {
             // console.log(result);
             console.log('appartment added');
-            res.redirect('/');
+            res.redirect('/Appartments/appartmentHouseList');
         })
         .catch(err => {
             console.log(err);
@@ -579,6 +611,26 @@ const postEditAppartment = (req, res, next) => {
         })
         .catch(err => console.log(err));
 
+}
+
+const postDeleteAppartment = (req, res) =>{
+
+    const appartId = req.body.id;
+    Appartments.findByIdAndDelete(appartId)
+        .then(() => {
+            appartmentGallery.findOneAndDelete({appartmentId: appartId }, function (err, docs) {
+                if (err){
+                    res.sendStatus(204)
+                    console.log('appartment deleted but gallery is still there')
+                    console.log(err)
+                }
+                else{
+                    console.log('Deleted appartment and its gallery');
+                    res.sendStatus(200);     
+                }
+            });
+        })
+        .catch(err => res.sendStatus(204));
 }
 
 const postAddAppartmentGallery = async (req, res, next) => {
@@ -965,7 +1017,7 @@ const postAddVehicle = (req, res) => {
         .then(result => {
             // console.log(result);
             console.log('Added vehicle');
-            res.redirect('/');
+            res.redirect('/Vehicles/vehicleList');
         })
         .catch(err => {
             console.log(err);
@@ -999,11 +1051,31 @@ const postEditVehicle = (req, res) => {
         })
         .then(result => {
             console.log('Updated vehicle');
-            res.redirect('/');
+            res.redirect('/Vehicles/vehicleList');
         })
         .catch(err => {
             console.log(err);
         });
+}
+
+const postDeleteVehicle = (req, res) =>{
+
+    const vehicleId = req.body.id;
+    Vehicles.findByIdAndDelete(vehicleId)
+        .then(() => {
+            vehicleGallery.findOneAndDelete({vehicleId: vehicleId }, function (err, docs) {
+                if (err){
+                    res.sendStatus(204)
+                    console.log('vehicle deleted but gallery is still there')
+                    console.log(err)
+                }
+                else{
+                    console.log('Deleted Vehicle and its gallery');
+                    res.sendStatus(200);     
+                }
+            });
+        })
+        .catch(err => res.sendStatus(204));
 }
 
 const postAddVehicleGallery = async (req, res) => {
@@ -1228,6 +1300,18 @@ const postEditTour = (req, res, next) => {
 
 }
 
+const postDeleteTour = (req, res) =>{
+
+    const tourId = req.body.id;
+    Tours.findByIdAndDelete(tourId)
+        .then(result => {
+            console.log('Tours deleted')
+            res.sendStatus(200)
+        })
+        .catch(err => res.sendStatus(204));
+}
+
+
 // Bundles and Offers
 const addBundle = (req, res, next) => {
     res.render('./pages/BundleOffers/addBundle')
@@ -1435,28 +1519,28 @@ module.exports = {
     indexView,
 
     // Areas
-    addArea, listAreas, editArea, postAddArea, postEditArea,
+    addArea, listAreas, editArea, postAddArea, postEditArea, postDeleteArea,
 
     // Customers
     customersList, viewCustomer, editMembership,
 
     // Hotels Clients
-    hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages, postAddHotel, postEditHotel, postAddHotelGallery, postDeleteGalleryImage,
+    hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages, postAddHotel, postEditHotel, postAddHotelGallery, postDeleteGalleryImage, postDeleteHotel,
 
     // Appartments / Houses 
-    appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGallery, addGalleryHouses, editGalleryHouses, postAddAppartment, postEditAppartment, postAddAppartmentGallery, postDeleteAppartmentGalleryImage,
+    appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGallery, addGalleryHouses, editGalleryHouses, postAddAppartment, postEditAppartment, postAddAppartmentGallery, postDeleteAppartmentGalleryImage, postDeleteAppartment,
 
     // Rooms
     addRoom, roomList, editRoom, addRoomGallery, editRoomGallery, postAddRoom, postEditRoom, postAddRoomGallery, postDeleteRoomGalleryImage,
 
     // Vehicle
-    addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery, postAddVehicle, postEditVehicle, postAddVehicleGallery, postDeleteVehiclesGalleryImage,
+    addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery, postAddVehicle, postEditVehicle, postAddVehicleGallery, postDeleteVehiclesGalleryImage, postDeleteVehicle,
 
     // Updates / Blog
     addUpdates, updateList, editBlog, deleteBlog,
 
     // Tours Plans & Hiking
-    addTour, tourList, viewTour, editTour, postAddTour, postEditTour,
+    addTour, tourList, viewTour, editTour, postAddTour, postEditTour, postDeleteTour,
 
     // Bundles and Offers
     addBundle, bundleList,

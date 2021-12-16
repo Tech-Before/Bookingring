@@ -47,7 +47,7 @@
                     </thead>
                     <tbody>
                       <% for(let i = 0; i < tours.length; i++) { %>
-                        <tr>
+                        <tr id="<%= tours[i].id %>">
                             <td><%= i + 1 %></td>
                             <td><span class="badge <%= tours[i].tourType === 'tour' ? 'badge-primary' : 'badge-secondary' %>" style="font-size: 14px;"><%= tours[i].tourType %></span></td>
                             <td><%= tours[i].startDate %></td>
@@ -56,21 +56,11 @@
                             <td>
                                 <a href=<%= '/Tours/viewTour/' + tours[i].id %> class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
                                 <a href=<%= '/Tours/editTour/' + tours[i].id %> class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+                                <button class="btn btn-danger btn-sm" onclick="<%= "deleteHandler('/Tours/deleteTour', '" + tours[i].id.toString() + "')" %>"><i class="fa fa-trash"></i></button>
+                            </td>
                             </td>
                         </tr>
                       <% } %>
-
-                        <!-- <tr>
-                            <td>2</td>
-                            <td><span class="badge badge-secondary" style="font-size: 14px;">Hike</span></td>
-                            <td>12/01/2021</td>
-                            <td>12/04/2021</td>
-                            <td>Mingora to Kalam</td>
-                            <td>
-                                <a href="/Tours/viewTour" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
-                                <a href="/Tours/editTour" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
-                            </td>
-                        </tr> -->
                     </tbody>
                     <tfoot>
                         <tr>
