@@ -9,7 +9,7 @@ const multer = require('multer')
 const app = express();
 const port = 3000;
 
-//configuring of file destination and name
+// configuring of file destination and name
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './public/images/');
