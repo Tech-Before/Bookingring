@@ -45,7 +45,7 @@ const editArea = (req, res, next) => {
     Areas.findById(areaId)
         .then(area => {
             if (!area) {
-                return res.redirect('/');
+                return res.render('./pages/Errors/error', { desc: 'The recored does\'t exist' });
             }
             res.render('./pages/Areas/editArea', {
                 pageTitle: 'Edit Area',
@@ -53,7 +53,7 @@ const editArea = (req, res, next) => {
                 area: area
             });
         })
-        .catch(err => console.log(err));
+        .catch(err => res.render('./pages/Errors/error'));
 }
 
 
