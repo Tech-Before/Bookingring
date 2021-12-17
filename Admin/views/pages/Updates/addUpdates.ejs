@@ -26,7 +26,7 @@
                 <h3 class="card-title">Add Update / Blog</h3>
               </div>
               <div class="card-body">
-                <form method="POST">
+                <form action="/Updates/addUpdate" method="POST">
                     <div class="row">
                         <div class="form-group col-md-2" style="border-right: 1px solid #e0e0e0;">
                             <label>Blog No. </label>
@@ -34,17 +34,17 @@
                         </div>
                         <div class="form-group col-md-10">
                             <label>Blog Heading</label>
-                            <input type="text" name="" placeholder="Example: Next Month 50% Off" class="form-control" required>
+                            <input type="text" name="heading" placeholder="Example: Next Month 50% Off" class="form-control" required>
                         </div>
     
                         <div class="form-group col-md-12">
                             <label>Blog Author</label>
-                            <input type="text" name="" placeholder="Example: C.E.O Rumman" class="form-control" required>
+                            <input type="text" name="author" placeholder="Example: C.E.O Rumman" class="form-control" required>
                         </div>
     
                         <div class="form-group col-md-12">
                             <label>Blog Description</label>
-                            <textarea name="" cols="30" rows="5" class="form-control" required placeholder="Enter Update/Blog Description Here!"></textarea>
+                            <textarea name="desc" cols="30" rows="5" class="form-control" required placeholder="Enter Update/Blog Description Here!"></textarea>
                         </div>
                     </div>
                     

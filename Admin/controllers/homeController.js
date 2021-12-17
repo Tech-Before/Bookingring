@@ -11,6 +11,7 @@ const Vehicles = require('../models/Vehicles')
 const vehicleGallery = require('../models/vehicleGallery')
 const sliderGallery = require('../models/sliderGallery')
 const Users = require('../models/User')
+const Updates = require('../models/Updates')
 
 // Login
 const login = (req, res, next) => {
@@ -1149,15 +1150,67 @@ const addUpdates = (req, res, next) => {
 }
 
 const updateList = (req, res, next) => {
-    res.render('./pages/Updates/updateList')
+    Updates.find()
+        .then(updates => {
+            res.render('./pages/Updates/updateList', {
+                updates: updates,
+                pageTitle: 'Updates List',
+                path: '/Updates/update-list'
+            });
+        })
+        .catch(err => console.log(err));
+    
 }
 
 const editBlog = (req, res, next) => {
-    res.render('./pages/Updates/editBlog')
+    
+    const id = req.params.id;
+    Updates.findById(id)
+        .then(update => {
+            if (!update) {
+                console.log('no update found')
+                return res.redirect('/');
+            }
+            res.render('./pages/Updates/editUpdate', {
+                update: update
+            })
+
+        })
+        .catch(err => console.log(err));
+    
 }
 
 const deleteBlog = (req, res, next) => {
     res.render('./pages/Updates/deleteBlog')
+}
+
+const postAddUpdate = (req, res)=>{
+    const heading = req.body.heading;
+    const author = req.body.author;
+    const date = new Date()
+    const desc = req.body.desc;
+
+    const update = new Updates({
+        heading: heading,
+        author: author,
+        date: date,
+        description: desc
+    });
+
+    update
+        .save()
+        .then(result => {
+            // console.log(result);
+            console.log('Added update');
+            res.redirect('/');
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+
+const postEditUpdate = (req, res) =>{
+    console.log('ding ding')
 }
 
 // Tours Plans & Hiking
@@ -1537,7 +1590,7 @@ module.exports = {
     addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery, postAddVehicle, postEditVehicle, postAddVehicleGallery, postDeleteVehiclesGalleryImage, postDeleteVehicle,
 
     // Updates / Blog
-    addUpdates, updateList, editBlog, deleteBlog,
+    addUpdates, updateList, editBlog, deleteBlog, postAddUpdate, postEditUpdate,
 
     // Tours Plans & Hiking
     addTour, tourList, viewTour, editTour, postAddTour, postEditTour, postDeleteTour,

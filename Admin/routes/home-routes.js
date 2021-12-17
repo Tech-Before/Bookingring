@@ -26,7 +26,7 @@ const {
     addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery, postAddVehicle, postEditVehicle, postAddVehicleGallery, postDeleteVehiclesGalleryImage, postDeleteVehicle,
 
     // Updates / Blog
-    addUpdates, updateList, editBlog, deleteBlog,
+    addUpdates, updateList, editBlog, deleteBlog, postAddUpdate, postEditUpdate,
     
     // Tours Plans & Hiking
     addTour, tourList, viewTour, editTour, postAddTour, postEditTour, postDeleteTour,
@@ -128,8 +128,10 @@ router.post('/Vehicles/deleteVehicle', postDeleteVehicle)
 // Updates / Blog
 router.get('/Updates/addUpdates', addUpdates)
 router.get('/Updates/updateList', updateList)
-router.get('/Updates/editBlog', editBlog)
+router.get('/Updates/editUpdate/:id', editBlog)
 router.get('/Updates/deleteBlog', deleteBlog)
+router.post('/Updates/addUpdate', postAddUpdate)
+router.post('/Updates/editUpdate', postEditUpdate)
 
 // Tours Plans & Hiking
 router.get('/Tours/addTours', addTour)

@@ -35,17 +35,17 @@
                         
                         <div class="form-group col-md-10">
                             <label>Blog Heading</label>
-                            <input type="text" name="" placeholder="Example: Next Month 50% Off" class="form-control" required>
+                            <input type="text" name="heading" value="<%= update.heading %>" placeholder="Example: Next Month 50% Off" class="form-control" required>
                         </div>
     
                         <div class="form-group col-md-12">
                             <label>Blog Author</label>
-                            <input type="text" name="" placeholder="Example: C.E.O Rumman" class="form-control" required>
+                            <input type="text" name="author" value="<%= update.author %>" placeholder="Example: C.E.O Rumman" class="form-control" required>
                         </div>
     
                         <div class="form-group col-md-12">
                             <label>Blog Description</label>
-                            <textarea name="" cols="30" rows="5" class="form-control" required placeholder="Enter Update/Blog Description Here!"></textarea>
+                            <textarea name="desc"  cols="30" rows="5" class="form-control" required placeholder="Enter Update/Blog Description Here!"><%= update.description %></textarea>
                         </div>
                     </div>
                     
