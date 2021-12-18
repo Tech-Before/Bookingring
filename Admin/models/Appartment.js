@@ -23,7 +23,7 @@ const AppartmentsSchema = new Schema({
         type: String,
         required: true
     },
-    appartmentType:{
+    appartmentType: {
         type: String,
         required: true
     },

@@ -4,11 +4,11 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Vehicles</h1>
+          <h1>Rental Vehicles</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item">Vehicle</li>
+            <li class="breadcrumb-item">Rental Vehicle</li>
             <li class="breadcrumb-item active">Add Vehicle</li>
           </ol>
         </div>
@@ -23,11 +23,10 @@
         <div class="col-md-12">
           <div class="card card-success">
             <div class="card-header">
-              <h3 class="card-title">Add Vehicle</h3>
+              <h3 class="card-title">Add Rental Vehicle</h3>
             </div>
             <div class="card-body">
               <form action="/Vehicles/addVehicle" method="POST">
-
                 <h5><b>Vehicle Details</b></h5>
                 <hr>
                 <div class="row">
@@ -50,7 +49,7 @@
                     <input type="number" name="model" placeholder="Example: 2002" class="form-control" required>
                   </div>
 
-                  <div class="form-group col-md-2">
+                  <!-- <div class="form-group col-md-2">
                     <label>Vehicle Condition</label>
                     <select class="form-control" name="condition" required>
                       <option value="A+">A+</option>
@@ -60,9 +59,9 @@
                       <option value="C">C</option>
                       <option value="C+">C+</option>
                     </select>
-                  </div>
+                  </div> -->
 
-                  <div class="form-group col-md-2">
+                  <div class="form-group col-md-4">
                     <label>Vehicle Status</label>
                     <select class="form-control" name="status" required>
                       <option value="true">Available</option>
@@ -70,16 +69,16 @@
                     </select>
                   </div>
 
-                  <div class="form-group col-md-4">
+                  <!-- <div class="form-group col-md-4">
                     <label>Car Classification</label>
                     <select class="form-control" style="width: 100%;" name="">
                       <option value="">Luxury</option>
                       <option value="">Economic</option>
                     </select>
-                  </div>
+                  </div> -->
 
                   <div class="form-group col-md-4">
-                    <label>Car Seats</label>
+                    <label>Vehicle Seats</label>
                     <input type="number" name="" placeholder="Example: 5" class="form-control" required>
                   </div>
                 </div>
@@ -116,7 +115,7 @@
                 <hr>
                 <div class="form-group">
                   <a class="btn btn-secondary btn-sm" name="cancel" type="submit" onclick="history.back(-1)">Cancel</a>
-                  <button class="btn btn-success btn-sm" type="submit" name="">Add Vehicle</button>
+                  <button class="btn btn-success btn-sm" type="submit" name="">Add Rental Vehicle</button>
                 </div>
               </form>
             </div>

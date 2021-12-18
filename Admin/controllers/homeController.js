@@ -90,7 +90,7 @@ const postEditArea = (req, res, next) => {
         .catch(err => console.log(err));
 };
 
-const postDeleteArea = (req, res) =>{
+const postDeleteArea = (req, res) => {
     const areaId = req.body.id;
     console.log(areaId)
     Areas.findByIdAndDelete(areaId)
@@ -376,20 +376,20 @@ const postAddHotelGallery = async (req, res, next) => {
 
 }
 
-const postDeleteHotel = (req, res) =>{
+const postDeleteHotel = (req, res) => {
 
     const hotelId = req.body.id;
     Hotels.findByIdAndDelete(hotelId)
         .then(() => {
-            hotelGallery.findOneAndDelete({hotelId: hotelId }, function (err, docs) {
-                if (err){
+            hotelGallery.findOneAndDelete({ hotelId: hotelId }, function (err, docs) {
+                if (err) {
                     res.sendStatus(204)
                     console.log('Hotel deleted but gallery is still there')
                     console.log(err)
                 }
-                else{
+                else {
                     console.log('Deleted Hotel and its gallery');
-                    res.sendStatus(200);     
+                    res.sendStatus(200);
                 }
             });
         })
@@ -614,20 +614,20 @@ const postEditAppartment = (req, res, next) => {
 
 }
 
-const postDeleteAppartment = (req, res) =>{
+const postDeleteAppartment = (req, res) => {
 
     const appartId = req.body.id;
     Appartments.findByIdAndDelete(appartId)
         .then(() => {
-            appartmentGallery.findOneAndDelete({appartmentId: appartId }, function (err, docs) {
-                if (err){
+            appartmentGallery.findOneAndDelete({ appartmentId: appartId }, function (err, docs) {
+                if (err) {
                     res.sendStatus(204)
                     console.log('appartment deleted but gallery is still there')
                     console.log(err)
                 }
-                else{
+                else {
                     console.log('Deleted appartment and its gallery');
-                    res.sendStatus(200);     
+                    res.sendStatus(200);
                 }
             });
         })
@@ -1059,20 +1059,20 @@ const postEditVehicle = (req, res) => {
         });
 }
 
-const postDeleteVehicle = (req, res) =>{
+const postDeleteVehicle = (req, res) => {
 
     const vehicleId = req.body.id;
     Vehicles.findByIdAndDelete(vehicleId)
         .then(() => {
-            vehicleGallery.findOneAndDelete({vehicleId: vehicleId }, function (err, docs) {
-                if (err){
+            vehicleGallery.findOneAndDelete({ vehicleId: vehicleId }, function (err, docs) {
+                if (err) {
                     res.sendStatus(204)
                     console.log('vehicle deleted but gallery is still there')
                     console.log(err)
                 }
-                else{
+                else {
                     console.log('Deleted Vehicle and its gallery');
-                    res.sendStatus(200);     
+                    res.sendStatus(200);
                 }
             });
         })
@@ -1159,11 +1159,11 @@ const updateList = (req, res, next) => {
             });
         })
         .catch(err => console.log(err));
-    
+
 }
 
 const editBlog = (req, res, next) => {
-    
+
     const id = req.params.id;
     Updates.findById(id)
         .then(update => {
@@ -1177,14 +1177,14 @@ const editBlog = (req, res, next) => {
 
         })
         .catch(err => console.log(err));
-    
+
 }
 
 const deleteBlog = (req, res, next) => {
     res.render('./pages/Updates/deleteBlog')
 }
 
-const postAddUpdate = (req, res)=>{
+const postAddUpdate = (req, res) => {
     const heading = req.body.heading;
     const author = req.body.author;
     const date = new Date()
@@ -1209,7 +1209,7 @@ const postAddUpdate = (req, res)=>{
         });
 }
 
-const postEditUpdate = (req, res) =>{
+const postEditUpdate = (req, res) => {
     console.log('ding ding')
 }
 
@@ -1353,7 +1353,7 @@ const postEditTour = (req, res, next) => {
 
 }
 
-const postDeleteTour = (req, res) =>{
+const postDeleteTour = (req, res) => {
 
     const tourId = req.body.id;
     Tours.findByIdAndDelete(tourId)
