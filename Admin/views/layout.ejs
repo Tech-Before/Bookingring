@@ -109,7 +109,7 @@
             <a href="#" class="nav-link">
               <i class="fas fa-location-arrow nav-icon"></i>
               <p>
-                Areas
+                Location
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -117,13 +117,13 @@
               <li class="nav-item">
                 <a href="/Areas/addAreas" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Add Area</p>
+                  <p>Add Location</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="/Areas/areaList" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Area List</p>
+                  <p>Location List</p>
                 </a>
               </li>
             </ul>
@@ -569,26 +569,26 @@
       });
 
       function deleteHandler(url, id) {
-          if (confirm('The selected Item will be deleted Permanantly')) {
-            fetch(url, {
-              method: "POST",
-              body: JSON.stringify({
-                id: id
-              }),
-              headers: {
-                "Content-type": "application/json; charset=UTF-8"
+        if (confirm('The selected Item will be deleted Permanantly')) {
+          fetch(url, {
+            method: "POST",
+            body: JSON.stringify({
+              id: id
+            }),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            }
+          })
+            // Checking Status
+            .then(response => {
+              if (response.status === 200) {
+                $('#' + id).remove();
+              } else {
+                alert('something went wrong')
               }
             })
-              // Checking Status
-              .then(response => {
-                if (response.status === 200) {
-                  $('#' + id).remove();
-                } else {
-                  alert('something went wrong')
-                }
-              })
-          }
         }
+      }
     </script>
 
 
