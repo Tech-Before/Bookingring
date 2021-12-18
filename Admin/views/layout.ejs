@@ -568,7 +568,7 @@
         $("#spinner").css("display", "flex");
       });
 
-      function deleteHandler(url, id) {
+      async function deleteHandler(url, id) {
         if (confirm('The selected Item will be deleted Permanantly')) {
           fetch(url, {
             method: "POST",
