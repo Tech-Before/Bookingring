@@ -37,10 +37,6 @@ const RoomsSchema = new Schema({
         type: Boolean,
         required: true
     },
-    roomService: {
-        type: Boolean,
-        required: true
-    },
     status: {
         type: Boolean,
         required: true
@@ -51,6 +47,18 @@ const RoomsSchema = new Schema({
     },
     charges: {
         type: Number,
+        required: true
+    },
+    size: {
+        type: String,
+        required: true
+    },
+    occupency: {
+        type: String,
+        required: true
+    },
+    bedSize: {
+        type: String,
         required: true
     }
 });

@@ -269,6 +269,7 @@ const postAddHotel = (req, res, next) => {
     const contact = req.body.contact;
     const parking = req.body.parking;
     const area = req.body.area;
+    const roomService = req.body.roomService;
     const address = req.body.address;
     const ownerName = req.body.ownerName;
     const ownerCNIC = req.body.ownerCNIC;
@@ -281,6 +282,7 @@ const postAddHotel = (req, res, next) => {
         contact: contact,
         parking: parking,
         area: area,
+        roomService: roomService,
         address: address,
         ownerName: ownerName,
         ownerCNIC: ownerCNIC,
@@ -792,10 +794,12 @@ const postAddRoom = (req, res) => {
     const beds = req.body.beds;
     const hotWater = req.body.hotWater;
     const balcony = req.body.balcony;
-    const roomServices = req.body.roomServices;
     const status = req.body.status;
     const location = req.body.location;
     const charges = req.body.charges;
+    const size = req.body.size;
+    const occupency = req.body.occupency;
+    const bedSize = req.body.bedSize;
 
     const room = new Rooms({
         roomNo: roomNo,
@@ -806,10 +810,12 @@ const postAddRoom = (req, res) => {
         beds: beds,
         hotWater: hotWater,
         balcony: balcony,
-        roomService: roomServices,
         status: status,
         location: location,
-        charges: charges
+        charges: charges,
+        size: size,
+        occupency: occupency,
+        bedSize: bedSize
     });
 
     room
