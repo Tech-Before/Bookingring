@@ -70,10 +70,10 @@
                       </td>
                       <td><span class="badge badge-primary">Approved</span></td>
                       <td>
-                        <a href="<%= '/Hotels/viewHotel/' + hotels[i].id %> " class="btn btn-info btn-sm"><i
-                            class="fa fa-eye"></i></a>
-                        <a href="<%= '/Hotels/editHotel/' + hotels[i].id %> " class="btn btn-primary btn-sm"><i
-                            class="fa fa-pencil"></i></a>
+                        <a href="<%= '/Hotels/viewHotel/' + hotels[i].id %> " class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
+                        <a href="<%= '/Hotels/editHotel/' + hotels[i].id %> " class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+                        <% let deleteHandler="deleteHandler('/Hotels/deleteHotel', '" + hotels[i].id.toString() + "' )" %>
+                          <button class="btn btn-danger btn-sm" onClick="<%= deleteHandler %>"><i class="fa fa-trash"></i></button>
                       </td>
                     </tr>
                     <% } %>

@@ -56,7 +56,8 @@
                       <td>
                         <a href=<%="/Areas/editArea/" + areas[count].id %> class="btn btn-success btn-sm">Edit &nbsp;<i
                             class="fa fa-pencil"></i></a>
-                            <button class="btn btn-danger btn-sm" onclick="<%= "deleteHandler('/Areas/deleteArea', '" + areas[count].id.toString() + "')" %>"><i class="fa fa-trash"></i></button>
+                        <% let deleteHandler="deleteHandler('/Areas/deleteArea', '" + areas[count].id.toString() + "')" %>
+                          <button class="btn btn-danger btn-sm" onClick="<%= deleteHandler %>"><i class="fa fa-trash"></i></button>
                       </td>
                     </tr>
 

@@ -82,9 +82,8 @@
                             class="fa fa-picture-o"></i></a>
                         <a href="<%= '/Appartments/editGallery/' + houses[i].id %>" class="btn btn-success btn-sm">Edit
                           <i class="fa fa-picture-o"></i></a>
-                        <button class="btn btn-danger btn-sm" onclick="<%= "
-                          deleteHandler('/Appartments/deleteAppartment', '" + houses[i].id.toString() + "' )" %>"><i
-                            class="fa fa-trash"></i></button>
+                        <% let deleteHandler="deleteHandler('/Appartments/deleteAppartment', '" + houses[i].id.toString() + "' )" %>
+                          <button class="btn btn-danger btn-sm" onClick="<%= deleteHandler %>"><i class="fa fa-trash"></i></button>
                       </td>
                     </tr>
                     <% } %>
