@@ -12,25 +12,28 @@ const {
 
     // Customers
     customersList, viewCustomer, editMembership,
-    
+
     // Hotels Clients
     hotelClients, hotelList, viewHotel, editHotel, hotelApproved, hotelUnapproved, addGalleryHotel, addHotelImages, galleryList, viewHotelImages, postAddHotel, postEditHotel, postAddHotelGallery, postDeleteGalleryImage, postDeleteHotel,
-    
+
     // Appartments / Houses 
     appartmentsHouses, appartmentHouseList, editAppartmentHouse, appartmentList, editGalleryAppartments, housesList, addGallery, addGalleryHouses, editGalleryHouses, postAddAppartment, postEditAppartment, postAddAppartmentGallery, postDeleteAppartmentGalleryImage, postDeleteAppartment,
-    
+
     // Rooms
     addRoom, roomList, editRoom, addRoomGallery, editRoomGallery, postAddRoom, postEditRoom, postAddRoomGallery, postDeleteRoomGalleryImage,
+
+    // Vehicle Category
+    addCategory, categoryList, editCategory,
 
     // Vehicle
     addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery, postAddVehicle, postEditVehicle, postAddVehicleGallery, postDeleteVehiclesGalleryImage, postDeleteVehicle,
 
     // Updates / Blog
     addUpdates, updateList, editBlog, deleteBlog, postAddUpdate, postEditUpdate,
-    
+
     // Tours Plans & Hiking
     addTour, tourList, viewTour, editTour, postAddTour, postEditTour, postDeleteTour,
-    
+
     // Bundles and Offers
     addBundle, bundleList,
 
@@ -111,7 +114,10 @@ router.post('/Rooms/editRoom', postEditRoom)
 router.post('/Rooms/addGallery', postAddRoomGallery)
 router.post('/Rooms/deleteImage/', postDeleteRoomGalleryImage)
 
-
+// Vehicle Category
+router.get('/VehiclesCategory/addCategory', addCategory)
+router.get('/VehiclesCategory/categoryList', categoryList)
+router.get('/VehiclesCategory/editCategory', editCategory)
 
 // Vehicle
 router.get('/Vehicles/addVehicles', addVehicle)
@@ -138,7 +144,7 @@ router.get('/Tours/addTours', addTour)
 router.get('/Tours/toursList', tourList)
 router.get('/Tours/viewTour/:id', viewTour)
 router.get('/Tours/editTour/:id', editTour)
-router.post('/Tours/deleteTour',postDeleteTour)
+router.post('/Tours/deleteTour', postDeleteTour)
 
 router.post('/Tours/addTours', postAddTour)
 router.post('/Tours/editTour/', postEditTour)

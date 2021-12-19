@@ -120,51 +120,51 @@
                 <hr>
 
 
+                <div class="row">
+                  <div class="form-group col-md-3">
+                    <label>Tour/Hike Days</label>
+                    <input type="number" name="days" value="<%= data.tour.days %>" placeholder="" class="form-control"
+                      required>
+                  </div>
 
-                <div class="form-group col-md-3">
-                  <label>Tour/Hike Days</label>
-                  <input type="number" name="days" value="<%= data.tour.days %>" placeholder="" class="form-control"
-                    required>
-                </div>
+                  <div class="form-group col-md-3">
+                    <label>Tour/Hike Nights</label>
+                    <input type="number" value="<%= data.tour.nights %>" name="nights" placeholder=""
+                      class="form-control" required>
+                  </div>
 
-                <div class="form-group col-md-3">
-                  <label>Tour/Hike Nights</label>
-                  <input type="number" value="<%= data.tour.nights %>" name="nights" placeholder="" class="form-control"
-                    required>
-                </div>
+                  <div class="form-group col-md-3">
+                    <label>Available Seats/Vacancies</label>
+                    <input type="number" name="seats" placeholder="" value="<%= data.tour.availableSeats %>"
+                      class="form-control" required>
+                  </div>
 
-                <div class="form-group col-md-3">
-                  <label>Available Seats/Vacancies</label>
-                  <input type="number" name="seats" placeholder="" value="<%= data.tour.availableSeats %>"
-                    class="form-control" required>
-                </div>
+                  <div class="form-group col-md-3">
+                    <label>Charges (Per Head Charges)</label>
+                    <input type="number" name="charges" value="<%= data.tour.chargesPerHead %>" placeholder=""
+                      class="form-control" required>
+                  </div>
 
-                <div class="form-group col-md-3">
-                  <label>Charges (Per Head Charges)</label>
-                  <input type="number" name="charges" value="<%= data.tour.chargesPerHead %>" placeholder=""
-                    class="form-control" required>
+                  <div class="form-group col-md-12">
+                    <label>Description</label>
+                    <textarea name="desc" id="" cols="10" rows="10" class="form-control" placeholder=""
+                      required><%= data.tour.description %> </textarea>
+                  </div>
                 </div>
-
-                <div class="form-group col-md-12">
-                  <label>Description</label>
-                  <textarea name="desc" id="" cols="10" rows="10" class="form-control" placeholder=""
-                    required><%= data.tour.description %> </textarea>
+                <input type="hidden" value="<%= data.tour.id %>" name="tourId" />
+                <hr>
+                <div class="form-group">
+                  <a class="btn btn-secondary btn-sm" name="cancel" type="submit" onclick="history.back(-1)">Cancel</a>
+                  <button class="btn btn-success btn-sm" type="submit" name="">Edit Tour/Hike</button>
                 </div>
+              </form>
             </div>
-            <input type="hidden" value="<%= data.tour.id %>" name="tourId" />
-            <hr>
-            <div class="form-group">
-              <a class="btn btn-secondary btn-sm" name="cancel" type="submit" onclick="history.back(-1)">Cancel</a>
-              <button class="btn btn-success btn-sm" type="submit" name="">Edit Tour/Hike</button>
-            </div>
-            </form>
           </div>
         </div>
       </div>
+      <!-- /.row -->
     </div>
-    <!-- /.row -->
-</div>
-<!-- /.container-fluid -->
-</section>
-<!-- /.content -->
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
 </div>

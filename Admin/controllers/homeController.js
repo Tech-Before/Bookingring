@@ -937,6 +937,19 @@ const postDeleteRoomGalleryImage = (req, res) => {
         .catch((err) => console.log(err));
 };
 
+// Vehicle Category (New Data)
+const addCategory = (req, res, next) => {
+    res.render('./pages/VehiclesCategory/addCategory')
+}
+
+const categoryList = (req, res, next) => {
+    res.render('./pages/VehiclesCategory/categoryList')
+}
+
+const editCategory = (req, res, next) => {
+    res.render('./pages/VehiclesCategory/editCategory')
+}
+
 // Vehicle
 const addVehicle = (req, res, next) => {
     res.render('./pages/Vehicles/addVehicles')
@@ -1591,6 +1604,9 @@ module.exports = {
 
     // Rooms
     addRoom, roomList, editRoom, addRoomGallery, editRoomGallery, postAddRoom, postEditRoom, postAddRoomGallery, postDeleteRoomGalleryImage,
+
+    // Vehicle Category
+    addCategory, categoryList, editCategory,
 
     // Vehicle
     addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery, postAddVehicle, postEditVehicle, postAddVehicleGallery, postDeleteVehiclesGalleryImage, postDeleteVehicle,
