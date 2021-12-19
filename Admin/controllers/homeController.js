@@ -1001,7 +1001,7 @@ const postAddVehicle = (req, res) => {
     const category = req.body.category;
     const vehicleNo = req.body.vehicleNo;
     const model = req.body.model;
-    const condition = req.body.condition;
+    const seats = req.body.seats;
     const status = req.body.status;
     const ownerName = req.body.ownerName;
     const ownerCNIC = req.body.ownerCNIC;
@@ -1012,7 +1012,7 @@ const postAddVehicle = (req, res) => {
         vehicleCategory: category,
         vehicleNo: vehicleNo,
         model: model,
-        condition: condition,
+        seats: seats,
         availabilityStatus: status,
         ownerName: ownerName,
         ownerCNIC: ownerCNIC,

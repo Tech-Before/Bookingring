@@ -15,7 +15,7 @@ const VehiclesSchema = new Schema({
         type: String,
         required: true
     },
-    condition: {
+    seats: {
         type: String,
         required: true
     },
