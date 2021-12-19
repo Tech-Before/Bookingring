@@ -18,7 +18,7 @@ const RoomsSchema = new Schema({
     },
     areaId: {
         type: Schema.Types.ObjectId,
-        ref: 'Areas',
+        ref: 'Locations',
         required: true
     },
     areaName: {

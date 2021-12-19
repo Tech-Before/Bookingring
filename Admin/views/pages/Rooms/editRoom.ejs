@@ -151,20 +151,20 @@
 
                   <div class="form-group col-md-4">
                     <label>Room Size</label>
-                    <input type="text" name="" placeholder="i.e: 47-52 sqft" class="form-control" required>
+                    <input type="text" name="size" value="<%= room.size %>" placeholder="i.e: 47-52 sqft" class="form-control" required>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label>Room Occupency</label>
-                    <input type="text" name="" placeholder="i.e: Upto 4 childrens" class="form-control" required>
+                    <input type="text" name="occupency" value="<%= room.occupency %>" placeholder="i.e: Upto 4 childrens" class="form-control" required>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label>Room Bed Size</label>
-                    <select class="form-control select2" style="width: 100%;" name="">
-                      <option value="">King Bed Only</option>
-                      <option value="">Regular Beds Only</option>
-                      <option value="">King &amp; Regular Beds</option>
+                    <select class="form-control select2" style="width: 100%;" name="bedSize">
+                      <option value="king" <%= room.bedSize === 'king' ? 'selected' : '' %> >King Bed Only</option>
+                      <option value="regular" <%= room.bedSize === 'regular' ? 'selected' : '' %>>Regular Beds Only</option>
+                      <option value="king&regular" <%= room.bedSize === 'king&regular' ? 'selected' : '' %> >King &amp; Regular Beds</option>
                     </select>
                   </div>
                 </div>

@@ -23,6 +23,18 @@ const ToursSchema = new Schema({
         type: String,
         required: true
     },
+    pickupLocation: {
+        type: String,
+        required: true
+    },
+    dropoffLocation: {
+        type: String,
+        required: true
+    },
+    stayHotel: {
+        type: String,
+        required: true
+    },
     days: {
         type: String,
         required: true

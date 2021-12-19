@@ -58,8 +58,8 @@
                   <div class="form-group col-md-3">
                     <label>Appartment | House Parking</label>
                     <select class="form-control" name="parking">
-                      <option value="true" <% data.appart.parking ? 'selected' : '' %>>Yes</option>
-                      <option value="false" <% !data.appart.parking ? 'selected' : '' %>>No</option>
+                      <option value="true" <%= data.appart.parking ? 'selected' : '' %>>Yes</option>
+                      <option value="false" <%= !data.appart.parking ? 'selected' : '' %>>No</option>
                     </select>
                   </div>
 
@@ -93,8 +93,9 @@
                   <div class="form-group col-md-3">
                     <label>Avialibility Status</label>
                     <select class="form-control" name="status">
-                      <option value="true" <% data.appart.availibilityStatus ? 'selected' : '' %> > Available </option>
-                      <option value="false" <% !data.appart.availibilityStatus ? 'selected' : '' %> >Unavailable
+                      <% console.log( data.appart.availibilityStatus ? 'this is true' : 'this is false') %> 
+                      <option value="true" <%= data.appart.availibilityStatus ? 'selected' : '' %>> Available </option>
+                      <option value="false" <%= !data.appart.availibilityStatus ? 'selected' : '' %> >Unavailable
                       </option>
                     </select>
                   </div>

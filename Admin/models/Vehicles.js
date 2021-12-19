@@ -3,7 +3,12 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const VehiclesSchema = new Schema({
-    vehicleCategory:{
+    categoryId: {
+        type: Schema.Types.ObjectId,
+        ref: 'vehicleCategories',
+        required: true
+    },
+    categoryName: {
         type: String,
         required: true
     },
