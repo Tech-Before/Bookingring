@@ -33,12 +33,13 @@
                             <h3 class="card-title">Edit Vehicle Category</h3>
                         </div>
                         <div class="card-body">
-                            <form action="" method="POST">
+                            <form action="/VehiclesCategory/editCategory" method="POST">
                                 <div class="form-group">
                                     <label for="">Category Name</label>
-                                    <input type="text" name="" placeholder="Example: Car" class="form-control" required>
+                                    <input type="text" name="name" value="<%= cat.categoryName %>" class="form-control" required>
                                 </div>
                                 <hr>
+                                <input type="hidden" name="id" value="<%= cat.id %>">
                                 <div class="form-group">
                                     <a class="btn btn-secondary btn-sm" name="cancel" type="submit"
                                         onclick="history.back(-1)">Cancel</a>

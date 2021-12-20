@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const AreasSchema = new Schema({
+const LocationsSchema = new Schema({
   name: {
     type: String,
     required: true
   }
 });
 
-module.exports = mongoose.model('Areas', AreasSchema);
+module.exports = mongoose.model('Locations', LocationsSchema);

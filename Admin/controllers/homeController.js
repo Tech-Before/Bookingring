@@ -1,5 +1,5 @@
 const delImage = require('../util/file')
-const Areas = require('../models/Area')
+const Areas = require('../models/Location')
 const Tours = require('../models/Tour')
 const Hotels = require('../models/Hotel')
 const hotelGallery = require('../models/hotelGallery')
@@ -12,6 +12,8 @@ const vehicleGallery = require('../models/vehicleGallery')
 const sliderGallery = require('../models/sliderGallery')
 const Users = require('../models/User')
 const Updates = require('../models/Updates')
+const VehicleCategory = require('../models/vehicleCategory')
+const vehicleCategory = require('../models/vehicleCategory')
 
 // Login
 const login = (req, res, next) => {
@@ -486,7 +488,7 @@ const editGalleryAppartments = (req, res, next) => {
     appartmentGallery.findOne({ appartmentId: appartId })
         .then(gallery => {
             if (!gallery) {
-                res.redirect('/')
+                res.redirect('/Appartments/addGallery/' + appartId)
             } else {
                 res.render('./pages/Appartments/editGalleryAppartments', {
                     gallery: gallery,
@@ -775,7 +777,7 @@ const editRoomGallery = (req, res, next) => {
     roomGallery.findOne({ roomId: roomId })
         .then(gallery => {
             if (!gallery) {
-                res.redirect('/')
+                res.redirect('/Rooms/addGallery/' + roomId)
             } else {
                 res.render('./pages/Rooms/editRoomGallery', {
                     gallery: gallery,
@@ -840,10 +842,12 @@ const postEditRoom = (req, res) => {
     const beds = req.body.beds;
     const hotWater = req.body.hotWater;
     const balcony = req.body.balcony;
-    const roomServices = req.body.roomService;
     const status = req.body.status;
     const location = req.body.location;
     const charges = req.body.charges;
+    const size = req.body.size;
+    const occupency = req.body.occupency;
+    const bedSize = req.body.bedSize;
 
     Rooms.findById(roomId)
         .then(room => {
@@ -855,10 +859,12 @@ const postEditRoom = (req, res) => {
             room.beds = beds;
             room.hotWater = hotWater;
             room.balcony = balcony;
-            room.roomService = roomServices;
             room.status = status;
             room.location = location;
             room.charges = charges;
+            room.size = size;
+            room.occupency = occupency;
+            room.bedSize = bedSize;
 
             return room.save()
         })
@@ -943,16 +949,92 @@ const addCategory = (req, res, next) => {
 }
 
 const categoryList = (req, res, next) => {
-    res.render('./pages/VehiclesCategory/categoryList')
+    vehicleCategory.find()
+        .then(cats => {
+            if (!cats) {
+                res.redirect('/')
+            } else {
+                res.render('./pages/VehiclesCategory/categoryList', {
+                    cats: cats,
+                    pageTitle: 'list category',
+                    path: '/VehiclesCategory/category-list'
+                });
+            }
+
+        })
+        .catch(err => console.log(err));
 }
 
 const editCategory = (req, res, next) => {
-    res.render('./pages/VehiclesCategory/editCategory')
+    const catId = req.params.id;
+    vehicleCategory.findById(catId)
+        .then(cat => {
+            if (!cat) {
+                res.redirect('/')
+            } else {
+                res.render('./pages/VehiclesCategory/editCategory', {
+                    cat: cat,
+                    pageTitle: 'edit category',
+                    path: '/VehiclesCategory/vehicleCategory'
+                });
+            }
+
+        })
+        .catch(err => console.log(err));
+}
+
+const postAddVehicleCategory = (req, res) =>{
+    const name = req.body.name;
+    const vehicleCategory = new VehicleCategory({
+        categoryName: name
+    });
+    vehicleCategory
+        .save()
+        .then(result => {
+            // console.log(result);
+            console.log('Added category');
+            res.redirect('/VehiclesCategory/addCategory');
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    
+}
+
+const postEditVehicleCategory = (req, res) =>{
+    const catId = req.body.id;
+    const name = req.body.name;
+    vehicleCategory.findById(catId)
+        .then(cat => {
+            cat.categoryName = name;
+            return cat.save()
+        })
+        .then(result => {
+            console.log('cat updated');
+            res.redirect('/VehiclesCategory/categoryList')
+        })
+        .catch(err => {
+            console.log(err);
+        });
 }
 
 // Vehicle
 const addVehicle = (req, res, next) => {
-    res.render('./pages/Vehicles/addVehicles')
+    vehicleCategory.find()
+        .then(cats => {
+            if (!cats) {
+                console.log('could\'t find categories');
+                res.redirect('/')
+            } else {
+                res.render('./pages/Vehicles/addVehicles', {
+                    cats: cats,
+                    pageTitle: 'list category',
+                    path: '/VehiclesCategory/category-list'
+                });
+            }
+
+        })
+        .catch(err => console.log(err));
 }
 
 const vehicleList = (req, res, next) => {
@@ -974,13 +1056,22 @@ const editVehicle = (req, res, next) => {
     Vehicles.findById(id)
         .then(vehicle => {
             if (!vehicle) {
-                console.log('no room found')
+                console.log('no vehicle found')
                 return res.redirect('/');
             }
-            res.render('./pages/Vehicles/editVehicle', {
-                vehicle: vehicle
+
+            return vehicleCategory.find().then(cats => {
+                return {
+                    cats: cats,
+                    vehicle: vehicle
+                }
             })
 
+        })
+        .then(data => {
+            res.render('./pages/Vehicles/editVehicle', {
+                data: data
+            })
         })
         .catch(err => console.log(err));
 
@@ -997,7 +1088,7 @@ const editVehicleGallery = (req, res, next) => {
     vehicleGallery.findOne({ vehicleId: vehicleId })
         .then(gallery => {
             if (!gallery) {
-                res.redirect('/')
+                res.redirect('/Vehicles/addVehicleGallery/' + vehicleId)
             } else {
                 res.render('./pages/Vehicles/editVehicleGallery', {
                     gallery: gallery,
@@ -1011,7 +1102,7 @@ const editVehicleGallery = (req, res, next) => {
 }
 
 const postAddVehicle = (req, res) => {
-    const category = req.body.category;
+    const category = JSON.parse(req.body.category);
     const vehicleNo = req.body.vehicleNo;
     const model = req.body.model;
     const seats = req.body.seats;
@@ -1022,7 +1113,8 @@ const postAddVehicle = (req, res) => {
     const ownerAddress = req.body.ownerAddress;
 
     const vehicle = new Vehicles({
-        vehicleCategory: category,
+        categoryId: category.id,
+        categoryName: category.name,
         vehicleNo: vehicleNo,
         model: model,
         seats: seats,
@@ -1046,10 +1138,10 @@ const postAddVehicle = (req, res) => {
 
 const postEditVehicle = (req, res) => {
     const id = req.body.id;
-    const category = req.body.category;
+    const category = JSON.parse(req.body.category);
     const vehicleNo = req.body.vehicleNo;
     const model = req.body.model;
-    const condition = req.body.condition;
+    const seats = req.body.seats;
     const status = req.body.status;
     const ownerName = req.body.ownerName;
     const ownerCNIC = req.body.ownerCNIC;
@@ -1058,10 +1150,11 @@ const postEditVehicle = (req, res) => {
 
     Vehicles.findById(id)
         .then(vehicle => {
-            vehicle.vehicleCategory = category;
+            vehicle.categoryId = category.id;
+            vehicle.categoryName = category.name;
             vehicle.vehicleNo = vehicleNo;
             vehicle.model = model;
-            vehicle.condition = condition;
+            vehicle.seats = seats;
             vehicle.availabilityStatus = status;
             vehicle.ownerName = ownerName;
             vehicle.ownerCNIC = ownerCNIC;
@@ -1126,7 +1219,7 @@ const postAddVehicleGallery = async (req, res) => {
             .then(result => {
                 // console.log(result);
                 console.log('Created Gallery');
-                res.redirect('/');
+                res.redirect('/Vehicles/editVehicleGallery/' + vehicleId);
             })
             .catch(err => {
                 console.log(err)
@@ -1233,17 +1326,20 @@ const postEditUpdate = (req, res) => {
 }
 
 // Tours Plans & Hiking
-const addTour = (req, res, next) => {
-
-    Areas.find()
-        .then(areas => {
-            res.render('./pages/Tours/addTours', {
-                areas: areas,
-                pageTitle: 'Add tour',
-                path: '/Tours/tour-list'
-            });
-        })
-        .catch(err => console.log(err));
+const addTour = async (req, res, next) => {
+    
+    try {
+        const hotels = await Hotels.find();
+        const areas = await Areas.find();
+        res.render('./pages/Tours/addTours', {
+            areas: areas,
+            hotels: hotels,
+            pageTitle: 'Add tour',
+            path: '/Tours/tour-list'
+        });
+    } catch (err) {
+        console.log(err)
+    }
 
 }
 
@@ -1276,26 +1372,25 @@ const viewTour = (req, res, next) => {
         .catch(err => console.log(err));
 }
 
-const editTour = (req, res, next) => {
+const editTour = async (req, res, next) => {
 
-    const tourId = req.params.id;
-    Tours.findById(tourId)
-        .then(tour => {
-            if (!tour) {
-                return res.redirect('/');
-            }
-            return Areas.find().then(areas => {
-                return { tour: tour, areas: areas }
+    try {
+        const areas = await Areas.find();
+        const hotels = await Hotels.find();
+        const tourId = req.params.id;
+        Tours.findById(tourId)
+            .then(tour => {
+                res.render('./pages/Tours/editTour', {
+                    pageTitle: 'Edit Tour',
+                    path: '/admin/edit-tour',
+                    tour: tour,
+                    areas: areas,
+                    hotels: hotels
+                });
             })
-        }).
-        then(data => {
-            res.render('./pages/Tours/editTour', {
-                pageTitle: 'Edit Tour',
-                path: '/admin/edit-tour',
-                data: data
-            });
-        })
-        .catch(err => console.log(err));
+    } catch (err) {
+        console.log(err)
+    }
 
 }
 
@@ -1304,20 +1399,25 @@ const postAddTour = (req, res) => {
     const tourType = req.body.tourType;
     const startDate = req.body.startDate;
     const endDate = req.body.endDate;
-    const fromPlace = req.body.fromPlace;
-    const toPlace = req.body.toPlace;
+    const fromPlace = JSON.parse(req.body.fromPlace);
+    const toPlace = JSON.parse(req.body.toPlace);
+    const pickupLoc = JSON.parse(req.body.pickupLoc);
+    const dropoffLoc = JSON.parse(req.body.dropoffLoc);
+    const stayHotel = JSON.parse(req.body.stayHotel);
     const days = req.body.days;
     const nights = req.body.nights;
     const availableSeats = req.body.seats;
     const chargesPerHead = req.body.charges;
     const description = req.body.desc;
-
     const tour = new Tours({
         tourType: tourType,
         startDate: startDate,
         endDate: endDate,
-        fromPlace: fromPlace,
-        toPlace: toPlace,
+        fromPlace: fromPlace.areaName,
+        toPlace: toPlace.areaName,
+        pickupLocation: pickupLoc.areaName,
+        dropoffLocation: dropoffLoc.areaName,
+        stayHotel: stayHotel.hotelName,
         days: days,
         nights: nights,
         availableSeats: availableSeats,
@@ -1329,7 +1429,7 @@ const postAddTour = (req, res) => {
         .then(result => {
             // console.log(result);
             console.log('Added Tour');
-            res.redirect('/');
+            res.redirect('/Tours/addTours');
         })
         .catch(err => {
             console.log(err);
@@ -1342,8 +1442,11 @@ const postEditTour = (req, res, next) => {
     const tourType = req.body.tourType;
     const startDate = req.body.startDate;
     const endDate = req.body.endDate;
-    const fromPlace = req.body.fromPlace;
-    const toPlace = req.body.toPlace;
+    const fromPlace = JSON.parse(req.body.fromPlace);
+    const toPlace = JSON.parse(req.body.toPlace);
+    const pickupLoc = JSON.parse(req.body.pickupLoc);
+    const dropoffLoc = JSON.parse(req.body.dropoffLoc);
+    const stayHotel = JSON.parse(req.body.stayHotel);
     const days = req.body.days;
     const nights = req.body.nights;
     const availableSeats = req.body.seats;
@@ -1355,8 +1458,11 @@ const postEditTour = (req, res, next) => {
             tour.tourType = tourType;
             tour.startDate = startDate;
             tour.endDate = endDate;
-            tour.fromPlace = fromPlace;
-            tour.toPlace = toPlace;
+            tour.fromPlace = fromPlace.areaName;
+            tour.toPlace = toPlace.areaName;
+            tour.pickupLocation = pickupLoc.areaName;
+            tour.dropoffLocation = dropoffLoc.areaName;
+            tour.stayHotel = stayHotel.hotelName;
             tour.days = days;
             tour.nights = nights;
             tour.availableSeats = availableSeats;
@@ -1606,7 +1712,7 @@ module.exports = {
     addRoom, roomList, editRoom, addRoomGallery, editRoomGallery, postAddRoom, postEditRoom, postAddRoomGallery, postDeleteRoomGalleryImage,
 
     // Vehicle Category
-    addCategory, categoryList, editCategory,
+    addCategory, categoryList, editCategory, postAddVehicleCategory, postEditVehicleCategory,
 
     // Vehicle
     addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery, postAddVehicle, postEditVehicle, postAddVehicleGallery, postDeleteVehiclesGalleryImage, postDeleteVehicle,
