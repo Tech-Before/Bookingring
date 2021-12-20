@@ -39,14 +39,16 @@
                       </thead>
                       <tbody>
                         <% for(let i=0; i< updates.length; i++) { %>
-                          <tr>
+                          <tr id="<%= updates[i].id %>">
                             <td><%= i + 1 %> </td>
                             <td>Blog#001</td>
                             <td><%= updates[i].heading %> </td>
                             <td><%= updates[i].date %> </td>
                             <td align="center">
-                              <a href="<%= '/Updates/editUpdate/' + updates[i].id %>" class="btn btn-success btn-sm">Edit &nbsp;<i class="fa fa-pencil"></i></a>
-                              <a href="/Updates/deleteBlog" class="btn btn-danger btn-sm">Delete &nbsp;<i class="fa fa-trash"></i></a>
+                              <a href="<%= '/Updates/editUpdate/' + updates[i].id %>" class="btn btn-success btn-sm">Edit &nbsp;<i
+                                  class="fa fa-pencil"></i></a>
+                              <% let deleteHandler="deleteHandler('/Updates/deleteUpdate', '" + updates[i].id.toString() + "')" %>
+                                <button class="btn btn-danger btn-sm" onClick="<%= deleteHandler %>"><i class="fa fa-trash"></i></button>
                             </td>
                           </tr>
                           <% } %>

@@ -1302,10 +1302,18 @@ const postAddUpdate = (req, res) => {
     const date = new Date()
     const desc = req.body.desc;
 
+    const uploads = req.files;
+    const media = uploads[0].filename;
+
+    // for (let i = 0; i < uploads.length; i++) {
+    //     media.push(uploads[i].filename)
+    // }
+
     const update = new Updates({
         heading: heading,
         author: author,
         date: date,
+        media: media,
         description: desc
     });
 
@@ -1322,7 +1330,49 @@ const postAddUpdate = (req, res) => {
 }
 
 const postEditUpdate = (req, res) => {
-    console.log('ding ding')
+    const id = req.body.id;
+    const heading = req.body.heading;
+    const author = req.body.author;
+    const date = new Date()
+    const oldImage = req.body.oldImage;
+    let media;
+    const desc = req.body.desc;
+
+    const uploads = req.files;
+    if(uploads.length === 0){
+        media = oldImage;
+    } else {
+        delImage(oldImage)
+        media = uploads[0].filename;
+    }
+   
+    Updates.findById(id)
+        .then(update => {
+            update.heading = heading;
+            update.author = author;
+            update.date = date;
+            update.media = media;
+            update.description = desc;
+            return update.save()
+        })
+        .then(result => {
+            console.log('Updated updates');
+            res.redirect('/Updates/updateList');
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+
+const postDeleteUpdate = (req, res) => {
+
+    const updateId = req.body.id;
+    Updates.findByIdAndDelete(updateId)
+        .then((result) => {
+            console.log('update deleted')
+            res.redirect('/')
+        })
+        .catch(err => res.sendStatus(204));
 }
 
 // Tours Plans & Hiking
@@ -1718,7 +1768,7 @@ module.exports = {
     addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery, postAddVehicle, postEditVehicle, postAddVehicleGallery, postDeleteVehiclesGalleryImage, postDeleteVehicle,
 
     // Updates / Blog
-    addUpdates, updateList, editBlog, deleteBlog, postAddUpdate, postEditUpdate,
+    addUpdates, updateList, editBlog, deleteBlog, postAddUpdate, postEditUpdate, postDeleteUpdate,
 
     // Tours Plans & Hiking
     addTour, tourList, viewTour, editTour, postAddTour, postEditTour, postDeleteTour,
