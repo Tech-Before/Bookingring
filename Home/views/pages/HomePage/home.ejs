@@ -87,9 +87,20 @@
 		<div class="col-12 mt-3">
 			<div class="booking-hero-wrap customWrapper">
 				<div class="row justify-content-center customJustifier">
-					<div class="col-5">
+					<div class="col-5 customCol">
 						<!-- <select class="wide nice-select select2"> -->
 						<select class="wide nice-select">
+							<option data-display="Please Select Service"></option>
+							<option value="">Hotel</option>
+							<option value="">Apartment</option>
+							<option value="">Rental Vehicles</option>
+						</select>
+					</div>
+
+					<div class="col-5 customCol">
+						<!-- <select class="wide nice-select select2"> -->
+						<select class="wide nice-select">
+							<option data-display="Please Select Location"></option>
 							<option value="Kalam">Kalam</option>
 							<option value="Malamjabba">Malamjabba</option>
 							<option value="Bahrain">Bahrain</option>
@@ -99,7 +110,8 @@
 						</select>
 					</div>
 
-					<div class="col-5 no-mob">
+
+					<!-- <div class="col-5 no-mob">
 						<div class="row">
 							<div class="col-6">
 								<select name="adults" class="wide">
@@ -124,9 +136,9 @@
 								</select>
 							</div>
 						</div>
-					</div>
+					</div> -->
 					<div class="col-6  col-sm-4 col-lg-2">
-						<a class="booking-button" href="search.html">book now</a>
+						<a class="booking-button customBtnSearch" href="search.html">Search Now!</a>
 					</div>
 				</div>
 			</div>
@@ -139,14 +151,15 @@
 		<div class="row">
 			<div class="col-md-6 align-self-center">
 				<div class="row justify-content-center">
-					<div class="col-10">
+					<div class="col-10 text-center">
 						<div class="subtitle text-center mb-4">hotel Booking Ring</div>
-						<h2 class="text-center">Appartments</h2>
+						<h2 class="text-center">Hotels</h2>
 						<p class="text-center mt-5">
 							Lorem ipsum, dolor sit amet consectetur adipisicing elit.
 							Nemo voluptas voluptates provident asperiores officiis aperiam autem quia omnis similique!
 							Nemo at deserunt ad alias, doloribus dolore quo fugiat. Magnam, quos.
 						</p>
+						<a class="mt-5 btn btn-primary" href="/Appartments/hotels">check availability</a>
 					</div>
 				</div>
 			</div>
@@ -171,13 +184,13 @@
 			<div class="col-xl-6 px-0 mt-4 mt-xl-0 align-self-center">
 				<div class="row justify-content-center">
 					<div class="col-10 col-xl-8 text-center">
-						<h3 class="text-center">Our Hotels</h3>
+						<h3 class="text-center">Apartments</h3>
 						<p class="text-center mt-4">
 							Lorem ipsum, dolor sit amet consectetur adipisicing elit.
 							Nemo voluptas voluptates provident asperiores officiis aperiam autem quia omnis similique!
 							Nemo at deserunt ad alias, doloribus dolore quo fugiat. Magnam, quos.
 						</p>
-						<a class="mt-5 btn btn-primary" href="/Appartments/hotels">check availability</a>
+						<a class="mt-5 btn btn-primary" href="/Appartments/allappartments">check availability</a>
 					</div>
 				</div>
 			</div>
@@ -186,7 +199,7 @@
 			<div class="col-xl-6 px-0 mt-4 mt-xl-0 pb-5 pb-xl-0 align-self-center">
 				<div class="row justify-content-center">
 					<div class="col-10 col-xl-8 text-center">
-						<h3 class="text-center">Our Cars</h3>
+						<h3 class="text-center">Cars</h3>
 						<p class="text-center mt-4">
 							Lorem ipsum, dolor sit amet consectetur adipisicing elit.
 							Nemo voluptas voluptates provident asperiores officiis aperiam autem quia omnis similique!
@@ -206,6 +219,7 @@
 	</div>
 </div>
 
+<!-- Hotels -->
 <div class="section background-dark over-hide">
 	<div class="container py-4">
 		<h3 class="text-center  text-white subtitle with-line mb-5">OUR HOTELS IN</h3>
@@ -264,6 +278,66 @@
 	</div>
 </div>
 
+<div class="section background-dark over-hide">
+	<div class="container py-4">
+		<h3 class="text-center  text-white subtitle with-line mb-5">OUR APARTMENTS IN</h3>
+		<div class="row">
+			<div class="col-sm-6 col-lg-8">
+				<a href="services.html">
+					<div class="img-wrap services-wrap h-300">
+						<img src="img/gallery/1.jpg" alt="" class="image-cover">
+						<div class="services-text-over btn btn-primary fit-content">Kalam</div>
+					</div>
+				</a>
+			</div>
+
+			<div class="col-sm-6 col-lg-4 ">
+				<a href="services.html">
+					<div class="img-wrap services-wrap h-300">
+						<img src="img/gallery/2.jpg" alt="" class="image-cover">
+						<div class="services-text-over btn btn-primary fit-content">Bahrain</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="section background-dark over-hide">
+	<div class="container py-4">
+		<div class="row">
+
+			<div class="col-sm-6 col-lg-4">
+				<a href="services.html">
+					<div class="img-wrap services-wrap h-300">
+						<img src="img/gallery/3.jpg" alt="" class="image-cover">
+						<div class="services-text-over btn btn-primary fit-content">Malamjabba</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-sm-6 col-lg-4 ">
+				<a href="services.html">
+					<div class="img-wrap services-wrap h-300">
+						<img src="img/gallery/4.jpg" alt="" class="image-cover">
+						<div class="services-text-over btn btn-primary fit-content">Marghazar</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-sm-6 col-lg-4 pt-4 pt-lg-0">
+				<a href="services.html">
+					<div class="img-wrap services-wrap h-300">
+						<img src="img/gallery/5.jpg" alt="" class="image-cover">
+						<div class="services-text-over btn btn-primary fit-content">Malamjabba</div>
+					</div>
+				</a>
+			</div>
+		</div>
+		<a class="booking-button mt-5" href="/Appartments/allappartments">Explore all Apartments</a>
+	</div>
+</div>
+
+
+
 
 <!-- Tours to -->
 
@@ -274,7 +348,7 @@
 
 		<div class="row">
 			<div class="col-sm-6 col-lg-4 ">
-				<a href="services.html">
+				<a href="/Tours/tours">
 					<div class="img-wrap services-wrap h-300">
 						<img src="img/gallery/bahrain.jpg" alt="" class="image-cover">
 						<div class="services-text-over booking-button fit-content">Bahrain</div>
@@ -282,7 +356,7 @@
 				</a>
 			</div>
 			<div class="col-sm-6 col-lg-8">
-				<a href="services.html">
+				<a href="/Tours/tours">
 					<div class="img-wrap services-wrap h-300">
 						<img src="img/gallery/kalam.jpg" alt="" class="image-cover">
 						<div class="services-text-over booking-button fit-content">Kalam</div>
@@ -300,7 +374,7 @@
 		<div class="row">
 
 			<div class="col-sm-6 col-lg-4">
-				<a href="services.html">
+				<a href="/Tours/tours">
 					<div class="img-wrap services-wrap h-300">
 						<img src="img/gallery/Malam-Jabba.jpeg" alt="" class="image-cover">
 						<div class="services-text-over booking-button fit-content">Malamjabba</div>
@@ -308,7 +382,7 @@
 				</a>
 			</div>
 			<div class="col-sm-6 col-lg-4 ">
-				<a href="services.html">
+				<a href="/Tours/tours">
 					<div class="img-wrap services-wrap h-300">
 						<img src="img/ser-3.jpg" alt="" class="image-cover">
 						<div class="services-text-over booking-button fit-content">Marghazar</div>
@@ -316,7 +390,7 @@
 				</a>
 			</div>
 			<div class="col-sm-6 col-lg-4 pt-4 pt-lg-0">
-				<a href="services.html">
+				<a href="/Tours/tours">
 					<div class="img-wrap services-wrap h-300">
 						<img src="img/ser-4.jpg" alt="" class="image-cover">
 						<div class="services-text-over booking-button fit-content">Malamjabba</div>
@@ -451,15 +525,18 @@
 	</div>
 </div>
 
+<!-- GET IN TOUCH -->
+
 <div class="section padding-top z-bigger">
 	<div class="container">
-		<div class="row justify-content-center padding-bottom-smaller">
+		<div class="row justify-content-center">
 			<div class="col-md-8">
 				<div class="subtitle with-line text-center mb-4">get in touch</div>
-				<h3 class="text-center padding-bottom-small">drop us a line</h3>
+				<!-- <h3 class="text-center padding-bottom-small">drop us a line</h3> -->
+				<h3 class="text-center padding-bottom-small">Subscribe Booking Ring!</h3>
 			</div>
-			<div class="section clearfix"></div>
-			<div class="col-md-6 col-lg-4">
+			<!-- <div class="section clearfix"></div> -->
+			<!-- <div class="col-md-6 col-lg-4">
 				<div class="address">
 					<div class="address-in text-left">
 						<p class="color-black">Address:</p>
@@ -476,8 +553,8 @@
 						<p>Mingora, Swat</p>
 					</div>
 				</div>
-			</div>
-			<div class="col-md-6 col-lg-4">
+			</div> -->
+			<!-- <div class="col-md-6 col-lg-4">
 				<div class="address">
 					<div class="address-in text-left">
 						<p class="color-black">Phone:</p>
@@ -494,12 +571,12 @@
 						<p>info@bookingring.com</p>
 					</div>
 				</div>
-			</div>
-			<div class="section clearfix"></div>
+			</div> -->
+			<!-- <div class="section clearfix"></div>
 			<div class="col-md-8 text-center mt-5" data-scroll-reveal="enter bottom move 50px over 0.7s after 0.2s">
 				<p class="mb-0"><em>Available at: 8 AM - 10 PM</em></p>
 				<h2 class="text-opacity">+92 346 097 3906</h2>
-			</div>
+			</div> -->
 		</div>
 		<div class="row justify-content-center">
 			<div class="col-md-8">
