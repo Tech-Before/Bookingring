@@ -84,7 +84,7 @@
                   <!-- New Data -->
                   <div class="form-group col-md-6">
                     <label>Pick-Up Location</label>
-                    <select class="form-control select2" style="width: 100%; height: 100%;" name="pickoffLoc">
+                    <select class="form-control select2" style="width: 100%; height: 100%;" name="pickupLoc">
                       <% for(let i=0; i < areas.length; i++) { %>
                         <option value="<%= JSON.stringify({ id: areas[i].id, areaName: areas[i].name }) %>">
                           <%= areas[i].name %>

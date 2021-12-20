@@ -1372,26 +1372,25 @@ const viewTour = (req, res, next) => {
         .catch(err => console.log(err));
 }
 
-const editTour = (req, res, next) => {
+const editTour = async (req, res, next) => {
 
-    const tourId = req.params.id;
-    Tours.findById(tourId)
-        .then(tour => {
-            if (!tour) {
-                return res.redirect('/');
-            }
-            return Areas.find().then(areas => {
-                return { tour: tour, areas: areas }
+    try {
+        const areas = await Areas.find();
+        const hotels = await Hotels.find();
+        const tourId = req.params.id;
+        Tours.findById(tourId)
+            .then(tour => {
+                res.render('./pages/Tours/editTour', {
+                    pageTitle: 'Edit Tour',
+                    path: '/admin/edit-tour',
+                    tour: tour,
+                    areas: areas,
+                    hotels: hotels
+                });
             })
-        }).
-        then(data => {
-            res.render('./pages/Tours/editTour', {
-                pageTitle: 'Edit Tour',
-                path: '/admin/edit-tour',
-                data: data
-            });
-        })
-        .catch(err => console.log(err));
+    } catch (err) {
+        console.log(err)
+    }
 
 }
 
@@ -1430,7 +1429,7 @@ const postAddTour = (req, res) => {
         .then(result => {
             // console.log(result);
             console.log('Added Tour');
-            res.redirect('/');
+            res.redirect('/Tours/addTours');
         })
         .catch(err => {
             console.log(err);
@@ -1443,8 +1442,11 @@ const postEditTour = (req, res, next) => {
     const tourType = req.body.tourType;
     const startDate = req.body.startDate;
     const endDate = req.body.endDate;
-    const fromPlace = req.body.fromPlace;
-    const toPlace = req.body.toPlace;
+    const fromPlace = JSON.parse(req.body.fromPlace);
+    const toPlace = JSON.parse(req.body.toPlace);
+    const pickupLoc = JSON.parse(req.body.pickupLoc);
+    const dropoffLoc = JSON.parse(req.body.dropoffLoc);
+    const stayHotel = JSON.parse(req.body.stayHotel);
     const days = req.body.days;
     const nights = req.body.nights;
     const availableSeats = req.body.seats;
@@ -1456,8 +1458,11 @@ const postEditTour = (req, res, next) => {
             tour.tourType = tourType;
             tour.startDate = startDate;
             tour.endDate = endDate;
-            tour.fromPlace = fromPlace;
-            tour.toPlace = toPlace;
+            tour.fromPlace = fromPlace.areaName;
+            tour.toPlace = toPlace.areaName;
+            tour.pickupLocation = pickupLoc.areaName;
+            tour.dropoffLocation = dropoffLoc.areaName;
+            tour.stayHotel = stayHotel.hotelName;
             tour.days = days;
             tour.nights = nights;
             tour.availableSeats = availableSeats;
