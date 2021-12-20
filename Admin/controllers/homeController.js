@@ -1641,7 +1641,14 @@ const viewFeedbackQuery = (req, res, next) => {
 
 // Users
 const addUser = (req, res, next) => {
-    res.render('./pages/Users/addUser')
+    Areas.find()
+    .then( areas => {
+        res.render('./pages/Users/addUser', {
+            areas: areas
+        })
+    })
+    .catch(err => console.log(err))
+    
 }
 
 const userList = (req, res, next) => {
@@ -1656,17 +1663,22 @@ const userList = (req, res, next) => {
         .catch(err => console.log(err));
 }
 
-const editUser = (req, res, next) => {
+const editUser = async (req, res, next) => {
     const userId = req.params.id;
-    Users.findById(userId)
-        .then(user => {
-            res.render('./pages/Users/editUser', {
-                user: user,
-                pageTitle: 'Edit User',
-                path: '/Users/edit-user'
-            });
-        })
-        .catch(err => console.log(err));
+
+    try {
+        const areas = await Areas.find();
+        const user = await Users.findById(userId);
+        res.render('./pages/Users/editUser', {
+            user: user,
+            areas: areas,
+            pageTitle: 'Edit User',
+            path: '/Users/edit-user'
+        });
+    } catch (err) {
+        console.log(err)
+    }
+
 }
 
 const postAddUser = (req, res) => {
@@ -1675,7 +1687,7 @@ const postAddUser = (req, res) => {
     const contact = req.body.contact;
     const cnic = req.body.cnic;
     const gender = req.body.gender;
-    const location = req.body.location;
+    const location = JSON.parse(req.body.location);
     const address = req.body.address;
     const type = req.body.type;
     const email = req.body.email;
@@ -1686,7 +1698,7 @@ const postAddUser = (req, res) => {
         contact: contact,
         CNIC: cnic,
         gender: gender,
-        location: location,
+        location: location.name,
         address: address,
         type: type,
         email: email,
@@ -1712,19 +1724,19 @@ const postEditUser = (req, res) => {
     const contact = req.body.contact;
     const cnic = req.body.cnic;
     const gender = req.body.gender;
-    const location = req.body.location;
+    const location = JSON.parse(req.body.location);
     const address = req.body.address;
     const type = req.body.type;
     const email = req.body.email;
     const password = req.body.password;
-
+    
     Users.findById(userId)
         .then(user => {
             user.name = name;
             user.contact = contact;
             user.CNIC = cnic;
             user.gender = gender;
-            user.location = location;
+            user.location = location.name;
             user.address = address;
             user.type = type;
             user.email = email;

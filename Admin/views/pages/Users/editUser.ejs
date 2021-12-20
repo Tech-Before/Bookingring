@@ -62,9 +62,9 @@
                     <div class="form-group col-md-3">
                       <label>Location</label>
                       <select class="form-control select2" name="location">
-                        <option value="kalam">Kalam</option>
-                        <option value="madyan">Madyan</option>
-                        <option value="behrain">Behrain</option>
+                        <% for(let i=0; i< areas.length; i++) { %> 
+                        <option value="<%= JSON.stringify( {id: areas[i].id, areas: areas[i].name} ) %>" <%= areas[i].name===user.location ? 'selected' : '' %> ><%= areas[i].name %></option>
+                        <% } %> 
                       </select>
                     </div>
                 
