@@ -41,7 +41,7 @@
                       </thead>
                       <tbody>
                         <% for(let i= 0; i< users.length; i++) { %> 
-                        <tr>
+                        <tr id="<%= users[i].id %>">
                             <td><%= i + 1 %> .</td>
                             <td><%= users[i].name %> </td>
                             <td><%= users[i].contact %> </td>
@@ -51,6 +51,8 @@
                             <td><span class="badge badge-secondary">Inactive</span></td>
                             <td>
                                 <a href="<%= '/Users/editUser/' + users[i].id %>" class="btn btn-success btn-sm">Edit &nbsp;<i class="fa fa-pencil"></i></a>
+                                <% let deleteHandler="deleteHandler('/Users/deleteUser', '" + users[i].id.toString() + "')" %>
+                                <button class="btn btn-danger btn-sm" onClick="<%= deleteHandler %>"><i class="fa fa-trash"></i></button>
                             </td>
                         </tr>
                         <% } %> 

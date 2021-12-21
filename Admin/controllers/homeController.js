@@ -1559,6 +1559,9 @@ const sliderImages = (req, res, next) => {
 
     sliderGallery.findOne()
         .then(gallery => {
+            if(!gallery){
+                res.redirect('/SliderImages/addSliderImages/none')
+            }
             res.render('./pages/SliderImages/sliderImagesList', { gallery: gallery })
         })
         .catch(err => console.log(err));
@@ -1750,6 +1753,16 @@ const postEditUser = (req, res) => {
         .catch(err => console.log(err));
 }
 
+const postDeleteUser = (req, res) =>{
+    const userId = req.body.id;
+    Users.findByIdAndDelete(userId)
+        .then(() => {
+            console.log('Deleted user');
+            res.sendStatus(200);
+        })
+        .catch(err => res.sendStatus(204));
+}
+
 
 module.exports = {
     // Login
@@ -1795,6 +1808,6 @@ module.exports = {
     feedback, viewFeedbackQuery,
 
     // Users
-    addUser, userList, editUser, postAddUser, postEditUser
+    addUser, userList, editUser, postAddUser, postEditUser, postDeleteUser
 
 }

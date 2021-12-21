@@ -44,7 +44,7 @@ const {
     feedback, viewFeedbackQuery,
 
     // Users
-    addUser, userList, editUser, postAddUser, postEditUser
+    addUser, userList, editUser, postAddUser, postEditUser, postDeleteUser
 
 } = require('../controllers/homeController')
 const router = express.Router();
@@ -172,6 +172,7 @@ router.get('/Users/usersList', userList)
 router.get('/Users/editUser/:id', editUser)
 router.post('/Users/addUser', postAddUser)
 router.post('/Users/editUser', postEditUser)
+router.post('/Users/deleteUser', postDeleteUser)
 
 module.exports = {
     routes: router
