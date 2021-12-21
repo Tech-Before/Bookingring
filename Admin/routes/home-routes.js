@@ -29,7 +29,7 @@ const {
     addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery, postAddVehicle, postEditVehicle, postAddVehicleGallery, postDeleteVehiclesGalleryImage, postDeleteVehicle,
 
     // Updates / Blog
-    addUpdates, updateList, editBlog, deleteBlog, postAddUpdate, postEditUpdate,
+    addUpdates, updateList, editBlog, deleteBlog, postAddUpdate, postEditUpdate, postDeleteUpdate,
 
     // Tours Plans & Hiking
     addTour, tourList, viewTour, editTour, postAddTour, postEditTour, postDeleteTour,
@@ -140,6 +140,7 @@ router.get('/Updates/editUpdate/:id', editBlog)
 router.get('/Updates/deleteBlog', deleteBlog)
 router.post('/Updates/addUpdate', postAddUpdate)
 router.post('/Updates/editUpdate', postEditUpdate)
+router.post('/Updates/deleteUpdate', postDeleteUpdate)
 
 // Tours Plans & Hiking
 router.get('/Tours/addTours', addTour)

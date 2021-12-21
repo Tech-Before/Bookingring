@@ -15,6 +15,10 @@ const UpdatesSchema = new Schema({
         type: Date,
         required: true
     },
+    media: {
+        type: String,
+        required: false
+    },
     description: {
         type: String,
         required: true

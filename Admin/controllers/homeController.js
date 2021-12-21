@@ -1302,10 +1302,18 @@ const postAddUpdate = (req, res) => {
     const date = new Date()
     const desc = req.body.desc;
 
+    const uploads = req.files;
+    const media = uploads[0].filename;
+
+    // for (let i = 0; i < uploads.length; i++) {
+    //     media.push(uploads[i].filename)
+    // }
+
     const update = new Updates({
         heading: heading,
         author: author,
         date: date,
+        media: media,
         description: desc
     });
 
@@ -1322,7 +1330,49 @@ const postAddUpdate = (req, res) => {
 }
 
 const postEditUpdate = (req, res) => {
-    console.log('ding ding')
+    const id = req.body.id;
+    const heading = req.body.heading;
+    const author = req.body.author;
+    const date = new Date()
+    const oldImage = req.body.oldImage;
+    let media;
+    const desc = req.body.desc;
+
+    const uploads = req.files;
+    if(uploads.length === 0){
+        media = oldImage;
+    } else {
+        delImage(oldImage)
+        media = uploads[0].filename;
+    }
+   
+    Updates.findById(id)
+        .then(update => {
+            update.heading = heading;
+            update.author = author;
+            update.date = date;
+            update.media = media;
+            update.description = desc;
+            return update.save()
+        })
+        .then(result => {
+            console.log('Updated updates');
+            res.redirect('/Updates/updateList');
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+
+const postDeleteUpdate = (req, res) => {
+
+    const updateId = req.body.id;
+    Updates.findByIdAndDelete(updateId)
+        .then((result) => {
+            console.log('update deleted')
+            res.redirect('/')
+        })
+        .catch(err => res.sendStatus(204));
 }
 
 // Tours Plans & Hiking
@@ -1591,7 +1641,14 @@ const viewFeedbackQuery = (req, res, next) => {
 
 // Users
 const addUser = (req, res, next) => {
-    res.render('./pages/Users/addUser')
+    Areas.find()
+    .then( areas => {
+        res.render('./pages/Users/addUser', {
+            areas: areas
+        })
+    })
+    .catch(err => console.log(err))
+    
 }
 
 const userList = (req, res, next) => {
@@ -1606,17 +1663,22 @@ const userList = (req, res, next) => {
         .catch(err => console.log(err));
 }
 
-const editUser = (req, res, next) => {
+const editUser = async (req, res, next) => {
     const userId = req.params.id;
-    Users.findById(userId)
-        .then(user => {
-            res.render('./pages/Users/editUser', {
-                user: user,
-                pageTitle: 'Edit User',
-                path: '/Users/edit-user'
-            });
-        })
-        .catch(err => console.log(err));
+
+    try {
+        const areas = await Areas.find();
+        const user = await Users.findById(userId);
+        res.render('./pages/Users/editUser', {
+            user: user,
+            areas: areas,
+            pageTitle: 'Edit User',
+            path: '/Users/edit-user'
+        });
+    } catch (err) {
+        console.log(err)
+    }
+
 }
 
 const postAddUser = (req, res) => {
@@ -1625,7 +1687,7 @@ const postAddUser = (req, res) => {
     const contact = req.body.contact;
     const cnic = req.body.cnic;
     const gender = req.body.gender;
-    const location = req.body.location;
+    const location = JSON.parse(req.body.location);
     const address = req.body.address;
     const type = req.body.type;
     const email = req.body.email;
@@ -1636,7 +1698,7 @@ const postAddUser = (req, res) => {
         contact: contact,
         CNIC: cnic,
         gender: gender,
-        location: location,
+        location: location.name,
         address: address,
         type: type,
         email: email,
@@ -1662,19 +1724,19 @@ const postEditUser = (req, res) => {
     const contact = req.body.contact;
     const cnic = req.body.cnic;
     const gender = req.body.gender;
-    const location = req.body.location;
+    const location = JSON.parse(req.body.location);
     const address = req.body.address;
     const type = req.body.type;
     const email = req.body.email;
     const password = req.body.password;
-
+    
     Users.findById(userId)
         .then(user => {
             user.name = name;
             user.contact = contact;
             user.CNIC = cnic;
             user.gender = gender;
-            user.location = location;
+            user.location = location.areaName;
             user.address = address;
             user.type = type;
             user.email = email;
@@ -1718,7 +1780,7 @@ module.exports = {
     addVehicle, vehicleList, editVehicle, addVehicleGallery, editVehicleGallery, postAddVehicle, postEditVehicle, postAddVehicleGallery, postDeleteVehiclesGalleryImage, postDeleteVehicle,
 
     // Updates / Blog
-    addUpdates, updateList, editBlog, deleteBlog, postAddUpdate, postEditUpdate,
+    addUpdates, updateList, editBlog, deleteBlog, postAddUpdate, postEditUpdate, postDeleteUpdate,
 
     // Tours Plans & Hiking
     addTour, tourList, viewTour, editTour, postAddTour, postEditTour, postDeleteTour,
