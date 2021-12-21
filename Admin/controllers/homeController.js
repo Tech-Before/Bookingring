@@ -1736,7 +1736,7 @@ const postEditUser = (req, res) => {
             user.contact = contact;
             user.CNIC = cnic;
             user.gender = gender;
-            user.location = location.name;
+            user.location = location.areaName;
             user.address = address;
             user.type = type;
             user.email = email;
