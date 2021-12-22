@@ -3,9 +3,8 @@ const Areas = require('../models/Location')
 const Tours = require('../models/Tour')
 const Hotels = require('../models/Hotel')
 const Appartments = require('../models/Appartment')
-const appartmentGallery = require('../models/AppartmentGallery')
 const Rooms = require('../models/Room')
-const roomGallery = require('../models/RoomGallery')
+
 const Vehicles = require('../models/Vehicles')
 const vehicleGallery = require('../models/vehicleGallery')
 const sliderGallery = require('../models/sliderGallery')
@@ -250,7 +249,7 @@ const galleryList = (req, res, next) => {
 const viewHotelImages = (req, res, next) => {
 
     const hotelId = req.params.id;
-    Hotels.findOne({ id: hotelId })
+    Hotels.findById(hotelId)
         .then(hotel => {
             if (!hotel) {
                 res.redirect('/')
@@ -343,8 +342,7 @@ const postEditHotel = (req, res, next) => {
 }
 
 const postAddHotelGallery = async (req, res, next) => {
-    //get the gallery with id
-    //update the image array
+
     const uploads = req.files;
     const hotelId = req.body.hotelId;
     const gallery = [];
@@ -353,21 +351,22 @@ const postAddHotelGallery = async (req, res, next) => {
         gallery.push(uploads[i].filename)
     }
 
-    const filter = { id: hotelId };
     try {
-      const hotel = await Hotels.findOne(filter);
-      if (hotel.gallery.length === 0) {
-        hotel.gallery = gallery;
-        await hotel.save();
-        console.log('added gallery to hotel')
-      } else {
-          updatedGallery = hotel.gallery.concat(gallery)
-          hotel.gallery = updatedGallery;
-          hotel.save();
-        console.log("gallery updated");
-      }
+        const hotel = await Hotels.findById(hotelId);
+        if (hotel.gallery.length === 0) {
+            hotel.gallery = gallery;
+            hotel.save();
+            console.log('added gallery to hotel')
+            res.redirect('/Hotels/viewHotelImages/' + hotelId)
+        } else {
+            updatedGallery = hotel.gallery.concat(gallery)
+            hotel.gallery = updatedGallery;
+            hotel.save();
+            console.log("gallery updated");
+            res.redirect('/Hotels/viewHotelImages/' + hotelId)
+        }
     } catch (err) {
-      console.log(err);
+        console.log(err);
     }
 
 }
@@ -376,18 +375,14 @@ const postDeleteHotel = (req, res) => {
 
     const hotelId = req.body.id;
     Hotels.findByIdAndDelete(hotelId)
-        .then(() => {
-            hotelGallery.findOneAndDelete({ hotelId: hotelId }, function (err, docs) {
-                if (err) {
-                    res.sendStatus(204)
-                    console.log('Hotel deleted but gallery is still there')
-                    console.log(err)
-                }
-                else {
-                    console.log('Deleted Hotel and its gallery');
-                    res.sendStatus(200);
-                }
-            });
+        .then(hotel => {
+            console.log(hotel)
+            for(let i= 0; hotel.gallery.length; i++){
+                console.log(hotel.gallery[i])
+                delImage(hotel.gallery[i])
+            }
+            console.log('Deleted Hotel and its gallery');
+            res.sendStatus(200);
         })
         .catch(err => res.sendStatus(204));
 }
@@ -395,29 +390,21 @@ const postDeleteHotel = (req, res) => {
 
 const postDeleteGalleryImage = (req, res) => {
 
-    const galleryId = req.body.galleryId;
     const image = req.body.image;
     const hotelId = req.body.hotelId;
-    let images = [];
-    hotelGallery
-        .findById(galleryId)
-        .then((gallery) => {
-            images = gallery.images;
-            images.splice(images.indexOf(image), 1);
-            if (images.length === 0) {
-                return hotelGallery.findByIdAndDelete(galleryId)
-            } else {
-                return gallery.save();
-            }
+    Hotels
+        .findById(hotelId)
+        .then(hotel => {
+            gallery = hotel.gallery;
+            //removing the selected image from array
+            gallery.splice(gallery.indexOf(image), 1);
+            hotel.gallery = gallery;
+            return hotel.save();
         })
         .then((result) => {
             delImage(image)
             console.log("UPDATED Gallery!");
-            if (images.length === 0) {
-                res.redirect('/')
-            } else {
-                res.redirect("/Hotels/viewHotelImages/" + hotelId);
-            }
+            res.redirect("/Hotels/viewHotelImages/" + hotelId);
         })
         .catch((err) => console.log(err));
 };
@@ -541,7 +528,7 @@ const postAddAppartment = (req, res, next) => {
     const loginPassword = req.body.loginPassword;
     // const approvedStatus = req.body.status;
     const appartment = new Appartments({
-        appartmentName: name,
+        name: name,
         contact: contact,
         price: price,
         contact: contact,
@@ -554,7 +541,7 @@ const postAddAppartment = (req, res, next) => {
         ownerContact: ownerContact,
         loginEmail: loginEmail,
         loginPassword: loginPassword,
-        availibilityStatus: true
+        availibilityStatus: false
     });
     appartment
         .save()
@@ -587,7 +574,7 @@ const postEditAppartment = (req, res, next) => {
 
     Appartments.findById(appartId)
         .then(appart => {
-            appart.appartmentName = name;
+            appart.name = name;
             appart.price = price;
             appart.contact = contact;
             appart.parking = parking;
@@ -766,13 +753,14 @@ const addRoomGallery = (req, res, next) => {
 
 const editRoomGallery = (req, res, next) => {
     const roomId = req.params.id;
-    roomGallery.findOne({ roomId: roomId })
-        .then(gallery => {
-            if (!gallery) {
+    Rooms.findById(roomId)
+        .then(room => {
+            if (room.gallery.length === 0) {
                 res.redirect('/Rooms/addGallery/' + roomId)
             } else {
                 res.render('./pages/Rooms/editRoomGallery', {
-                    gallery: gallery,
+                    gallery: room.gallery,
+                    roomId: room.id,
                     pageTitle: 'Gallery List',
                     path: '/Rooms/gallery-list'
                 });
@@ -871,66 +859,52 @@ const postEditRoom = (req, res) => {
 }
 
 const postAddRoomGallery = async (req, res) => {
+    
     const uploads = req.files;
     const roomId = req.body.roomId;
-    const roomImages = [];
+    const gallery = [];
 
     for (let i = 0; i < uploads.length; i++) {
-        roomImages.push(uploads[i].filename)
+        gallery.push(uploads[i].filename)
     }
 
-    const filter = { roomId: roomId };
-    const update = { $push: { images: roomImages } };
-
-    const existingGallery = await roomGallery.findOneAndUpdate(filter, update, {
-        new: true
-    });
-    if (existingGallery) {
-        console.log('the gallery updated')
-        res.redirect('/Rooms/editGallery/' + roomId)
-    } else {
-        const gallery = new roomGallery({
-            roomId: roomId,
-            images: roomImages
-        })
-        gallery
-            .save()
-            .then(result => {
-                // console.log(result);
-                console.log('Created Gallery');
-                res.redirect('/');
-            })
-            .catch(err => {
-                console.log(err)
-            });
+    try {
+        const room = await Rooms.findById(roomId);
+        if (room.gallery.length === 0) {
+            room.gallery = gallery;
+            room.save();
+            console.log('added gallery to room')
+            res.redirect('/Rooms/editGallery/' + roomId)
+        } else {
+            updatedGallery = room.gallery.concat(gallery)
+            room.gallery = updatedGallery;
+            room.save();
+            console.log("gallery updated");
+            res.redirect('/Rooms/editGallery/' + roomId)
+        }
+    } catch (err) {
+        console.log(err);
     }
 }
 
 const postDeleteRoomGalleryImage = (req, res) => {
 
-    const galleryId = req.body.galleryId;
-    const image = req.body.image;
     const roomId = req.body.roomId;
-    let images = [];
-    roomGallery
-        .findById(galleryId)
-        .then((gallery) => {
-            images = gallery.images;
-            images.splice(images.indexOf(image), 1);
-            if (images.length === 0) {
-                return roomGallery.findByIdAndDelete(galleryId)
-            } else {
-                return gallery.save();
-            }
+    const image = req.body.image;
+
+    Rooms
+        .findById(roomId)
+        .then(room => {
+            gallery = room.gallery;
+            //removing the selected image from array
+            gallery.splice(gallery.indexOf(image), 1);
+            room.gallery = gallery;
+            return room.save();
         })
         .then((result) => {
             delImage(image)
             console.log("UPDATED Gallery!");
-            if (images.length === 0) {
-                res.redirect('/')
-            } else {
-                res.redirect("/Rooms/editGallery/" + roomId);
-            }
+            res.redirect("/Rooms/editGallery/" + roomId);
         })
         .catch((err) => console.log(err));
 };

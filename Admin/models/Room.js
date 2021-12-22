@@ -60,6 +60,10 @@ const RoomsSchema = new Schema({
     bedSize: {
         type: String,
         required: true
+    },
+    gallery: {
+        type: [String],
+        required: false
     }
 });
 

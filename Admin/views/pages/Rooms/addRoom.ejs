@@ -44,8 +44,8 @@
                     <select class="form-control select2" name="hotel">
                       <% for(let i=0; i< data.hotels.length; i++) { %>
                         <option
-                          value="<%= JSON.stringify({hotelName: data.hotels[i].hotelName, hotelId: data.hotels[i].id}) %>">
-                          <%= data.hotels[i].hotelName %>
+                          value="<%= JSON.stringify({hotelName: data.hotels[i].name, hotelId: data.hotels[i].id}) %>">
+                          <%= data.hotels[i].name %>
                         </option>
                         <% } %>
                     </select>

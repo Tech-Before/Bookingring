@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const AppartmentsSchema = new Schema({
-    appartmentName: {
+    name: {
         type: String,
         required: true
     },
@@ -54,6 +54,10 @@ const AppartmentsSchema = new Schema({
     availibilityStatus: {
         type: Boolean,
         required: true
+    },
+    gallery: {
+        type: [String],
+        required: false
     }
 });
 
