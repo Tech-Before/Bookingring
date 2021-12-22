@@ -2,7 +2,6 @@ const delImage = require('../util/file')
 const Areas = require('../models/Location')
 const Tours = require('../models/Tour')
 const Hotels = require('../models/Hotel')
-const hotelGallery = require('../models/hotelGallery')
 const Appartments = require('../models/Appartment')
 const appartmentGallery = require('../models/AppartmentGallery')
 const Rooms = require('../models/Room')
@@ -233,14 +232,13 @@ const addHotelImages = (req, res, next) => {
 
 const galleryList = (req, res, next) => {
 
-    hotelGallery.find()
-        .populate('hotelId')
-        .then(galleries => {
-            if (!galleries) {
+    Hotels.find()
+        .then(hotels => {
+            if (!hotels) {
                 res.redirect('/')
             }
             res.render('./pages/Hotels/galleryList', {
-                galleries: galleries,
+                hotels: hotels,
                 pageTitle: 'Gallery List',
                 path: '/Hotels/gallery-list'
             });
@@ -252,13 +250,14 @@ const galleryList = (req, res, next) => {
 const viewHotelImages = (req, res, next) => {
 
     const hotelId = req.params.id;
-    hotelGallery.findOne({ hotelId: hotelId })
-        .then(gallery => {
-            if (!gallery) {
+    Hotels.findOne({ id: hotelId })
+        .then(hotel => {
+            if (!hotel) {
                 res.redirect('/')
             }
             res.render('./pages/Hotels/viewHotelImages', {
-                gallery: gallery,
+                hotelId: hotel.id,
+                gallery: hotel.gallery,
                 pageTitle: 'Gallery List',
                 path: '/Hotels/gallery-list'
             });
@@ -280,7 +279,7 @@ const postAddHotel = (req, res, next) => {
     const loginPassword = req.body.loginPassword;
     // const approvedStatus = req.body.status;
     const hotel = new Hotels({
-        hotelName: name,
+        name: name,
         contact: contact,
         parking: parking,
         area: area,
@@ -344,38 +343,31 @@ const postEditHotel = (req, res, next) => {
 }
 
 const postAddHotelGallery = async (req, res, next) => {
+    //get the gallery with id
+    //update the image array
     const uploads = req.files;
     const hotelId = req.body.hotelId;
-    const hotelImages = [];
+    const gallery = [];
 
     for (let i = 0; i < uploads.length; i++) {
-        hotelImages.push(uploads[i].filename)
+        gallery.push(uploads[i].filename)
     }
 
-    const filter = { hotelId: hotelId };
-    const update = { $push: { images: hotelImages } };
-
-    const existingGallery = await hotelGallery.findOneAndUpdate(filter, update, {
-        new: true
-    });
-    if (existingGallery) {
-        console.log('the gallery updated')
-        res.redirect('/Hotels/viewHotelImages/' + hotelId)
-    } else {
-        const gallery = new hotelGallery({
-            hotelId: hotelId,
-            images: hotelImages
-        })
-        gallery
-            .save()
-            .then(result => {
-                // console.log(result);
-                console.log('Created Gallery');
-                res.redirect('/Hotels/viewHotelImages/' + hotelId);
-            })
-            .catch(err => {
-                console.log(err)
-            });
+    const filter = { id: hotelId };
+    try {
+      const hotel = await Hotels.findOne(filter);
+      if (hotel.gallery.length === 0) {
+        hotel.gallery = gallery;
+        await hotel.save();
+        console.log('added gallery to hotel')
+      } else {
+          updatedGallery = hotel.gallery.concat(gallery)
+          hotel.gallery = updatedGallery;
+          hotel.save();
+        console.log("gallery updated");
+      }
+    } catch (err) {
+      console.log(err);
     }
 
 }

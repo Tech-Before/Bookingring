@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const HotelsSchema = new Schema({
-    hotelName: {
+    name: {
         type: String,
         required: true
     },
@@ -50,6 +50,10 @@ const HotelsSchema = new Schema({
     approvedStatus: {
         type: Boolean,
         required: true
+    },
+    gallery:{
+        type: [String],
+        required: false
     }
 });
 
