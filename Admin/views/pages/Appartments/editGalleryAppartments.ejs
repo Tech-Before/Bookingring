@@ -33,16 +33,15 @@
                 <h3 class="card-title">Appartments Gallery</h3>
               </div>
               <div class="card-body">
-                <a class="btn btn-info btn-lg mb-1" href="<%= '/Appartments/addGallery/' + gallery.appartmentId %>">Add New<i class="fa fa-plus"></i></a>
+                <a class="btn btn-info btn-lg mb-1" href="<%= '/Appartments/addGallery/' + appartmentId %>">Add New<i class="fa fa-plus"></i></a>
                 <div class="row">
 
-                  <% for(let i=0; i< gallery.images.length; i++) { %>
+                  <% for(let i=0; i< gallery.length; i++) { %>
                     <div class="col-md-4">
-                      <img src="<%= '/images/' + gallery.images[i] %>" class="img-thumbnail" width="304" height="236">
+                      <img src="<%= '/images/' + gallery[i] %>" class="img-thumbnail" width="304" height="236">
                       <form action="/Appartments/DeleteGalleryImage" method="POST">
-                        <input type="hidden" name="galleryId" value="<%= gallery.id %>">
-                        <input type="hidden" name="image" value="<%= gallery.images[i] %>">
-                        <input type="hidden" name="appartId" value="<%= gallery.appartmentId %>">
+                        <input type="hidden" name="image" value="<%= gallery[i] %>">
+                        <input type="hidden" name="appartId" value="<%= appartmentId %>">
                         <button type="submit" class="btn btn-danger btn-sm" style="width: 90%">Delete <i class="fa fa-trash"></i></button>
                       </form>
                     </div>

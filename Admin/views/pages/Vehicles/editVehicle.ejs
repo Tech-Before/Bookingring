@@ -34,7 +34,7 @@
                     <label>Vehicle Category</label>
                     <select class="form-control" name="category" required>
                       <% for(let i= 0; i< data.cats.length; i++) { %> 
-                      <option value="<%= JSON.stringify({id: data.cats[i].id, name: data.cats[i].categoryName}) %>" <%= data.vehicle.categoryId == data.cats[i].id ? 'selected' : '' %> ><%= data.cats[i].categoryName %> </option>
+                      <option value="<%= JSON.stringify({id: data.cats[i].id, name: data.cats[i].name}) %>" <%= data.vehicle.categoryId == data.cats[i].id ? 'selected' : '' %> ><%= data.cats[i].name %> </option>
                       <% } %> 
                     </select>
                   </div>

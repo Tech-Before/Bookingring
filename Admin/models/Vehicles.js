@@ -43,6 +43,10 @@ const VehiclesSchema = new Schema({
     ownerAddress: {
         type: String,
         required: true
+    },
+    gallery: {
+        type: [String],
+        required: false
     }
 });
 

@@ -41,8 +41,8 @@
                     <label>Vehicle Category</label>
                     <select class="form-control" name="category" required>
                       <% for(let i=0; i< cats.length; i++) { %>
-                        <option value="<%= JSON.stringify({id: cats[i].id, name: cats[i].categoryName}) %>">
-                          <%= cats[i].categoryName %>
+                        <option value="<%= JSON.stringify({id: cats[i].id, name: cats[i].name}) %>">
+                          <%= cats[i].name %>
                         </option>
                         <% } %>
                     </select>
