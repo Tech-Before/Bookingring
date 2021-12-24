@@ -34,15 +34,17 @@
               <div class="card-body">
                 <a class="btn btn-info btn-lg mb-1" href="<%= '/Hotels/addHotelImages?hotelId=' + hotelId %>">Add New<i class="fa fa-plus"></i></a>
                 <div class="row">
-              
+
                   <% for(let i=0; i< gallery.length; i++) { %>
-                    <div class="col-md-4">
+                    <div class="col-md-4" id="<%= gallery[i] %>">
                       <img src="<%= '/images/' + gallery[i] %>" class="img-thumbnail" width="304" height="236">
-                      <form action="/Hotels/DeleteGalleryImage" method="POST">
-                        <input type="hidden" name="image" value="<%= gallery[i] %>">
-                        <input type="hidden" name="hotelId" value="<%= hotelId %>">
+                      <% let deleteHandler="deleteImageHandler('/Hotels/DeleteGalleryImage', '" + hotelId + "', '" + gallery[i] + "')"; %>
+                        <button style="width: 90%" class="btn btn-danger btn-sm" onclick="<%= deleteHandler %>">Delete <i
+                            class="fa fa-trash"></i></button>
+                      <!-- <form action="/Hotels/DeleteGalleryImage" method="POST" id="deleteForm">
+                        <input type="hidden" name="hotelId" value="<%= //hotelId %>">
                         <button type="submit" class="btn btn-danger btn-sm" style="width: 90%">Delete</button>
-                      </form>
+                      </form> -->
                     </div>
                   
                     <% } %>

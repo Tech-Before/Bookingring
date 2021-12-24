@@ -386,25 +386,26 @@ const postDeleteHotel = async (req, res) => {
 };
 
 
-const postDeleteGalleryImage = (req, res) => {
+const postDeleteGalleryImage = async (req, res) => {
 
     const image = req.body.image;
-    const hotelId = req.body.hotelId;
-    Hotels
-        .findById(hotelId)
-        .then(hotel => {
-            gallery = hotel.gallery;
-            //removing the selected image from array
-            gallery.splice(gallery.indexOf(image), 1);
-            hotel.gallery = gallery;
-            return hotel.save();
-        })
-        .then((result) => {
-            delImg(image)
-            console.log("UPDATED Gallery!");
-            res.redirect("/Hotels/viewHotelImages/" + hotelId);
-        })
-        .catch((err) => console.log(err));
+    const hotelId = req.body.id;
+    
+    try {
+        const hotel = await Hotels.findById(hotelId);
+        gallery = hotel.gallery;
+        //removing the selected image from array
+        gallery.splice(gallery.indexOf(image), 1);
+        hotel.gallery = gallery;
+        await hotel.save();
+        delImg(image)
+        console.log("UPDATED Gallery!");
+        res.sendStatus(200)
+    }
+    catch (err) {
+        console.log(err);
+        res.sendStatus(204)
+    }
 };
 
 
@@ -1308,15 +1309,21 @@ const postEditUpdate = (req, res) => {
         });
 }
 
-const postDeleteUpdate = (req, res) => {
+const postDeleteUpdate = async (req, res) => {
 
     const updateId = req.body.id;
-    Updates.findByIdAndDelete(updateId)
-        .then((result) => {
-            console.log('update deleted')
-            res.redirect('/')
-        })
-        .catch(err => res.sendStatus(204));
+    try {
+        const update = await Updates.findById(updateId);
+        await Updates.findByIdAndDelete(updateId);
+        const mediaFile = update.media;
+        delImg(mediaFile)
+        console.log('update deleted')
+        res.sendStatus(200)
+    } catch (err) {
+        console.log(err)
+        res.sendStatus(204)
+    }
+
 }
 
 // Tours Plans & Hiking
