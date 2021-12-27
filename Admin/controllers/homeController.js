@@ -6,7 +6,7 @@ const Appartments = require('../models/Appartment')
 const Rooms = require('../models/Room')
 const Vehicles = require('../models/Vehicles')
 const sliderGallery = require('../models/sliderGallery')
-const Users = require('../models/User')
+const Users = require('../models/SystemUsers')
 const Updates = require('../models/Updates')
 const vehicleCategory = require('../models/vehicleCategory')
 
@@ -885,26 +885,26 @@ const postAddRoomGallery = async (req, res) => {
     }
 }
 
-const postDeleteRoomGalleryImage = (req, res) => {
+const postDeleteRoomGalleryImage = async (req, res) => {
 
-    const roomId = req.body.roomId;
+    const roomId = req.body.id;
     const image = req.body.image;
 
-    Rooms
-        .findById(roomId)
-        .then(room => {
-            gallery = room.gallery;
-            //removing the selected image from array
-            gallery.splice(gallery.indexOf(image), 1);
-            room.gallery = gallery;
-            return room.save();
-        })
-        .then((result) => {
-            delImg(image)
-            console.log("UPDATED Gallery!");
-            res.redirect("/Rooms/editGallery/" + roomId);
-        })
-        .catch((err) => console.log(err));
+    try {
+        const room = await Rooms.findById(roomId);
+        gallery = room.gallery;
+        //removing the selected image from array
+        gallery.splice(gallery.indexOf(image), 1);
+        room.gallery = gallery;
+        await room.save();
+        delImg(image)
+        console.log("UPDATED Gallery!");
+        res.sendStatus(200)
+    }
+    catch (err) {
+        console.log(err);
+        res.sendStatus(204)
+    }
 };
 
 // Vehicle Category (New Data)
@@ -1180,25 +1180,26 @@ const postAddVehicleGallery = async (req, res) => {
     }
 }
 
-const postDeleteVehiclesGalleryImage = (req, res) => {
+const postDeleteVehiclesGalleryImage = async (req, res) => {
 
     const image = req.body.image;
-    const vehicleId = req.body.vehicleId;
-    Vehicles
-        .findById(vehicleId)
-        .then(vehicle => {
-            gallery = vehicle.gallery;
-            //removing the selected image from array
-            gallery.splice(gallery.indexOf(image), 1);
-            vehicle.gallery = gallery;
-            return vehicle.save();
-        })
-        .then((result) => {
-            delImg(image)
-            console.log("UPDATED Gallery!");
-            res.redirect("/Vehicles/editVehicleGallery/" + vehicleId);
-        })
-        .catch((err) => console.log(err));
+    const vehicleId = req.body.id;
+
+    try {
+        const vehicle = await Vehicles.findById(vehicleId);
+        gallery = vehicle.gallery;
+        //removing the selected image from array
+        gallery.splice(gallery.indexOf(image), 1);
+        vehicle.gallery = gallery;
+        await vehicle.save();
+        delImg(image)
+        console.log("UPDATED Gallery!");
+        res.sendStatus(200)
+    }
+    catch (err) {
+        console.log(err);
+        res.sendStatus(204)
+    }
 };
 
 // Updates / Blog

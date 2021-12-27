@@ -36,15 +36,11 @@
                 <div class="row">
 
                   <% for(let i=0; i< gallery.length; i++) { %>
-                    <div class="col-md-4" id="<%= gallery[i] %>">
+                    <div class="col-md-4" id="<%= 'elem' + i %>">
                       <img src="<%= '/images/' + gallery[i] %>" class="img-thumbnail" width="304" height="236">
-                      <% let deleteHandler="deleteImageHandler('/Hotels/DeleteGalleryImage', '" + hotelId + "', '" + gallery[i] + "')"; %>
+                      <% let deleteHandler="deleteImageHandler('/Hotels/DeleteGalleryImage', '" + hotelId + "', '" + gallery[i] + "', 'elem" + i + "')"; %>
                         <button style="width: 90%" class="btn btn-danger btn-sm" onclick="<%= deleteHandler %>">Delete <i
                             class="fa fa-trash"></i></button>
-                      <!-- <form action="/Hotels/DeleteGalleryImage" method="POST" id="deleteForm">
-                        <input type="hidden" name="hotelId" value="<%= //hotelId %>">
-                        <button type="submit" class="btn btn-danger btn-sm" style="width: 90%">Delete</button>
-                      </form> -->
                     </div>
                   
                     <% } %>

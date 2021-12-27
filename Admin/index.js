@@ -50,7 +50,7 @@ app.use(homeRoutes.routes)
 // app.listen(port, ()=> console.log(`App listening on ${port}`))
 mongoose
   .connect(
-    process.env.DB_Credentials
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.xjk47.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
   )
   .then(result => {
     app.listen(port, () => console.log(`App listening on Port: ${port}`));

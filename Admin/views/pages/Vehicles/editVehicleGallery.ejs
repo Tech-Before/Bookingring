@@ -30,14 +30,11 @@
                 New<i class="fa fa-plus"></i></a>
               <div class="row">
                 <% for(let i=0; i< gallery.length; i++) { %>
-                  <div class="col-md-4">
+                  <div class="col-md-4" id="<%= 'elem' + i %>">
                     <img src="<%= '/images/' + gallery[i] %>" class="img-thumbnail" width="304" height="236">
-                    <form action="/Vehicles/deleteImage" method="POST">
-                      <input type="hidden" name="image" value="<%= gallery[i] %>">
-                      <input type="hidden" name="vehicleId" value="<%= vehicleId %>">
-                      <button type="submit" class="btn btn-danger btn-sm" style="width: 90%">Delete <i
-                          class="fa fa-trash"></i></button>
-                    </form>
+                    <% let deleteHandler="deleteImageHandler('/Vehicles/deleteImage', '" + vehicleId + "', '" + gallery[i]
+                      + "', 'elem" + i + "')" ; %>
+                      <button style="width: 90%" class="btn btn-danger btn-sm" onclick="<%= deleteHandler %>">Delete <i class="fa fa-trash"></i></button>
                   </div>
                   <% } %>
               </div>

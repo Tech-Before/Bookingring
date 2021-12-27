@@ -614,7 +614,7 @@
         }
       }
 
-      function deleteImageHandler(url, id, image) {
+      function deleteImageHandler(url, id, image, elemId) {
         if (confirm('The selected Item will be deleted Permanantly')) {
           fetch(url, {
             method: "POST",
@@ -629,8 +629,7 @@
             // Checking Status
             .then(response => {
               if (response.status === 200) {
-                console.log(image)
-                $('#' + image).remove();
+                $('#' + elemId).remove();
               } else {
                 alert('something went wrong')
               }
