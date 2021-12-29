@@ -1,4 +1,4 @@
-const {delImg, delMultImages} = require('../util/file')
+const { delImg, delMultImages } = require('../util/file')
 const Areas = require('../models/Location')
 const Tours = require('../models/Tour')
 const Hotels = require('../models/Hotel')
@@ -12,7 +12,7 @@ const vehicleCategory = require('../models/vehicleCategory')
 
 // Login
 const login = (req, res, next) => {
-    res.render('./login')
+    res.render('./login', { layout: 'login' })
 }
 
 // Dashboard
@@ -390,7 +390,7 @@ const postDeleteGalleryImage = async (req, res) => {
 
     const image = req.body.image;
     const hotelId = req.body.id;
-    
+
     try {
         const hotel = await Hotels.findById(hotelId);
         gallery = hotel.gallery;
@@ -857,7 +857,7 @@ const postDeleteRoom = async (req, res) => {
 };
 
 const postAddRoomGallery = async (req, res) => {
-    
+
     const uploads = req.files;
     const roomId = req.body.roomId;
     const gallery = [];
@@ -947,7 +947,7 @@ const editCategory = (req, res, next) => {
         .catch(err => console.log(err));
 }
 
-const postAddVehicleCategory = (req, res) =>{
+const postAddVehicleCategory = (req, res) => {
     const name = req.body.name;
     const vehicleCat = new vehicleCategory({
         name: name
@@ -962,10 +962,10 @@ const postAddVehicleCategory = (req, res) =>{
         .catch(err => {
             console.log(err);
         });
-    
+
 }
 
-const postEditVehicleCategory = (req, res) =>{
+const postEditVehicleCategory = (req, res) => {
     const catId = req.body.id;
     const name = req.body.name;
     vehicleCategory.findById(catId)
@@ -1285,13 +1285,13 @@ const postEditUpdate = (req, res) => {
     const desc = req.body.desc;
 
     const uploads = req.files;
-    if(uploads.length === 0){
+    if (uploads.length === 0) {
         media = oldImage;
     } else {
         delImg(oldImage)
         media = uploads[0].filename;
     }
-   
+
     Updates.findById(id)
         .then(update => {
             update.heading = heading;
@@ -1329,7 +1329,7 @@ const postDeleteUpdate = async (req, res) => {
 
 // Tours Plans & Hiking
 const addTour = async (req, res, next) => {
-    
+
     try {
         const hotels = await Hotels.find();
         const areas = await Areas.find();
@@ -1511,7 +1511,7 @@ const sliderImages = (req, res, next) => {
 
     sliderGallery.findOne()
         .then(gallery => {
-            if(!gallery){
+            if (!gallery) {
                 res.redirect('/SliderImages/addSliderImages/none')
             }
             res.render('./pages/SliderImages/sliderImagesList', { gallery: gallery })
@@ -1597,13 +1597,13 @@ const viewFeedbackQuery = (req, res, next) => {
 // Users
 const addUser = (req, res, next) => {
     Areas.find()
-    .then( areas => {
-        res.render('./pages/Users/addUser', {
-            areas: areas
+        .then(areas => {
+            res.render('./pages/Users/addUser', {
+                areas: areas
+            })
         })
-    })
-    .catch(err => console.log(err))
-    
+        .catch(err => console.log(err))
+
 }
 
 const userList = (req, res, next) => {
@@ -1684,7 +1684,7 @@ const postEditUser = (req, res) => {
     const type = req.body.type;
     const email = req.body.email;
     const password = req.body.password;
-    
+
     Users.findById(userId)
         .then(user => {
             user.name = name;
@@ -1705,7 +1705,7 @@ const postEditUser = (req, res) => {
         .catch(err => console.log(err));
 }
 
-const postDeleteUser = (req, res) =>{
+const postDeleteUser = (req, res) => {
     const userId = req.body.id;
     Users.findByIdAndDelete(userId)
         .then(() => {

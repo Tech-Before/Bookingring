@@ -47,8 +47,7 @@
 
                   <div class="form-group col-md-3">
                     <label>Tour/Hike Start Date</label>
-                    <input type="date" class="form-control" name="startDate" value="<%= tour.startDate %>"
-                      required>
+                    <input type="date" class="form-control" name="startDate" value="<%= tour.startDate %>" required>
                   </div>
 
                   <div class="form-group col-md-3">
@@ -64,7 +63,8 @@
                     <label>Tour/Hike From Place</label>
                     <select class="form-control select2" style="width: 100%; height: 100%;" name="fromPlace">
                       <% for(let i=0; i < areas.length; i++) { %>
-                        <option value="<%= JSON.stringify({ id: areas[i].id, areaName: areas[i].name }) %>" <%= areas[i].name===tour.fromPlace ? 'selected' : '' %> >
+                        <option value="<%= JSON.stringify({ id: areas[i].id, areaName: areas[i].name }) %>"
+                          <%=areas[i].name===tour.fromPlace ? 'selected' : '' %> >
                           <%= areas[i].name %>
                         </option>
                         <% } %>
@@ -75,19 +75,20 @@
                     <label>Tour/Hike To Place</label>
                     <select class="form-control select2" style="width: 100%; height: 100%;" name="toPlace">
                       <% for(let i=0; i < areas.length; i++) { %>
-                        <option value="<%= JSON.stringify({ id: areas[i].id, areaName: areas[i].name }) %>" <%= areas[i].name===tour.toPlace ? 'selected' : '' %>>
+                        <option value="<%= JSON.stringify({ id: areas[i].id, areaName: areas[i].name }) %>"
+                          <%=areas[i].name===tour.toPlace ? 'selected' : '' %>>
                           <%= areas[i].name %>
                         </option>
                         <% } %>
                     </select>
                   </div>
 
-                  <!-- New Data -->
                   <div class="form-group col-md-6">
                     <label>Pick-Up Location</label>
                     <select class="form-control select2" style="width: 100%; height: 100%;" name="pickupLoc">
                       <% for(let i=0; i < areas.length; i++) { %>
-                        <option value="<%= JSON.stringify({ id: areas[i].id, areaName: areas[i].name }) %>" <%= areas[i].name===tour.pickupLocation ? 'selected' : '' %>>
+                        <option value="<%= JSON.stringify({ id: areas[i].id, areaName: areas[i].name }) %>"
+                          <%=areas[i].name===tour.pickupLocation ? 'selected' : '' %>>
                           <%= areas[i].name %>
                         </option>
                         <% } %>
@@ -98,7 +99,8 @@
                     <label>Drop-Off Location</label>
                     <select class="form-control select2" style="width: 100%; height: 100%;" name="dropoffLoc">
                       <% for(let i=0; i < areas.length; i++) { %>
-                        <option value="<%= JSON.stringify({ id: areas[i].id, areaName: areas[i].name }) %>" <%= areas[i].name===tour.dropoffLocation ? 'selected' : '' %>>
+                        <option value="<%= JSON.stringify({ id: areas[i].id, areaName: areas[i].name }) %>"
+                          <%=areas[i].name===tour.dropoffLocation ? 'selected' : '' %>>
                           <%= areas[i].name %>
                         </option>
                         <% } %>
@@ -110,11 +112,19 @@
                     <label>Hotel Stay</label>
                     <select class="form-control select2" style="width: 100%; height: 100%;" name="stayHotel">
                       <% for(let i=0; i < hotels.length; i++) { %>
-                        <option value="<%= JSON.stringify( {id: hotels[i].id, hotelName: hotels[i].hotelName} ) %>" <%= hotels[i].hotelName===tour.stayHotel ? 'selected' : '' %> >
+                        <option value="<%= JSON.stringify( {id: hotels[i].id, hotelName: hotels[i].hotelName} ) %>"
+                          <%=hotels[i].hotelName===tour.stayHotel ? 'selected' : '' %> >
                           <%= hotels[i].hotelName %>
                         </option>
                         <% } %>
                     </select>
+                  </div>
+
+                  <!-- New Data -->
+                  <div class="form-group col-md-6">
+                    <label>Tour Video</label>
+                    <input type="url" name="" placeholder="i.e: https://www.youtube.com/embed/XV7OFsykBT0"
+                      class="form-control" required>
                   </div>
                   <!-- /New Data -->
                 </div>
@@ -131,8 +141,8 @@
 
                   <div class="form-group col-md-3">
                     <label>Tour/Hike Nights</label>
-                    <input type="number" value="<%= tour.nights %>" name="nights" placeholder=""
-                      class="form-control" required>
+                    <input type="number" value="<%= tour.nights %>" name="nights" placeholder="" class="form-control"
+                      required>
                   </div>
 
                   <div class="form-group col-md-3">

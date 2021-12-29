@@ -39,6 +39,7 @@ app.use(
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 
+app.set("layout login", false);
 
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
