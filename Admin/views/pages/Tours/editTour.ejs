@@ -112,9 +112,9 @@
                     <label>Hotel Stay</label>
                     <select class="form-control select2" style="width: 100%; height: 100%;" name="stayHotel">
                       <% for(let i=0; i < hotels.length; i++) { %>
-                        <option value="<%= JSON.stringify( {id: hotels[i].id, hotelName: hotels[i].hotelName} ) %>"
-                          <%=hotels[i].hotelName===tour.stayHotel ? 'selected' : '' %> >
-                          <%= hotels[i].hotelName %>
+                        <option value="<%= JSON.stringify( {id: hotels[i].id, hotelName: hotels[i].name} ) %>"
+                          <%=hotels[i].name===tour.stayHotel ? 'selected' : '' %> >
+                          <%= hotels[i].name %>
                         </option>
                         <% } %>
                     </select>
@@ -123,7 +123,7 @@
                   <!-- New Data -->
                   <div class="form-group col-md-6">
                     <label>Tour Video</label>
-                    <input type="url" name="" placeholder="i.e: https://www.youtube.com/embed/XV7OFsykBT0"
+                    <input type="url" name="videoUrl" value="<%= tour.videoUrl %>" placeholder="i.e: https://www.youtube.com/embed/XV7OFsykBT0"
                       class="form-control" required>
                   </div>
                   <!-- /New Data -->

@@ -54,6 +54,10 @@ const ToursSchema = new Schema({
     description: {
         type: String,
         required: true
+    },
+    videoUrl: {
+        type: String,
+        required: true
     }
 });
 

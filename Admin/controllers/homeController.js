@@ -526,6 +526,9 @@ const postAddAppartment = (req, res, next) => {
     const ownerContact = req.body.ownerContact;
     const loginEmail = req.body.loginEmail;
     const loginPassword = req.body.loginPassword;
+    const description = req.body.description;
+    const features = req.body.features;
+    const videoUrl = req.body.videoUrl;
     // const approvedStatus = req.body.status;
     const appartment = new Appartments({
         name: name,
@@ -541,7 +544,10 @@ const postAddAppartment = (req, res, next) => {
         ownerContact: ownerContact,
         loginEmail: loginEmail,
         loginPassword: loginPassword,
-        availibilityStatus: false
+        availibilityStatus: false,
+        description: description,
+        features: features,
+        videoUrl: videoUrl
     });
     appartment
         .save()
@@ -571,6 +577,9 @@ const postEditAppartment = (req, res, next) => {
     const loginEmail = req.body.loginEmail;
     const loginPassword = req.body.loginPassword;
     const availibilityStatus = req.body.status;
+    const description = req.body.description;
+    const features = req.body.features;
+    const videoUrl = req.body.videoUrl;
 
     Appartments.findById(appartId)
         .then(appart => {
@@ -587,6 +596,9 @@ const postEditAppartment = (req, res, next) => {
             appart.loginEmail = loginEmail;
             appart.loginPassword = loginPassword;
             appart.availibilityStatus = availibilityStatus;
+            appart.description = description;
+            appart.features = features;
+            appart.videoUrl = videoUrl;
             return appart.save();
         })
         .then(result => {
@@ -763,6 +775,9 @@ const postAddRoom = (req, res) => {
     const size = req.body.size;
     const occupency = req.body.occupency;
     const bedSize = req.body.bedSize;
+    const description = req.body.description;
+    const features = req.body.features;
+    const videoUrl = req.body.videoUrl;
 
     const room = new Rooms({
         roomNo: roomNo,
@@ -778,7 +793,10 @@ const postAddRoom = (req, res) => {
         charges: charges,
         size: size,
         occupency: occupency,
-        bedSize: bedSize
+        bedSize: bedSize,
+        description: description,
+        features: features,
+        videoUrl: videoUrl
     });
 
     room
@@ -809,6 +827,9 @@ const postEditRoom = (req, res) => {
     const size = req.body.size;
     const occupency = req.body.occupency;
     const bedSize = req.body.bedSize;
+    const description = req.body.description;
+    const features = req.body.features;
+    const videoUrl = req.body.videoUrl;
 
     Rooms.findById(roomId)
         .then(room => {
@@ -826,6 +847,9 @@ const postEditRoom = (req, res) => {
             room.size = size;
             room.occupency = occupency;
             room.bedSize = bedSize;
+            room.description = description;
+            room.features = features;
+            room.videoUrl = videoUrl;
 
             return room.save()
         })
@@ -1076,6 +1100,9 @@ const postAddVehicle = (req, res) => {
     const ownerCNIC = req.body.ownerCNIC;
     const ownerContact = req.body.ownerContact;
     const ownerAddress = req.body.ownerAddress;
+    const description = req.body.description;
+    const features = req.body.features;
+    const videoUrl = req.body.videoUrl;
 
     const vehicle = new Vehicles({
         categoryId: category.id,
@@ -1087,7 +1114,10 @@ const postAddVehicle = (req, res) => {
         ownerName: ownerName,
         ownerCNIC: ownerCNIC,
         ownerContact: ownerContact,
-        ownerAddress: ownerAddress
+        ownerAddress: ownerAddress,
+        description: description,
+        features: features,
+        videoUrl: videoUrl
     });
     vehicle
         .save()
@@ -1112,6 +1142,9 @@ const postEditVehicle = (req, res) => {
     const ownerCNIC = req.body.ownerCNIC;
     const ownerContact = req.body.ownerContact;
     const ownerAddress = req.body.ownerAddress;
+    const description = req.body.description;
+    const features = req.body.features;
+    const videoUrl = req.body.videoUrl;
 
     Vehicles.findById(id)
         .then(vehicle => {
@@ -1125,6 +1158,9 @@ const postEditVehicle = (req, res) => {
             vehicle.ownerCNIC = ownerCNIC;
             vehicle.ownerContact = ownerContact;
             vehicle.ownerAddress = ownerAddress;
+            vehicle.description = description;
+            vehicle.features = features;
+            vehicle.videoUrl = videoUrl;
             return vehicle.save()
         })
         .then(result => {
@@ -1411,6 +1447,7 @@ const postAddTour = (req, res) => {
     const availableSeats = req.body.seats;
     const chargesPerHead = req.body.charges;
     const description = req.body.desc;
+    const videoUrl = req.body.videoUrl;
     const tour = new Tours({
         tourType: tourType,
         startDate: startDate,
@@ -1424,14 +1461,15 @@ const postAddTour = (req, res) => {
         nights: nights,
         availableSeats: availableSeats,
         chargesPerHead: chargesPerHead,
-        description: description
+        description: description,
+        videoUrl: videoUrl
     });
     tour
         .save()
         .then(result => {
             // console.log(result);
             console.log('Added Tour');
-            res.redirect('/Tours/addTours');
+            res.redirect('/Tours/tourList');
         })
         .catch(err => {
             console.log(err);
@@ -1454,6 +1492,7 @@ const postEditTour = (req, res, next) => {
     const availableSeats = req.body.seats;
     const chargesPerHead = req.body.charges;
     const description = req.body.desc;
+    const videoUrl = req.body.videoUrl;
 
     Tours.findById(tourId)
         .then(tour => {
@@ -1470,6 +1509,7 @@ const postEditTour = (req, res, next) => {
             tour.availableSeats = availableSeats;
             tour.chargesPerHead = chargesPerHead;
             tour.description = description;
+            tour.videoUrl = videoUrl;
             return tour.save();
         })
         .then(result => {

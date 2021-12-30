@@ -55,6 +55,18 @@ const AppartmentsSchema = new Schema({
         type: Boolean,
         required: true
     },
+    description: {
+        type: String,
+        required: true
+    },
+    features: {
+        type: String,
+        required: true
+    },
+    videoUrl: {
+        type: String,
+        required: true
+    },
     gallery: {
         type: [String],
         required: false
