@@ -17,21 +17,25 @@ const login = (req, res, next) => {
 
 // Dashboard
 const indexView = (req, res, next) => {
-    res.render('./pages/Home/home');
+    const message = req.flash('message')
+    res.render('./pages/Home/home', {flashMessage: message});
 }
 
 // Areas
 const addArea = (req, res, next) => {
-    res.render('./pages/Areas/addAreas');
+    const message = req.flash('message')
+    res.render('./pages/Areas/addAreas', {flashMessage: message});
 }
 
 const listAreas = (req, res, next) => {
+    const message = req.flash('message');
     Areas.find()
         .then(areas => {
             res.render('./pages/Areas/areaList', {
                 areas: areas,
                 pageTitle: 'Areas List',
-                path: '/Areas/area-list'
+                path: '/Areas/area-list',
+                flashMessage: message
             });
         })
         .catch(err => console.log(err));
@@ -48,7 +52,8 @@ const editArea = (req, res, next) => {
             res.render('./pages/Areas/editArea', {
                 pageTitle: 'Edit Area',
                 path: '/admin/edit-area',
-                area: area
+                area: area,
+                flashMessage: ''
             });
         })
         .catch(err => res.render('./pages/Errors/error'));
@@ -65,6 +70,7 @@ const postAddArea = (req, res, next) => {
         .then(result => {
             // console.log(result);
             console.log('Added Area');
+            req.flash('message', 'Area Added Successfully')
             res.redirect('/Areas/addAreas');
         })
         .catch(err => {
@@ -82,6 +88,7 @@ const postEditArea = (req, res, next) => {
         })
         .then(result => {
             console.log('UPDATED Area!');
+            req.flash('message', 'Location Updated');
             res.redirect('/Areas/areaList');
         })
         .catch(err => console.log(err));
@@ -89,7 +96,7 @@ const postEditArea = (req, res, next) => {
 
 const postDeleteArea = (req, res) => {
     const areaId = req.body.id;
-    console.log(areaId)
+    
     Areas.findByIdAndDelete(areaId)
         .then(() => {
             console.log('Deleted area');
@@ -101,7 +108,7 @@ const postDeleteArea = (req, res) => {
 
 // Customers
 const customersList = (req, res, next) => {
-    res.render('./pages/Customers/customer')
+    res.render('./pages/Customers/customer', )
 }
 
 const editMembership = (req, res, next) => {
@@ -132,7 +139,8 @@ const hotelList = (req, res, next) => {
             res.render('./pages/Hotels/hotelsList', {
                 hotels: hotels,
                 pageTitle: 'Hotels List',
-                path: '/Hotels/hotels-list'
+                path: '/Hotels/hotels-list',
+                flashMessage: req.flash('message')
             });
         })
         .catch(err => console.log(err));
@@ -255,7 +263,8 @@ const viewHotelImages = (req, res, next) => {
                 hotelId: hotel.id,
                 gallery: hotel.gallery,
                 pageTitle: 'Gallery List',
-                path: '/Hotels/gallery-list'
+                path: '/Hotels/gallery-list',
+                flashMessage: req.flash('message')
             });
         })
         .catch(err => console.log(err));
@@ -293,6 +302,7 @@ const postAddHotel = (req, res, next) => {
         .then(result => {
             // console.log(result);
             console.log('Added Hotel');
+            req.flash('message', 'Hotel Data Added Successfully.')
             res.redirect('/Hotels/hotelsList');
         })
         .catch(err => {
@@ -332,6 +342,7 @@ const postEditHotel = (req, res, next) => {
         })
         .then(result => {
             console.log('UPDATED Hotel!');
+            req.flash('message', 'Hotel Data Updated Successfully.')
             res.redirect('/Hotels/hotelsList');
         })
         .catch(err => console.log(err));
@@ -354,12 +365,14 @@ const postAddHotelGallery = async (req, res, next) => {
             hotel.gallery = gallery;
             hotel.save();
             console.log('added gallery to hotel')
+            req.flash('message', 'Gallery Added To Hotel Successfully');
             res.redirect('/Hotels/viewHotelImages/' + hotelId)
         } else {
             updatedGallery = hotel.gallery.concat(gallery)
             hotel.gallery = updatedGallery;
             hotel.save();
             console.log("gallery updated");
+            req.flash('message', 'Hotel Gallery Updated Successfully');
             res.redirect('/Hotels/viewHotelImages/' + hotelId)
         }
     } catch (err) {
@@ -428,7 +441,8 @@ const appartmentHouseList = (req, res, next) => {
             res.render('./pages/Appartments/appartmentHouseList', {
                 appartments: appartments,
                 pageTitle: 'Appartments List',
-                path: '/Appartments/appartment-list'
+                path: '/Appartments/appartment-list',
+                flashMessage: req.flash('message')
             });
         })
         .catch(err => console.log(err));
@@ -472,7 +486,8 @@ const editGalleryAppartments = (req, res, next) => {
                     gallery: appartment.gallery,
                     appartmentId: appartment.id,
                     pageTitle: 'Gallery List',
-                    path: '/Hotels/gallery-list'
+                    path: '/Hotels/gallery-list',
+                    flashMessage: req.flash('message')
                 });
             }
 
@@ -554,6 +569,7 @@ const postAddAppartment = (req, res, next) => {
         .then(result => {
             // console.log(result);
             console.log('appartment added');
+            req.flash('message', 'Appartment Added Successfully');
             res.redirect('/Appartments/appartmentHouseList');
         })
         .catch(err => {
@@ -603,6 +619,7 @@ const postEditAppartment = (req, res, next) => {
         })
         .then(result => {
             console.log('UPDATED appartment/house!');
+            req.flash('message', 'Appartment Data Updated Successfully')
             res.redirect('/Appartments/appartmentHouseList');
         })
         .catch(err => console.log(err));
@@ -639,13 +656,15 @@ const postAddAppartmentGallery = async (req, res, next) => {
         if (appartment.gallery.length === 0) {
             appartment.gallery = gallery;
             appartment.save();
-            console.log('added gallery to appartment')
+            console.log('added gallery to appartment');
+            req.flash('message', 'Gallery added To Appartment Successfully');
             res.redirect('/Appartments/editGallery/' + appartId)
         } else {
             updatedGallery = appartment.gallery.concat(gallery)
             appartment.gallery = updatedGallery;
             appartment.save();
             console.log("gallery updated");
+            req.flash('message', 'Appartment Gallery Updated Successfully');
             res.redirect('/Appartments/editGallery/' + appartId)
         }
     } catch (err) {
@@ -707,7 +726,8 @@ const roomList = (req, res, next) => {
             res.render('./pages/Rooms/roomList', {
                 rooms: rooms,
                 pageTitle: 'Room List',
-                path: '/Rooms/room-list'
+                path: '/Rooms/room-list',
+                flashMessage: req.flash('message')
             });
         })
         .catch(err => console.log(err));
@@ -755,7 +775,8 @@ const editRoomGallery = (req, res, next) => {
                     gallery: room.gallery,
                     roomId: room.id,
                     pageTitle: 'Gallery List',
-                    path: '/Rooms/gallery-list'
+                    path: '/Rooms/gallery-list',
+                    flashMessage: req.flash('message')
                 });
             }
         })
@@ -804,6 +825,7 @@ const postAddRoom = (req, res) => {
         .then(result => {
             // console.log(result);
             console.log('Added Room');
+            req.flash('message', 'Room Added Successfully')
             res.redirect('/');
         })
         .catch(err => {
@@ -855,6 +877,7 @@ const postEditRoom = (req, res) => {
         })
         .then(result => {
             console.log('room updated');
+            req.flash('message', 'Room Data Updated Successfully')
             res.redirect('/Rooms/roomList')
         })
         .catch(err => {
@@ -895,14 +918,16 @@ const postAddRoomGallery = async (req, res) => {
         if (room.gallery.length === 0) {
             room.gallery = gallery;
             room.save();
-            console.log('added gallery to room')
-            res.redirect('/Rooms/editGallery/' + roomId)
+            console.log('added gallery to room');
+            req.flash('message', 'Gallery Added To Room');
+            res.redirect('/Rooms/editGallery/' + roomId);
         } else {
             updatedGallery = room.gallery.concat(gallery)
             room.gallery = updatedGallery;
             room.save();
             console.log("gallery updated");
-            res.redirect('/Rooms/editGallery/' + roomId)
+            req.flash('message', 'Room Gallery Updated');
+            res.redirect('/Rooms/editGallery/' + roomId);
         }
     } catch (err) {
         console.log(err);
@@ -933,7 +958,7 @@ const postDeleteRoomGalleryImage = async (req, res) => {
 
 // Vehicle Category (New Data)
 const addCategory = (req, res, next) => {
-    res.render('./pages/VehiclesCategory/addCategory')
+    res.render('./pages/VehiclesCategory/addCategory', {flashMessage: req.flash('message')})
 }
 
 const categoryList = (req, res, next) => {
@@ -945,7 +970,8 @@ const categoryList = (req, res, next) => {
                 res.render('./pages/VehiclesCategory/categoryList', {
                     cats: cats,
                     pageTitle: 'list category',
-                    path: '/VehiclesCategory/category-list'
+                    path: '/VehiclesCategory/category-list',
+                    flashMessage: req.flash('message')
                 });
             }
 
@@ -981,6 +1007,7 @@ const postAddVehicleCategory = (req, res) => {
         .then(result => {
             // console.log(result);
             console.log('Added category');
+            req.flash('message', 'Vehicle Category Added Successfully');
             res.redirect('/VehiclesCategory/addCategory');
         })
         .catch(err => {
@@ -999,6 +1026,7 @@ const postEditVehicleCategory = (req, res) => {
         })
         .then(result => {
             console.log('cat updated');
+            req.flash('message', 'Categroy Modified Successfully');
             res.redirect('/VehiclesCategory/categoryList')
         })
         .catch(err => {

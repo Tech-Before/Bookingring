@@ -5,7 +5,11 @@ const path = require('path');
 const homeRoutes = require('./routes/home-routes')
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const multer = require('multer')
+const multer = require('multer');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
+
 const app = express();
 const port = 3000;
 
@@ -38,6 +42,15 @@ app.use(
 );
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
+
+app.use(cookieParser('SecretStringForCookies'));
+app.use(session({
+  secret: 'SecretStringForCookies',
+  cookie: {maxAge: 600000},
+  resave: true,
+  saveUninitialized: true
+}));
+app.use(flash());
 
 app.set("layout login", false);
 
