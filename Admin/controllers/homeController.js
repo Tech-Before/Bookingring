@@ -1,4 +1,5 @@
 const { delImg, delMultImages } = require('../util/file')
+const bcrypt = require("bcrypt");
 const Areas = require('../models/Location')
 const Tours = require('../models/Tour')
 const Hotels = require('../models/Hotel')
@@ -270,7 +271,8 @@ const viewHotelImages = (req, res, next) => {
         .catch(err => console.log(err));
 }
 
-const postAddHotel = (req, res, next) => {
+//Hotel post Requests 
+const postAddHotel = async (req, res, next) => {
     const name = req.body.hotelName;
     const contact = req.body.contact;
     const parking = req.body.parking;
@@ -282,6 +284,12 @@ const postAddHotel = (req, res, next) => {
     const ownerContact = req.body.ownerContact;
     const loginEmail = req.body.loginEmail;
     const loginPassword = req.body.loginPassword;
+
+    // generate salt to hash password
+    const salt = await bcrypt.genSalt(5);
+    // now we set user password to hashed password
+    const hashedPassword = await bcrypt.hash(loginPassword, salt);
+
     // const approvedStatus = req.body.status;
     const hotel = new Hotels({
         name: name,
@@ -294,23 +302,23 @@ const postAddHotel = (req, res, next) => {
         ownerCNIC: ownerCNIC,
         ownerContact: ownerContact,
         loginEmail: loginEmail,
-        loginPassword: loginPassword,
+        loginPassword: hashedPassword,
         approvedStatus: false
     });
-    hotel
-        .save()
-        .then(result => {
-            // console.log(result);
-            console.log('Added Hotel');
-            req.flash('message', 'Hotel Data Added Successfully.')
-            res.redirect('/Hotels/hotelsList');
-        })
-        .catch(err => {
-            console.log(err);
-        });
+
+    try {
+        await hotel.save();
+        // console.log(result);
+        console.log('Added Hotel');
+        req.flash('message', 'Hotel Data Added Successfully.')
+        res.redirect('/Hotels/hotelsList');
+
+    } catch (err) {
+        console.log(err);
+    }
 };
 
-const postEditHotel = (req, res, next) => {
+const postEditHotel = async (req, res, next) => {
 
     const hotelId = req.body.hotelId;
     const name = req.body.hotelName;
@@ -325,28 +333,32 @@ const postEditHotel = (req, res, next) => {
     const loginPassword = req.body.loginPassword;
     const approvedStatus = req.body.status;
 
-    Hotels.findById(hotelId)
-        .then(hotel => {
-            hotel.hotelName = name,
-                hotel.contact = contact,
-                hotel.parking = parking,
-                hotel.area = area,
-                hotel.address = address,
-                hotel.ownerName = ownerName,
-                hotel.ownerCNIC = ownerCNIC,
-                hotel.ownerContact = ownerContact,
-                hotel.loginEmail = loginEmail,
-                hotel.loginPassword = loginPassword,
-                hotel.approvedStatus = approvedStatus
-            return hotel.save();
-        })
-        .then(result => {
-            console.log('UPDATED Hotel!');
-            req.flash('message', 'Hotel Data Updated Successfully.')
-            res.redirect('/Hotels/hotelsList');
-        })
-        .catch(err => console.log(err));
+    // generate salt to hash password
+    const salt = await bcrypt.genSalt(5);
+    // now we set user password to hashed password
+    const hashedPassword = await bcrypt.hash(loginPassword, salt);
 
+    try {
+        const hotel = await Hotels.findById(hotelId)
+        hotel.hotelName = name,
+        hotel.contact = contact,
+        hotel.parking = parking,
+        hotel.area = area,
+        hotel.address = address,
+        hotel.ownerName = ownerName,
+        hotel.ownerCNIC = ownerCNIC,
+        hotel.ownerContact = ownerContact,
+        hotel.loginEmail = loginEmail,
+        hotel.loginPassword = hashedPassword,
+        hotel.approvedStatus = approvedStatus
+
+        await hotel.save();
+        console.log('UPDATED Hotel!');
+        req.flash('message', 'Hotel Data Updated Successfully.')
+        res.redirect('/Hotels/hotelsList');
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 const postAddHotelGallery = async (req, res, next) => {
@@ -528,7 +540,8 @@ const editGalleryHouses = (req, res, next) => {
     res.render('./pages/Appartments/editGalleryHouses')
 }
 
-const postAddAppartment = (req, res, next) => {
+//Appartments post requests
+const postAddAppartment = async (req, res, next) => {
     const name = req.body.appartName;
     const price = req.body.price;
     const contact = req.body.contact;
@@ -544,6 +557,12 @@ const postAddAppartment = (req, res, next) => {
     const description = req.body.description;
     const features = req.body.features;
     const videoUrl = req.body.videoUrl;
+
+    // generate salt to hash password
+    const salt = await bcrypt.genSalt(5);
+    // now we set user password to hashed password
+    const hashedPassword = await bcrypt.hash(loginPassword, salt);
+
     // const approvedStatus = req.body.status;
     const appartment = new Appartments({
         name: name,
@@ -558,26 +577,27 @@ const postAddAppartment = (req, res, next) => {
         ownerCNIC: ownerCNIC,
         ownerContact: ownerContact,
         loginEmail: loginEmail,
-        loginPassword: loginPassword,
+        loginPassword: hashedPassword,
         availibilityStatus: false,
         description: description,
         features: features,
         videoUrl: videoUrl
     });
-    appartment
-        .save()
-        .then(result => {
-            // console.log(result);
-            console.log('appartment added');
-            req.flash('message', 'Appartment Added Successfully');
-            res.redirect('/Appartments/appartmentHouseList');
-        })
-        .catch(err => {
-            console.log(err);
-        });
+
+
+    try {
+        await appartment.save()
+        // console.log(result);
+        console.log('appartment added');
+        req.flash('message', 'Appartment Added Successfully');
+        res.redirect('/Appartments/appartmentHouseList');
+    }
+    catch (err) {
+        console.log(err);
+    }
 }
 
-const postEditAppartment = (req, res, next) => {
+const postEditAppartment = async (req, res, next) => {
 
     const appartId = req.body.appartId;
     const name = req.body.appartName;
@@ -597,32 +617,36 @@ const postEditAppartment = (req, res, next) => {
     const features = req.body.features;
     const videoUrl = req.body.videoUrl;
 
-    Appartments.findById(appartId)
-        .then(appart => {
-            appart.name = name;
-            appart.price = price;
-            appart.contact = contact;
-            appart.parking = parking;
-            appart.area = area;
-            appart.appartmentType = appartType;
-            appart.address = address;
-            appart.ownerName = ownerName;
-            appart.ownerCNIC = ownerCNIC;
-            appart.ownerContact = ownerContact;
-            appart.loginEmail = loginEmail;
-            appart.loginPassword = loginPassword;
-            appart.availibilityStatus = availibilityStatus;
-            appart.description = description;
-            appart.features = features;
-            appart.videoUrl = videoUrl;
-            return appart.save();
-        })
-        .then(result => {
-            console.log('UPDATED appartment/house!');
-            req.flash('message', 'Appartment Data Updated Successfully')
-            res.redirect('/Appartments/appartmentHouseList');
-        })
-        .catch(err => console.log(err));
+    // generate salt to hash password
+    const salt = await bcrypt.genSalt(5);
+    // now we set user password to hashed password
+    const hashedPassword = await bcrypt.hash(loginPassword, salt);
+
+    try {
+        const appart = await Appartments.findById(appartId)
+        appart.name = name;
+        appart.price = price;
+        appart.contact = contact;
+        appart.parking = parking;
+        appart.area = area;
+        appart.appartmentType = appartType;
+        appart.address = address;
+        appart.ownerName = ownerName;
+        appart.ownerCNIC = ownerCNIC;
+        appart.ownerContact = ownerContact;
+        appart.loginEmail = loginEmail;
+        appart.loginPassword = hashedPassword;
+        appart.availibilityStatus = availibilityStatus;
+        appart.description = description;
+        appart.features = features;
+        appart.videoUrl = videoUrl;
+        await appart.save();
+        console.log('UPDATED appartment/house!');
+        req.flash('message', 'Appartment Data Updated Successfully')
+        res.redirect('/Appartments/appartmentHouseList');
+    } catch (err) {
+        console.log(err)
+    }
 
 }
 
@@ -783,6 +807,7 @@ const editRoomGallery = (req, res, next) => {
         .catch(err => console.log(err));
 }
 
+// Room post requests
 const postAddRoom = (req, res) => {
     const roomNo = req.body.roomNo;
     const hotel = JSON.parse(req.body.hotel);
@@ -1059,7 +1084,8 @@ const vehicleList = (req, res, next) => {
             res.render('./pages/Vehicles/vehicleList', {
                 vehicles: vehicles,
                 pageTitle: 'Vehicle List',
-                path: '/Vehicles/vehicles-list'
+                path: '/Vehicles/vehicles-list',
+                flashMessage: req.flash('message')
             });
         })
         .catch(err => console.log(err));
@@ -1110,7 +1136,8 @@ const editVehicleGallery = (req, res, next) => {
                     gallery: vehicle.gallery,
                     vehicleId: vehicle.id,
                     pageTitle: 'Gallery List',
-                    path: '/Vehicle/gallery-list'
+                    path: '/Vehicle/gallery-list',
+                    flashMessage: req.flash('message')
                 });
             }
         })
@@ -1152,6 +1179,7 @@ const postAddVehicle = (req, res) => {
         .then(result => {
             // console.log(result);
             console.log('Added vehicle');
+            req.flash('message', 'Vehicle Added Successfully');
             res.redirect('/Vehicles/vehicleList');
         })
         .catch(err => {
@@ -1193,6 +1221,7 @@ const postEditVehicle = (req, res) => {
         })
         .then(result => {
             console.log('Updated vehicle');
+            req.flash('message', 'Vehicle Data Updated Successfully');
             res.redirect('/Vehicles/vehicleList');
         })
         .catch(err => {
@@ -1230,14 +1259,16 @@ const postAddVehicleGallery = async (req, res) => {
         if (vehicle.gallery.length === 0) {
             vehicle.gallery = gallery;
             vehicle.save();
-            console.log('added gallery to vehicle')
-            res.redirect('/Vehicles/editVehicleGallery/' + vehicleId)
+            console.log('added gallery to vehicle');
+            req.flash('message', 'Vehicle Gallery Added Successfully');
+            res.redirect('/Vehicles/editVehicleGallery/' + vehicleId);
         } else {
             updatedGallery = vehicle.gallery.concat(gallery)
             vehicle.gallery = updatedGallery;
             vehicle.save();
             console.log("gallery updated");
-            res.redirect('/Vehicles/editVehicleGallery/' + vehicleId)
+            req.flash('message', 'Vehicle Gallery Updated Successfully');
+            res.redirect('/Vehicles/editVehicleGallery/' + vehicleId);
         }
     } catch (err) {
         console.log(err);
@@ -1415,7 +1446,8 @@ const tourList = (req, res, next) => {
             res.render('./pages/Tours/toursList', {
                 tours: tours,
                 pageTitle: 'Tours List',
-                path: '/Tours/tour-list'
+                path: '/Tours/tour-list',
+                flashMessage: req.flash('message')
             });
         })
         .catch(err => console.log(err));
@@ -1497,7 +1529,8 @@ const postAddTour = (req, res) => {
         .then(result => {
             // console.log(result);
             console.log('Added Tour');
-            res.redirect('/Tours/tourList');
+            req.flash('message', 'Tour Added Successfully')
+            res.redirect('/');
         })
         .catch(err => {
             console.log(err);
@@ -1542,7 +1575,8 @@ const postEditTour = (req, res, next) => {
         })
         .then(result => {
             console.log('UPDATED Tour!');
-            res.redirect('/');
+            req.flash('message', 'Tour Data Updated Successfully')
+            res.redirect('/Tours/toursList');
         })
         .catch(err => console.log(err));
 
@@ -1582,7 +1616,7 @@ const sliderImages = (req, res, next) => {
             if (!gallery) {
                 res.redirect('/SliderImages/addSliderImages/none')
             }
-            res.render('./pages/SliderImages/sliderImagesList', { gallery: gallery })
+            res.render('./pages/SliderImages/sliderImagesList', { gallery: gallery, flashMessage: req.flash('message') })
         })
         .catch(err => console.log(err));
 
@@ -1605,7 +1639,8 @@ const postAddSliderImages = async (req, res) => {
         new: true
     });
     if (existingGallery) {
-        console.log('the gallery updated')
+        console.log('the gallery updated');
+        req.flash('message', 'Slider Gallery Updated Successfully');
         res.redirect('/SliderImages/sliderImagesList')
     } else {
         const gallery = new sliderGallery({
@@ -1616,7 +1651,8 @@ const postAddSliderImages = async (req, res) => {
             .then(result => {
                 // console.log(result);
                 console.log('Created Gallery');
-                res.redirect('/');
+                req.flash('message', 'Slider Gallery Added Successfully');
+                res.redirect('/SliderImages/sliderImagesList');
             })
             .catch(err => {
                 console.log(err)
@@ -1626,7 +1662,7 @@ const postAddSliderImages = async (req, res) => {
 
 const postDeleteSliderGalleryImage = (req, res) => {
 
-    const galleryId = req.body.galleryId;
+    const galleryId = req.body.id;
     const image = req.body.image;
     let images = [];
     sliderGallery
@@ -1704,7 +1740,7 @@ const editUser = async (req, res, next) => {
 
 }
 
-const postAddUser = (req, res) => {
+const postAddUser = async (req, res) => {
 
     const name = req.body.name;
     const contact = req.body.contact;
@@ -1716,6 +1752,11 @@ const postAddUser = (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
+    // generate salt to hash password
+    const salt = await bcrypt.genSalt(5);
+    // now we set user password to hashed password
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     const user = new Users({
         name: name,
         contact: contact,
@@ -1725,7 +1766,7 @@ const postAddUser = (req, res) => {
         address: address,
         type: type,
         email: email,
-        password: password
+        password: hashedPassword
     });
 
     user
@@ -1733,6 +1774,7 @@ const postAddUser = (req, res) => {
         .then(result => {
             // console.log(result);
             console.log('Added user');
+            req.flash('message', 'User Added Successfully');
             res.redirect('/');
         })
         .catch(err => {
@@ -1740,7 +1782,7 @@ const postAddUser = (req, res) => {
         });
 }
 
-const postEditUser = (req, res) => {
+const postEditUser = async (req, res) => {
 
     const userId = req.body.userId;
     const name = req.body.name;
@@ -1752,25 +1794,29 @@ const postEditUser = (req, res) => {
     const type = req.body.type;
     const email = req.body.email;
     const password = req.body.password;
+    // generate salt to hash password
+    const salt = await bcrypt.genSalt(5);
+    // now we set user password to hashed password
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    Users.findById(userId)
-        .then(user => {
-            user.name = name;
-            user.contact = contact;
-            user.CNIC = cnic;
-            user.gender = gender;
-            user.location = location.areaName;
-            user.address = address;
-            user.type = type;
-            user.email = email;
-            user.password = password;
-            return user.save();
-        })
-        .then(result => {
-            console.log('UPDATED User!');
-            res.redirect('/');
-        })
-        .catch(err => console.log(err));
+    try {
+        const user = await Users.findById(userId);
+        user.name = name;
+        user.contact = contact;
+        user.CNIC = cnic;
+        user.gender = gender;
+        user.location = location.areaName;
+        user.address = address;
+        user.type = type;
+        user.email = email;
+        user.password = hashedPassword;
+        await user.save();
+        console.log('UPDATED User!');
+        req.flash('message', 'User Updated Successfully');
+        res.redirect('/');
+    } catch (err) {
+        console.log(err);
+    } 
 }
 
 const postDeleteUser = (req, res) => {
