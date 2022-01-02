@@ -11,12 +11,15 @@ const hotels = (req, res, next) => res.render('./pages/Appartments/hotels');
 const hotelGallery = (req, res, next) => res.render('./pages/Appartments/hotelGallery');
 const hotelRooms = (req, res, next) => res.render('./pages/Appartments/hotelRooms');
 const vehicles = (req, res, next) => res.render('./pages/Appartments/vehicles');
+const vehicleBooking = (req, res, next) => res.render('./pages/Appartments/vehicleBooking');
 const galleryAppRoom = (req, res, next) => res.render('./pages/Appartments/galleryAppRoom');
 const roomBooking = (req, res, next) => res.render('./pages/Appartments/roomBooking');
 
-// Tours
+// Tours 
 const tours = (req, res, next) => res.render('./pages/Tours/tours');
 const hike = (req, res, next) => res.render('./pages/Tours/hike');
+const booking = (req, res, next) => res.render('./pages/Tours/booking');
+
 const gallerytandh = (req, res, next) => res.render('./pages/Tours/gallerytandh');
 
 // News
@@ -33,16 +36,19 @@ const contact = (req, res, next) => res.render('./pages/Contact/contact');
 const login = (req, res, next) => res.render('./pages/User/login');
 const signup = (req, res, next) => res.render('./pages/User/signup');
 
+// Terms And Conditions
+const termsAndCondition = (req, res, next) => res.render('./pages/TermsConditions/termsAndCondition');
+
 
 module.exports = {
     // HomePage
     home,
 
     // Services (Appartments)
-    appartments, allappartments, apartmentBooking, appartmentGallery, hotels, hotelGallery, hotelRooms, vehicles, galleryAppRoom, roomBooking,
+    appartments, allappartments, apartmentBooking, appartmentGallery, hotels, hotelGallery, hotelRooms, vehicles, vehicleBooking, galleryAppRoom, roomBooking,
 
     // Tours
-    tours, hike, gallerytandh,
+    tours, hike, booking, gallerytandh,
 
     // News
     news, exploreNews,
@@ -54,5 +60,8 @@ module.exports = {
     contact,
 
     // User
-    login, signup
+    login, signup,
+
+    // Terms And Conditions
+    termsAndCondition
 }

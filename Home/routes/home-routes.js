@@ -5,10 +5,10 @@ const {
     home,
 
     // Services (Appartments)
-    appartments, allappartments, apartmentBooking, appartmentGallery, hotels, hotelGallery, hotelRooms, vehicles, galleryAppRoom, roomBooking,
+    appartments, allappartments, apartmentBooking, appartmentGallery, hotels, hotelGallery, hotelRooms, vehicles, vehicleBooking, galleryAppRoom, roomBooking,
 
     // Tours
-    tours, hike, gallerytandh,
+    tours, hike, booking, gallerytandh,
 
     // News
     news, exploreNews,
@@ -20,7 +20,10 @@ const {
     contact,
 
     // User
-    login, signup
+    login, signup,
+
+    // Terms And Conditions
+    termsAndCondition
 
 } = require('../controllers/homeController');
 const router = express.Router();
@@ -37,12 +40,14 @@ router.get('/Appartments/hotels', hotels)
 router.get('/Appartments/hotelGallery', hotelGallery)
 router.get('/Appartments/hotelRooms', hotelRooms)
 router.get('/Appartments/vehicles', vehicles)
+router.get('/Appartments/vehicleBooking', vehicleBooking)
 router.get('/Appartments/galleryAppRoom', galleryAppRoom)
 router.get('/Appartments/roomBooking', roomBooking)
 
 // Tours
 router.get('/Tours/tours', tours)
 router.get('/Tours/hike', hike)
+router.get('/Tours/booking', booking)
 router.get('/Tours/gallerytandh', gallerytandh)
 
 // News
@@ -59,6 +64,8 @@ router.get('/Contact/contact', contact)
 router.get('/User/login', login)
 router.get('/User/signup', signup)
 
+// Terms And Conditions
+router.get('/TermsConditions/termsAndCondition', termsAndCondition)
 
 
 module.exports = {
