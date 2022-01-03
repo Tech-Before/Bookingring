@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const delImg = (name) => {
-  imgPath = path.join(__dirname, "../public/images/" + name);
+  imgPath = path.join(__dirname, "../public/uploads/" + name);
   fs.unlink(imgPath, function (err) {
     if (err) throw err;
     console.log("File deleted!");
@@ -10,7 +10,7 @@ const delImg = (name) => {
 };
 
 const delMultImages = (names) => {
-  const imgDirectory = path.join(__dirname, "../public/images/");
+  const imgDirectory = path.join(__dirname, "../public/uploads/");
   names.map((name) => {
     imgPath = imgDirectory + name;
     fs.unlink(imgPath, function (err) {

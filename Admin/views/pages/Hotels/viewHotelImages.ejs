@@ -25,7 +25,7 @@
     <!-- Main content -->
     <section class="content">
       <% if(flashMessage.length> 0){ %>
-        <div class="alert alert-success m-3 mt-2" style="z-index: 10001;" role="alert" id="flashMessage">
+        <div class="alert alert-info m-3 mt-2" style="z-index: 10001;" role="alert" id="flashMessage">
           <%= flashMessage %>
         </div>
         <% } %>
@@ -42,7 +42,7 @@
 
                   <% for(let i=0; i< gallery.length; i++) { %>
                     <div class="col-md-4" id="<%= 'elem' + i %>">
-                      <img src="<%= '/images/' + gallery[i] %>" class="img-thumbnail" width="304" height="236">
+                      <img src="<%= '/uploads/' + gallery[i] %>" class="img-thumbnail" width="304" height="236">
                       <% let deleteHandler="deleteImageHandler('/Hotels/DeleteGalleryImage', '" + hotelId + "', '" + gallery[i] + "', 'elem" + i + "')"; %>
                         <button style="width: 90%" class="btn btn-danger btn-sm" onclick="<%= deleteHandler %>">Delete <i
                             class="fa fa-trash"></i></button>

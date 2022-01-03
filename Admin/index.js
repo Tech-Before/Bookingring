@@ -9,14 +9,19 @@ const multer = require('multer');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
+const MongoDBStore = require('connect-mongodb-session')(session);
 
 const app = express();
+const store = new MongoDBStore({
+  uri: `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.xjk47.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+  collection: 'sessions'
+});
 const port = 3000;
 
 // configuring of file destination and name
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './public/images/');
+    cb(null, './public/uploads/');
   },
   filename: (req, file, cb) => {
     let date = new Date().toISOString().replaceAll(":", "-");
@@ -47,8 +52,9 @@ app.use(cookieParser('SecretStringForCookies'));
 app.use(session({
   secret: 'SecretStringForCookies',
   cookie: {maxAge: 600000},
-  resave: true,
-  saveUninitialized: true
+  resave: false,
+  saveUninitialized: false,
+  store: store
 }));
 app.use(flash());
 
@@ -59,9 +65,9 @@ app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, './public')));
 app.use('images', express.static(path.join(__dirname, './public/images')));
+
 app.use(homeRoutes.routes)
 
-// app.listen(port, ()=> console.log(`App listening on ${port}`))
 mongoose
   .connect(
     `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.xjk47.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`

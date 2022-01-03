@@ -1,19 +1,60 @@
-const { delImg, delMultImages } = require('../util/file')
+const { delImg, delMultImages } = require('../util/file');
 const bcrypt = require("bcrypt");
-const Areas = require('../models/Location')
-const Tours = require('../models/Tour')
-const Hotels = require('../models/Hotel')
-const Appartments = require('../models/Appartment')
-const Rooms = require('../models/Room')
-const Vehicles = require('../models/Vehicles')
-const sliderGallery = require('../models/sliderGallery')
-const Users = require('../models/SystemUsers')
-const Updates = require('../models/Updates')
-const vehicleCategory = require('../models/vehicleCategory')
+const Areas = require('../models/Location');
+const Tours = require('../models/Tour');
+const Hotels = require('../models/Hotel');
+const Appartments = require('../models/Appartment');
+const Rooms = require('../models/Room');
+const Vehicles = require('../models/Vehicles');
+const sliderGallery = require('../models/sliderGallery');
+const Users = require('../models/SystemUsers');
+const Updates = require('../models/Updates');
+const vehicleCategory = require('../models/vehicleCategory');
 
 // Login
 const login = (req, res, next) => {
-    res.render('./login', { layout: 'login' })
+    res.render('./login', { layout: 'login', flashMessage: req.flash('message') })
+}
+
+//postLogin
+const postLogin = (req, res, next) =>{
+    const email = req.body.email;
+    const password = req.body.password;
+    Users.findOne({ email: email })
+    .then(user => {
+      if (!user) {
+          req.flash('message', 'invalid email');
+        return res.redirect('/login');
+      }
+      bcrypt
+        .compare(password, user.password)
+        .then(doMatch => {
+          if (doMatch) {
+            req.session.loggedIn = true;
+            req.session.user = user;
+            req.flash('message', 'Welcome ' + user.name)
+            return req.session.save(err => {
+              console.log(err);
+              res.redirect('/');
+            });
+          }
+          req.flash('message', 'invalid password');
+          res.redirect('/login');
+        })
+        .catch(err => {
+          console.log(err);
+          req.flash('message', 'invalid email or password');
+          res.redirect('/login');
+        });
+    })
+    .catch(err => console.log(err));
+}
+
+const logout = (req, res, next) =>{
+    req.session.destroy((err)=>{
+        console.log(err);
+        res.redirect('/');
+    })
 }
 
 // Dashboard
@@ -1832,7 +1873,7 @@ const postDeleteUser = (req, res) => {
 
 module.exports = {
     // Login
-    login,
+    login, postLogin, logout,
 
     // Dashboard
     indexView,
