@@ -35,6 +35,8 @@ const contact = (req, res, next) => res.render('./pages/Contact/contact');
 // User
 const login = (req, res, next) => res.render('./pages/User/login');
 const signup = (req, res, next) => res.render('./pages/User/signup');
+const verification = (req, res, next) => res.render('./pages/User/verification');
+
 
 // Terms And Conditions
 const termsAndCondition = (req, res, next) => res.render('./pages/TermsConditions/termsAndCondition');
@@ -60,7 +62,7 @@ module.exports = {
     contact,
 
     // User
-    login, signup,
+    login, signup, verification,
 
     // Terms And Conditions
     termsAndCondition
