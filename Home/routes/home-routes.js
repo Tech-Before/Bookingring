@@ -23,7 +23,10 @@ const {
     login, signup, verification,
 
     // Terms And Conditions
-    termsAndCondition
+    termsAndCondition,
+
+    // FAQ's
+    faqs
 
 } = require('../controllers/homeController');
 const router = express.Router();
@@ -67,6 +70,9 @@ router.get('/User/verification', verification)
 
 // Terms And Conditions
 router.get('/TermsConditions/termsAndCondition', termsAndCondition)
+
+// FAQ's
+router.get('/FAQs/faqs', faqs)
 
 
 module.exports = {

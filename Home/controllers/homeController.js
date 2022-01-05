@@ -41,6 +41,8 @@ const verification = (req, res, next) => res.render('./pages/User/verification')
 // Terms And Conditions
 const termsAndCondition = (req, res, next) => res.render('./pages/TermsConditions/termsAndCondition');
 
+// FAQ's
+const faqs = (req, res, next) => res.render('./pages/FAQs/faqs');
 
 module.exports = {
     // HomePage
@@ -65,5 +67,8 @@ module.exports = {
     login, signup, verification,
 
     // Terms And Conditions
-    termsAndCondition
+    termsAndCondition,
+
+    // FAQ's
+    faqs
 }
