@@ -1,5 +1,6 @@
 const { render } = require('ejs');
 const express = require('express');
+const Hotels = require('../models/Hotel');
 const {
     // Login
     login, postLogin, logout,
@@ -49,10 +50,18 @@ const {
 } = require('../controllers/homeController')
 const router = express.Router();
 const isAuth = require('../middleware/isAuth');
+const { check, body } = require('express-validator');
 
 // Login
 router.get('/login', login);
-router.post('/postLogin', postLogin);
+router.post('/postLogin', [
+    body('email')
+      .isEmail()
+      .withMessage('Please enter a valid email address.')
+      .normalizeEmail(),
+    body('password', 'Password has to be valid.')
+      .trim()
+  ], postLogin);
 router.get('/logout', logout);
 
 // Dashboard
@@ -83,8 +92,76 @@ router.get('/Hotels/addHotelGallery', isAuth, addGalleryHotel)
 router.get('/Hotels/addHotelImages', isAuth, addHotelImages)
 router.get('/Hotels/galleryList', isAuth, galleryList)
 router.get('/Hotels/viewHotelImages/:id', isAuth, viewHotelImages)
-router.post('/Hotels/addHotel', postAddHotel)
-router.post('/Hotels/editHotel/', isAuth, postEditHotel)
+router.post('/Hotels/addHotel', [
+    check('loginEmail')
+      .isEmail()
+      .withMessage('Please enter a valid email.')
+      .custom((value, { req }) => {
+        return Hotels.findOne({ loginEmail: value }).then(userHotel => {
+          if (userHotel) {
+            return Promise.reject(
+              'Hotel associated with E-Mail exists already, please pick a different one.'
+            );
+          }
+        });
+      })
+      .normalizeEmail(),
+    body(
+      'loginPassword',
+      'Please enter a password with only numbers and text and at least 8 characters.'
+    )
+      .isLength({ min: 8 })
+      .isAlphanumeric()
+      .trim(),
+    body(
+        'contact',
+        'Please enter valid Hotel contact number.'
+    )
+    .isLength({ min: 10, max: 11})
+    .trim(),
+    body(
+      'ownerCNIC',
+      'Please enter valid 13-digit CNIC Number.'
+    )
+    .isLength({ min: 13, max: 13 })
+    .trim(),
+    body(
+      'ownerContact',
+      'Please enter valid owner contact Number.'
+    )
+    .isLength({ min: 10, max: 11 })
+    .trim()
+  ], isAuth, postAddHotel)
+
+router.post('/Hotels/editHotel/',[
+  check('loginEmail')
+    .isEmail()
+    .withMessage('Please enter a valid email.')
+    .normalizeEmail(),
+  body(
+    'loginPassword',
+    'Please enter a password with only numbers and text and at least 8 characters.'
+  )
+    .isLength({ min: 8 }),
+  body(
+      'contact',
+      'Please enter valid Hotel contact number.'
+  )
+  .isLength({ min: 10, max: 11})
+  .trim(),
+  body(
+    'ownerCNIC',
+    'Please enter valid 13-digit CNIC Number.'
+  )
+  .isLength({ min: 13, max: 13 })
+  .trim(),
+  body(
+    'ownerContact',
+    'Please enter valid owner contact Number.'
+  )
+  .isLength({ min: 10, max: 11 })
+  .trim()
+], isAuth, postEditHotel)
 router.post('/Hotels/addHotelGallery', isAuth, postAddHotelGallery)
 router.post('/Hotels/DeleteGalleryImage', postDeleteGalleryImage)
 router.post('/Hotels/deleteHotel', isAuth, postDeleteHotel)
@@ -99,7 +176,48 @@ router.get('/Appartments/appartmentList', isAuth, appartmentList)
 router.get('/Appartments/housesList', isAuth, housesList)
 router.get('/Appartments/addGalleryHouses', isAuth, addGalleryHouses)
 router.get('/Appartments/editGalleryHouses', isAuth, editGalleryHouses)
-router.post('/Appartments/addAppartment', isAuth, postAddAppartment)
+// post requests for appartment
+router.post('/Appartments/addAppartment', [
+  check('loginEmail')
+    .isEmail()
+    .withMessage('Please enter a valid email.')
+    .custom((value, { req }) => {
+      return Hotels.findOne({ loginEmail: value }).then(userHotel => {
+        if (userHotel) {
+          return Promise.reject(
+            'Hotel associated with E-Mail exists already, please pick a different one.'
+          );
+        }
+      });
+    })
+    .normalizeEmail(),
+  body(
+    'loginPassword',
+    'Please enter a password with only numbers and text and at least 8 characters.'
+  )
+    .isLength({ min: 8 })
+    .isAlphanumeric()
+    .trim(),
+  body(
+      'contact',
+      'Please enter valid Hotel contact number.'
+  )
+  .isLength({ min: 10, max: 11})
+  .trim(),
+  body(
+    'ownerCNIC',
+    'Please enter valid 13-digit CNIC Number.'
+  )
+  .isLength({ min: 13, max: 13 })
+  .trim(),
+  body(
+    'ownerContact',
+    'Please enter valid owner contact Number.'
+  )
+  .isLength({ min: 10, max: 11 })
+  .trim()
+], isAuth, postAddAppartment)
+
 router.post('/Appartments/editAppartmentHouse', isAuth, postEditAppartment)
 router.post('/Appartments/addGallery', isAuth, postAddAppartmentGallery)
 router.post('/Appartments/deleteGalleryImage', isAuth, postDeleteAppartmentGalleryImage)

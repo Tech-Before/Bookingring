@@ -1,5 +1,7 @@
 const { delImg, delMultImages } = require('../util/file');
 const bcrypt = require("bcrypt");
+const { validationResult } = require('express-validator');
+
 const Areas = require('../models/Location');
 const Tours = require('../models/Tour');
 const Hotels = require('../models/Hotel');
@@ -13,13 +15,34 @@ const vehicleCategory = require('../models/vehicleCategory');
 
 // Login
 const login = (req, res, next) => {
-    res.render('./login', { layout: 'login', flashMessage: req.flash('message') })
+    res.render('./login', {
+        layout: 'login',
+        oldInput: {
+            email: '',
+            passsword: ''
+        },
+        flashMessage: req.flash('message') 
+    })
 }
 
 //postLogin
 const postLogin = (req, res, next) =>{
     const email = req.body.email;
     const password = req.body.password;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).render('../views/login', {
+        path: '/login',
+        pageTitle: 'Login',
+        layout: 'login',
+        flashMessage: errors.array()[0].msg,
+        oldInput: {
+            email: email,
+            password: password
+        },
+        validationErrors: errors.array()
+        });
+    }
     Users.findOne({ email: email })
     .then(user => {
       if (!user) {
@@ -168,7 +191,21 @@ const hotelClients = (req, res, next) => {
             res.render('./pages/Hotels/addHotel', {
                 areas: areas,
                 pageTitle: 'add hotel',
-                path: '/Hotels/add-hotel'
+                path: '/Hotels/add-hotel',
+                oldInput: {
+                    name: '',
+                    contact: '',
+                    parking: '',
+                    area: '',
+                    roomService: '',
+                    address: '',
+                    ownerName: '',
+                    ownerCNIC: '',
+                    ownerContact: '',
+                    loginEmail: '',
+                    loginPassword: ''
+                    },
+                flashMessage: req.flash('message')
             });
         })
         .catch(err => console.log(err));
@@ -201,26 +238,28 @@ const viewHotel = (req, res, next) => {
         .catch(err => console.log(err));
 }
 
-const editHotel = (req, res, next) => {
+const editHotel = async (req, res, next) => {
 
     const hotelId = req.params.id;
-    Hotels.findById(hotelId)
-        .then(hotel => {
-            if (!hotel) {
-                return res.redirect('/');
-            }
-            return Areas.find().then(areas => {
-                return { hotel: hotel, areas: areas }
-            })
-        }).
-        then(data => {
-            res.render('./pages/Hotels/editHotel', {
-                pageTitle: 'Edit Tour',
-                path: '/admin/edit-tour',
-                data: data
-            });
-        })
-        .catch(err => console.log(err));
+    try {
+        const hotel = await Hotels.findById(hotelId);
+        if (!hotel) {
+            req.flash('message', 'Could not find the Hotel');
+            return res.redirect('/');
+        }
+        const areas = await Areas.find();
+
+        res.render('./pages/Hotels/editHotel', {
+            pageTitle: 'Edit Tour',
+            path: '/admin/edit-tour',
+            areas: areas,
+            hotel: hotel,
+            flashMessage: req.flash('message')
+        });
+    }
+    catch (err) {
+        console.log(err)
+    }
 
 }
 
@@ -314,6 +353,7 @@ const viewHotelImages = (req, res, next) => {
 
 //Hotel post Requests 
 const postAddHotel = async (req, res, next) => {
+
     const name = req.body.hotelName;
     const contact = req.body.contact;
     const parking = req.body.parking;
@@ -325,13 +365,38 @@ const postAddHotel = async (req, res, next) => {
     const ownerContact = req.body.ownerContact;
     const loginEmail = req.body.loginEmail;
     const loginPassword = req.body.loginPassword;
+    // const approvedStatus = req.body.status;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const areas = await Areas.find();
+        return res.status(422).render('../views/pages/Hotels/addHotel', {
+        path: '/Hotesl/addHotel',
+        pageTitle: 'Hotel',
+        areas: areas,
+        flashMessage: errors.array()[0].msg,
+        oldInput: {
+        name: name,
+        contact: contact,
+        parking: parking,
+        area: area,
+        roomService: roomService,
+        address: address,
+        ownerName: ownerName,
+        ownerCNIC: ownerCNIC,
+        ownerContact: ownerContact,
+        loginEmail: loginEmail,
+        loginPassword: loginPassword
+        },
+        validationErrors: errors.array()
+        });
+    }
 
     // generate salt to hash password
-    const salt = await bcrypt.genSalt(5);
+    const salt = await bcrypt.genSalt(16);
     // now we set user password to hashed password
     const hashedPassword = await bcrypt.hash(loginPassword, salt);
 
-    // const approvedStatus = req.body.status;
     const hotel = new Hotels({
         name: name,
         contact: contact,
@@ -367,6 +432,7 @@ const postEditHotel = async (req, res, next) => {
     const parking = req.body.parking;
     const area = req.body.area;
     const address = req.body.address;
+    const roomService = req.body.roomService;
     const ownerName = req.body.ownerName;
     const ownerCNIC = req.body.ownerCNIC;
     const ownerContact = req.body.ownerContact;
@@ -374,14 +440,40 @@ const postEditHotel = async (req, res, next) => {
     const loginPassword = req.body.loginPassword;
     const approvedStatus = req.body.status;
 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const areas = await Areas.find();
+        return res.status(422).render('../views/pages/Hotels/editHotel', {
+        path: '/Hotesl/addHotel',
+        pageTitle: 'Hotel',
+        areas: areas,
+        flashMessage: errors.array()[0].msg,
+        hotel: {
+        id: hotelId,
+        name: name,
+        contact: contact,
+        parking: parking,
+        area: area,
+        roomService: roomService,
+        address: address,
+        ownerName: ownerName,
+        ownerCNIC: ownerCNIC,
+        ownerContact: ownerContact,
+        loginEmail: loginEmail,
+        loginPassword: loginPassword
+        },
+        validationErrors: errors.array()
+        });
+    }
+
     // generate salt to hash password
-    const salt = await bcrypt.genSalt(5);
+    const salt = await bcrypt.genSalt(16);
     // now we set user password to hashed password
     const hashedPassword = await bcrypt.hash(loginPassword, salt);
 
     try {
         const hotel = await Hotels.findById(hotelId)
-        hotel.hotelName = name,
+        hotel.name = name,
         hotel.contact = contact,
         hotel.parking = parking,
         hotel.area = area,
