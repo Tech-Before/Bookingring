@@ -20,7 +20,7 @@ const {
     contact,
 
     // User
-    login, signup, verification,
+    login, signup, verification, forgotPassword, passwordReset,
 
     // Terms And Conditions
     termsAndCondition,
@@ -67,6 +67,8 @@ router.get('/Contact/contact', contact)
 router.get('/User/login', login)
 router.get('/User/signup', signup)
 router.get('/User/verification', verification)
+router.get('/User/forgotPassword', forgotPassword)
+router.get('/User/passwordReset', passwordReset)
 
 // Terms And Conditions
 router.get('/TermsConditions/termsAndCondition', termsAndCondition)

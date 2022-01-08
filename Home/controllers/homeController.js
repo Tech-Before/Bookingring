@@ -36,6 +36,8 @@ const contact = (req, res, next) => res.render('./pages/Contact/contact');
 const login = (req, res, next) => res.render('./pages/User/login');
 const signup = (req, res, next) => res.render('./pages/User/signup');
 const verification = (req, res, next) => res.render('./pages/User/verification');
+const forgotPassword = (req, res, next) => res.render('./pages/User/forgotPassword');
+const passwordReset = (req, res, next) => res.render('./pages/User/passwordReset');
 
 
 // Terms And Conditions
@@ -64,7 +66,7 @@ module.exports = {
     contact,
 
     // User
-    login, signup, verification,
+    login, signup, verification, forgotPassword, passwordReset,
 
     // Terms And Conditions
     termsAndCondition,
