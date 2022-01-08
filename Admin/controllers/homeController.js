@@ -574,7 +574,25 @@ const appartmentsHouses = (req, res, next) => {
             res.render('./pages/Appartments/addAppartment', {
                 areas: areas,
                 pageTitle: 'add appartment',
-                path: '/Appartments/add-appartment'
+                path: '/Appartments/add-appartment',
+                oldInput: {
+                    name: '',
+                    price: '',
+                    contact: '',
+                    parking: '',
+                    area: '',
+                    appartmentType: '',
+                    address: '',
+                    ownerName: '',
+                    ownerCNIC: '',
+                    ownerContact: '',
+                    loginEmail: '',
+                    loginPassword: '',
+                    description: '',
+                    features: '',
+                    videoUrl: ''
+                },
+                flashMessage: req.flash('message')
             });
         })
         .catch(err => console.log(err));
@@ -593,25 +611,28 @@ const appartmentHouseList = (req, res, next) => {
         .catch(err => console.log(err));
 }
 
-const editAppartmentHouse = (req, res, next) => {
+const editAppartmentHouse = async (req, res, next) => {
     const appartId = req.params.id;
-    Appartments.findById(appartId)
-        .then(appart => {
-            if (!appart) {
-                return res.redirect('/');
-            }
-            return Areas.find().then(areas => {
-                return { appart: appart, areas: areas }
-            })
-        }).
-        then(data => {
-            res.render('./pages/Appartments/editAppartmentHouse', {
-                pageTitle: 'Edit Appartment/House',
-                path: '/Appartment/edit-Appartment',
-                data: data
-            });
+
+    try {
+        const appart = await Appartments.findById(appartId)
+
+        if (!appart) {
+            return res.redirect('/');
+        }
+
+        const areas = await Areas.find();
+        res.render('./pages/Appartments/editAppartmentHouse', {
+            pageTitle: 'Edit Appartment/House',
+            path: '/Appartment/edit-Appartment',
+            areas: areas,
+            appart: appart,
+            flashMessage: req.flash('message')
         })
-        .catch(err => console.log(err));
+    }
+    catch (err) {
+        console.log(err);
+    }
 }
 
 const addGallery = (req, res, next) => {
@@ -675,6 +696,7 @@ const editGalleryHouses = (req, res, next) => {
 
 //Appartments post requests
 const postAddAppartment = async (req, res, next) => {
+
     const name = req.body.appartName;
     const price = req.body.price;
     const contact = req.body.contact;
@@ -691,12 +713,41 @@ const postAddAppartment = async (req, res, next) => {
     const features = req.body.features;
     const videoUrl = req.body.videoUrl;
 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const areas = await Areas.find();
+        return res.status(422).render('../views/pages/Appartments/addAppartment', {
+        path: '/Appartments/addAppartment',
+        pageTitle: 'Appartment',
+        areas: areas,
+        flashMessage: errors.array()[0].msg,
+        oldInput: {
+        name: name,
+        price: price,
+        contact: contact,
+        parking: parking,
+        area: area,
+        appartmentType: appartType,
+        address: address,
+        ownerName: ownerName,
+        ownerCNIC: ownerCNIC,
+        ownerContact: ownerContact,
+        loginEmail: loginEmail,
+        loginPassword: loginPassword,
+        description: description,
+        features: features,
+        videoUrl: videoUrl
+        },
+        validationErrors: errors.array()
+        });
+    }
+
     // generate salt to hash password
-    const salt = await bcrypt.genSalt(5);
+    const salt = await bcrypt.genSalt(16);
     // now we set user password to hashed password
     const hashedPassword = await bcrypt.hash(loginPassword, salt);
 
-    // const approvedStatus = req.body.status;
+    const approvedStatus = req.body.status;
     const appartment = new Appartments({
         name: name,
         contact: contact,
@@ -750,8 +801,38 @@ const postEditAppartment = async (req, res, next) => {
     const features = req.body.features;
     const videoUrl = req.body.videoUrl;
 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const areas = await Areas.find();
+        return res.status(422).render('../views/pages/Appartments/editAppartmentHouse', {
+        path: '/Appartments/addAppartment',
+        pageTitle: 'Appartment',
+        areas: areas,
+        flashMessage: errors.array()[0].msg,
+        appart: {
+        id: appartId,
+        name: name,
+        price: price,
+        contact: contact,
+        parking: parking,
+        area: area,
+        appartmentType: appartType,
+        address: address,
+        ownerName: ownerName,
+        ownerCNIC: ownerCNIC,
+        ownerContact: ownerContact,
+        loginEmail: loginEmail,
+        loginPassword: loginPassword,
+        description: description,
+        features: features,
+        videoUrl: videoUrl
+        },
+        validationErrors: errors.array()
+        });
+    }
+
     // generate salt to hash password
-    const salt = await bcrypt.genSalt(5);
+    const salt = await bcrypt.genSalt(16);
     // now we set user password to hashed password
     const hashedPassword = await bcrypt.hash(loginPassword, salt);
 
@@ -1203,7 +1284,23 @@ const addVehicle = (req, res, next) => {
                 res.render('./pages/Vehicles/addVehicles', {
                     cats: cats,
                     pageTitle: 'list category',
-                    path: '/VehiclesCategory/category-list'
+                    path: '/VehiclesCategory/category-list',
+                    oldInput: {
+                        categoryId: '',
+                        categoryName: '',
+                        vehicleNo: '',
+                        model: '',
+                        seats: '',
+                        availabilityStatus: '',
+                        ownerName: '',
+                        ownerCNIC: '',
+                        ownerContact: '',
+                        ownerAddress: '',
+                        description: '',
+                        features: '',
+                        videoUrl: ''
+                    },
+                    flashMessage: req.flash('message')
                 });
             }
 
@@ -1225,30 +1322,27 @@ const vehicleList = (req, res, next) => {
 }
 
 
-const editVehicle = (req, res, next) => {
+const editVehicle = async (req, res, next) => {
     const id = req.params.id;
 
-    Vehicles.findById(id)
-        .then(vehicle => {
-            if (!vehicle) {
-                console.log('no vehicle found')
-                return res.redirect('/');
-            }
+    try {
+        const vehicle = await Vehicles.findById(id);
+        if (!vehicle) {
+            console.log('no vehicle found')
+            req.flash('message', 'Vehicle Not Found')
+            return res.redirect('/');
+        }
 
-            return vehicleCategory.find().then(cats => {
-                return {
-                    cats: cats,
-                    vehicle: vehicle
-                }
-            })
-
+        const cats = await vehicleCategory.find();
+        res.render('./pages/Vehicles/editVehicle', {
+            cats: cats,
+            vehicle: vehicle,
+            flashMessage: req.flash('message')
         })
-        .then(data => {
-            res.render('./pages/Vehicles/editVehicle', {
-                data: data
-            })
-        })
-        .catch(err => console.log(err));
+    }
+    catch (err) {
+        console.log(err)
+    }
 
 }
 
@@ -1278,7 +1372,7 @@ const editVehicleGallery = (req, res, next) => {
 
 }
 
-const postAddVehicle = (req, res) => {
+const postAddVehicle = async (req, res) => {
     const category = JSON.parse(req.body.category);
     const vehicleNo = req.body.vehicleNo;
     const model = req.body.model;
@@ -1291,6 +1385,33 @@ const postAddVehicle = (req, res) => {
     const description = req.body.description;
     const features = req.body.features;
     const videoUrl = req.body.videoUrl;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const cats = await vehicleCategory.find();
+        return res.status(422).render('../views/pages/Vehicles/addVehicles', {
+        path: '/Vehicles/addVehicle',
+        pageTitle: 'Vehicles',
+        flashMessage: errors.array()[0].msg,
+        cats: cats,
+        oldInput: {
+            categoryId: category.id,
+            categoryName: category.name,
+            vehicleNo: vehicleNo,
+            model: model,
+            seats: seats,
+            availabilityStatus: status,
+            ownerName: ownerName,
+            ownerCNIC: ownerCNIC,
+            ownerContact: ownerContact,
+            ownerAddress: ownerAddress,
+            description: description,
+            features: features,
+            videoUrl: videoUrl
+        },
+        validationErrors: errors.array()
+        });
+    }
 
     const vehicle = new Vehicles({
         categoryId: category.id,
@@ -1307,20 +1428,20 @@ const postAddVehicle = (req, res) => {
         features: features,
         videoUrl: videoUrl
     });
-    vehicle
-        .save()
-        .then(result => {
-            // console.log(result);
-            console.log('Added vehicle');
-            req.flash('message', 'Vehicle Added Successfully');
-            res.redirect('/Vehicles/vehicleList');
-        })
-        .catch(err => {
-            console.log(err);
-        });
+
+    try {
+        await vehicle.save()
+        console.log('Added vehicle');
+        req.flash('message', 'Vehicle Added Successfully');
+        res.redirect('/Vehicles/vehicleList');
+    }
+
+    catch (err) {
+        console.log(err);
+    }
 }
 
-const postEditVehicle = (req, res) => {
+const postEditVehicle = async (req, res) => {
     const id = req.body.id;
     const category = JSON.parse(req.body.category);
     const vehicleNo = req.body.vehicleNo;
@@ -1335,31 +1456,61 @@ const postEditVehicle = (req, res) => {
     const features = req.body.features;
     const videoUrl = req.body.videoUrl;
 
-    Vehicles.findById(id)
-        .then(vehicle => {
-            vehicle.categoryId = category.id;
-            vehicle.categoryName = category.name;
-            vehicle.vehicleNo = vehicleNo;
-            vehicle.model = model;
-            vehicle.seats = seats;
-            vehicle.availabilityStatus = status;
-            vehicle.ownerName = ownerName;
-            vehicle.ownerCNIC = ownerCNIC;
-            vehicle.ownerContact = ownerContact;
-            vehicle.ownerAddress = ownerAddress;
-            vehicle.description = description;
-            vehicle.features = features;
-            vehicle.videoUrl = videoUrl;
-            return vehicle.save()
-        })
-        .then(result => {
-            console.log('Updated vehicle');
-            req.flash('message', 'Vehicle Data Updated Successfully');
-            res.redirect('/Vehicles/vehicleList');
-        })
-        .catch(err => {
-            console.log(err);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+
+        const cats = await vehicleCategory.find();
+
+        return res.status(422).render('../views/pages/Vehicles/editVehicle', {
+        path: '/Vehicles/addVehicle',
+        pageTitle: 'Vehicles',
+        flashMessage: errors.array()[0].msg,
+        cats: cats,
+        vehicle: {
+            id: id,
+            categoryId: category.id,
+            categoryName: category.name,
+            vehicleNo: vehicleNo,
+            model: model,
+            seats: seats,
+            availabilityStatus: status,
+            ownerName: ownerName,
+            ownerCNIC: ownerCNIC,
+            ownerContact: ownerContact,
+            ownerAddress: ownerAddress,
+            description: description,
+            features: features,
+            videoUrl: videoUrl
+        },
+        validationErrors: errors.array()
         });
+    }
+
+    try {
+        const vehicle = await Vehicles.findById(id);
+        vehicle.categoryId = category.id;
+        vehicle.categoryName = category.name;
+        vehicle.vehicleNo = vehicleNo;
+        vehicle.model = model;
+        vehicle.seats = seats;
+        vehicle.availabilityStatus = status;
+        vehicle.ownerName = ownerName;
+        vehicle.ownerCNIC = ownerCNIC;
+        vehicle.ownerContact = ownerContact;
+        vehicle.ownerAddress = ownerAddress;
+        vehicle.description = description;
+        vehicle.features = features;
+        vehicle.videoUrl = videoUrl;
+
+        await vehicle.save();
+
+        console.log('Updated vehicle');
+        req.flash('message', 'Vehicle Data Updated Successfully');
+        res.redirect('/Vehicles/vehicleList');
+    }
+    catch (err) {
+        console.log(err);
+    }
 }
 
 const postDeleteVehicle = async (req, res) => {

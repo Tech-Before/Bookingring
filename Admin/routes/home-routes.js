@@ -176,7 +176,7 @@ router.get('/Appartments/appartmentList', isAuth, appartmentList)
 router.get('/Appartments/housesList', isAuth, housesList)
 router.get('/Appartments/addGalleryHouses', isAuth, addGalleryHouses)
 router.get('/Appartments/editGalleryHouses', isAuth, editGalleryHouses)
-// post requests for appartment
+// post requests routes for appartment
 router.post('/Appartments/addAppartment', [
   check('loginEmail')
     .isEmail()
@@ -185,7 +185,7 @@ router.post('/Appartments/addAppartment', [
       return Hotels.findOne({ loginEmail: value }).then(userHotel => {
         if (userHotel) {
           return Promise.reject(
-            'Hotel associated with E-Mail exists already, please pick a different one.'
+            'Appartment associated with E-Mail exists already, please pick a different one.'
           );
         }
       });
@@ -200,13 +200,13 @@ router.post('/Appartments/addAppartment', [
     .trim(),
   body(
       'contact',
-      'Please enter valid Hotel contact number.'
+      'Please enter valid Appartment contact number.'
   )
   .isLength({ min: 10, max: 11})
   .trim(),
   body(
     'ownerCNIC',
-    'Please enter valid 13-digit CNIC Number.'
+    'Please enter valid 13-digit CNIC Number without dashes.'
   )
   .isLength({ min: 13, max: 13 })
   .trim(),
@@ -218,7 +218,35 @@ router.post('/Appartments/addAppartment', [
   .trim()
 ], isAuth, postAddAppartment)
 
-router.post('/Appartments/editAppartmentHouse', isAuth, postEditAppartment)
+router.post('/Appartments/editAppartmentHouse',[
+  check('loginEmail')
+    .isEmail()
+    .withMessage('Please enter a valid email.')
+    .normalizeEmail(),
+  body(
+    'loginPassword',
+    'Please enter a password with only numbers and text and at least 8 characters.'
+  )
+    .isLength({ min: 8 }),
+  body(
+      'contact',
+      'Please enter valid Appartment contact number.'
+  )
+  .isLength({ min: 10, max: 11})
+  .trim(),
+  body(
+    'ownerCNIC',
+    'Please enter valid 13-digit CNIC Number without dashes.'
+  )
+  .isLength({ min: 13, max: 13 })
+  .trim(),
+  body(
+    'ownerContact',
+    'Please enter valid owner contact Number.'
+  )
+  .isLength({ min: 10, max: 11 })
+  .trim()
+], isAuth, postEditAppartment)
 router.post('/Appartments/addGallery', isAuth, postAddAppartmentGallery)
 router.post('/Appartments/deleteGalleryImage', isAuth, postDeleteAppartmentGalleryImage)
 router.post('/Appartments/deleteAppartment', isAuth, postDeleteAppartment)
@@ -249,8 +277,35 @@ router.get('/Vehicles/vehicleList', isAuth, vehicleList)
 router.get('/Vehicles/editVehicle/:id', isAuth, editVehicle)
 router.get('/Vehicles/addVehicleGallery/:id', isAuth, addVehicleGallery)
 router.get('/Vehicles/editVehicleGallery/:id', isAuth, editVehicleGallery)
-router.post('/Vehicles/addVehicle', isAuth, postAddVehicle)
-router.post('/Vehicles/editVehicle', isAuth, postEditVehicle)
+// post request routes for vehicles
+router.post('/Vehicles/addVehicle',[
+  body(
+    'ownerCNIC',
+    'Please enter valid 13-digit CNIC Number without dashes.'
+  )
+  .isLength({ min: 13, max: 13 })
+  .trim(),
+  body(
+    'ownerContact',
+    'Please enter valid owner contact Number.'
+  )
+  .isLength({ min: 10, max: 11 })
+  .trim()
+], isAuth, postAddVehicle)
+router.post('/Vehicles/editVehicle',[
+  body(
+    'ownerCNIC',
+    'Please enter valid 13-digit CNIC Number without dashes.'
+  )
+  .isLength({ min: 13, max: 13 })
+  .trim(),
+  body(
+    'ownerContact',
+    'Please enter valid owner contact Number.'
+  )
+  .isLength({ min: 10, max: 11 })
+  .trim()
+], isAuth, postEditVehicle)
 router.post('/Vehicles/addGallery', isAuth, postAddVehicleGallery)
 router.post('/Vehicles/deleteImage', isAuth, postDeleteVehiclesGalleryImage)
 router.post('/Vehicles/deleteVehicle', isAuth, postDeleteVehicle)

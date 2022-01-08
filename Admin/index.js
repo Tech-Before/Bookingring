@@ -51,7 +51,7 @@ app.use(bodyParser.raw());
 app.use(cookieParser('SecretStringForCookies'));
 app.use(session({
   secret: 'SecretStringForCookies',
-  cookie: {maxAge: 600000},
+  cookie: {maxAge: 86400000},
   resave: false,
   saveUninitialized: false,
   store: store
