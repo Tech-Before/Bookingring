@@ -25,6 +25,11 @@
 
   <!-- Main content -->
   <section class="content">
+    <% if(flashMessage.length> 0){ %>
+      <div class="alert alert-danger m-3 mt-2" style="z-index: 10001;" role="alert" id="flashMessage">
+        <%= flashMessage %>
+      </div>
+      <% } %>
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
@@ -39,36 +44,36 @@
                 <div class="row">
                   <div class="form-group col-md-3">
                     <label>Appartment | House Name</label>
-                    <input type="text" value="<%= data.appart.name %>" name="appartName"
+                    <input type="text" value="<%= appart.name %>" name="appartName"
                       placeholder="Example: Appartment No. 3" class="form-control" required>
                   </div>
 
                   <div class="form-group col-md-3">
                     <label>Rent</label>
-                    <input type="number" name="price" value="<%= data.appart.price %>" placeholder="Example: 5000"
+                    <input type="number" name="price" value="<%= appart.price %>" placeholder="Example: 5000"
                       class="form-control" required>
                   </div>
 
                   <div class="form-group col-md-3">
                     <label>Appartment | House Contact</label>
-                    <input type="number" name="contact" value="<%= data.appart.contact %>"
+                    <input type="number" name="contact" value="<%= appart.contact %>"
                       placeholder="Example: 0946712215" class="form-control" required>
                   </div>
 
                   <div class="form-group col-md-3">
                     <label>Appartment | House Parking</label>
                     <select class="form-control" name="parking">
-                      <option value="true" <%=data.appart.parking ? 'selected' : '' %>>Yes</option>
-                      <option value="false" <%=!data.appart.parking ? 'selected' : '' %>>No</option>
+                      <option value="true" <%=appart.parking ? 'selected' : '' %>>Yes</option>
+                      <option value="false" <%=!appart.parking ? 'selected' : '' %>>No</option>
                     </select>
                   </div>
 
                   <div class="form-group col-md-3">
                     <label>Appartment | House Area</label>
                     <select class="form-control" style="width: 100%;" name="area">
-                      <% for(let i=0; i< data.areas.length; i++) { %>
-                        <option value="<%= data.areas[i].name %>" <% data.appart.area===data.areas[i].name ? 'selected'
-                          : '' %>><%= data.areas[i].name %>
+                      <% for(let i=0; i< areas.length; i++) { %>
+                        <option value="<%= areas[i].name %>" <% appart.area===areas[i].name ? 'selected'
+                          : '' %>><%= areas[i].name %>
                         </option>
                         <% } %>
                     </select>
@@ -77,25 +82,24 @@
                   <div class="form-group col-md-3">
                     <label>Select Option</label>
                     <select class="form-control" style="width: 100%;" name="appartType">
-                      <option value="<%= data.appart.appartmentType %>" <% data.appart.appartmentType==='appartment'
+                      <option value="<%= appart.appartmentType %>" <% appart.appartmentType==='appartment'
                         ? 'selected' : '' %>>Appartment</option>
-                      <option value="<%= data.appart.appartmentType %>" <% data.appart.appartmentType==='appartment'
+                      <option value="<%= appart.appartmentType %>" <% appart.appartmentType==='appartment'
                         ? 'selected' : '' %>>Hosue</option>
                     </select>
                   </div>
 
                   <div class="form-group col-md-6">
                     <label>Appartment | House Address</label>
-                    <input type="text" name="address" value="<%= data.appart.address %>"
+                    <input type="text" name="address" value="<%= appart.address %>"
                       placeholder="Example: Near Shell Ptrol Station, Madyan Bazar" class="form-control" required>
                   </div>
 
                   <div class="form-group col-md-3">
                     <label>Avialibility Status</label>
                     <select class="form-control" name="status">
-                      <% console.log( data.appart.availibilityStatus ? 'this is true' : 'this is false' ) %>
-                        <option value="true" <%=data.appart.availibilityStatus ? 'selected' : '' %>> Available </option>
-                        <option value="false" <%=!data.appart.availibilityStatus ? 'selected' : '' %> >Unavailable
+                        <option value="true" <%=appart.availibilityStatus ? 'selected' : '' %>> Available </option>
+                        <option value="false" <%=!appart.availibilityStatus ? 'selected' : '' %> >Unavailable
                         </option>
                     </select>
                   </div>
@@ -105,18 +109,18 @@
                   <div class="form-group col-md-6">
                     <label>Appartment | House Description</label>
                     <textarea name="description" id="" rows="5" class="form-control"
-                      placeholder="Apartment/House Description . . ." required><%= data.appart.description %></textarea>
+                      placeholder="Apartment/House Description . . ." required><%= appart.description %></textarea>
                   </div>
 
                   <div class="form-group col-md-6">
                     <label>Appartment | House Features</label>
                     <textarea name="features" id="" rows="5" class="form-control" placeholder="Apartment/House Features . . ."
-                      required><%= data.appart.features %></textarea>
+                      required><%= appart.features %></textarea>
                   </div>
 
                   <div class="form-group col-md-6">
                     <label>Appartment | House Video</label>
-                    <input type="url" value="<%= data.appart.videoUrl %>" name="videoUrl" placeholder="i.e: https://www.youtube.com/embed/XV7OFsykBT0"
+                    <input type="url" value="<%= appart.videoUrl %>" name="videoUrl" placeholder="i.e: https://www.youtube.com/embed/XV7OFsykBT0"
                       class="form-control" required>
                   </div>
                   <!-- /New Data -->
@@ -137,37 +141,37 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>Owner Name</label>
-                    <input type="text" name="ownerName" value="<%= data.appart.ownerName %>"
+                    <input type="text" name="ownerName" value="<%= appart.ownerName %>"
                       placeholder="Example: Asif Khan" class="form-control" required>
                   </div>
 
                   <div class="form-group col-md-3">
                     <label>Owner CNIC #</label>
-                    <input type="number" name="ownerCNIC" value="<%= data.appart.ownerCNIC %>"
+                    <input type="number" name="ownerCNIC" value="<%= appart.ownerCNIC %>"
                       placeholder="Example: xxxxx-xxxxxxx-x" class="form-control" required>
                   </div>
 
                   <div class="form-group col-md-3">
                     <label>Owner Contact</label>
-                    <input type="number" name="ownerContact" value="<%= data.appart.ownerContact %>"
+                    <input type="number" name="ownerContact" value="<%= appart.ownerContact %>"
                       placeholder="Example: 03xxxxxxxxx" class="form-control" required>
                   </div>
 
 
                   <div class="form-group col-md-6">
                     <label>Login Email</label>
-                    <input type="email" name="loginEmail" value="<%= data.appart.loginEmail %>"
+                    <input type="email" name="loginEmail" value="<%= appart.loginEmail %>"
                       placeholder="Example: example@gmail.com" class="form-control" required>
                   </div>
 
                   <div class="form-group col-md-6">
                     <label>Password</label>
-                    <input type="password" name="loginPassword" value="<%= data.appart.loginPassword %>"
+                    <input type="password" name="loginPassword" value="<%= appart.loginPassword %>"
                       placeholder="Example: example@gmail.com" class="form-control" required>
                   </div>
                 </div>
 
-                <input type="hidden" name="appartId" value="<%= data.appart.id %>">
+                <input type="hidden" name="appartId" value="<%= appart.id %>">
 
                 <hr>
                 <div class="form-group">
