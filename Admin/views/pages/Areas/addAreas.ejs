@@ -27,7 +27,7 @@
   <!-- Main content -->
   <section class="content">
     <% if(flashMessage.length> 0){ %>
-      <div class="alert alert-info m-3 mt-2" style="z-index: 10001;" role="alert" id="flashMessage">
+      <div class="alert alert-danger m-3 mt-2" style="z-index: 10001;" role="alert" id="flashMessage">
         <%= flashMessage %>
       </div>
       <% } %>
@@ -40,10 +40,10 @@
               <h3 class="card-title">Add Location</h3>
             </div>
             <div class="card-body">
-              <form action="http://localhost:3000/Areas/addAreas" method="POST">
+              <form action="/Areas/addAreas" method="POST">
                 <div class="form-group">
                   <label for="Area">Location Name</label>
-                  <input type="text" name="areaName" placeholder="Example: Kalam" class="form-control" required>
+                  <input type="text" value="<%= name %>" name="areaName" placeholder="Example: Kalam" class="form-control" required>
                 </div>
                 <hr>
                 <div class="form-group">
