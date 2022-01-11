@@ -469,6 +469,7 @@ const postAddHotel = async (req, res, next) => {
 };
 
 const postEditHotel = async (req, res, next) => {
+
   const hotelId = req.body.hotelId;
   const name = req.body.hotelName;
   const contact = req.body.contact;
@@ -510,9 +511,9 @@ const postEditHotel = async (req, res, next) => {
     });
   }
 
-  const salt=null;
-  const hashedPassword=null;
-  if(!loginPassword.length===0){
+  let salt=null;
+  let hashedPassword=null;
+  if(loginPassword.length> 0){
     // generate salt to hash password
     salt = await bcrypt.genSalt(16);
     // now we set user password to hashed password
@@ -541,6 +542,8 @@ const postEditHotel = async (req, res, next) => {
     res.redirect("/Hotels/hotelsList");
   } catch (err) {
     console.log(err);
+    req.flash('message', 'Something went wrong.');
+    res.redirect('/');
   }
 };
 
@@ -819,6 +822,7 @@ const postAddAppartment = async (req, res, next) => {
 };
 
 const postEditAppartment = async (req, res, next) => {
+
   const appartId = req.body.appartId;
   const name = req.body.appartName;
   const price = req.body.price;
@@ -832,6 +836,7 @@ const postEditAppartment = async (req, res, next) => {
   const ownerContact = req.body.ownerContact;
   const loginEmail = req.body.loginEmail;
   const loginPassword = req.body.loginPassword;
+  const oldLoginPassword = req.body.oldLoginPassword;
   const availibilityStatus = req.body.status;
   const description = req.body.description;
   const features = req.body.features;
@@ -869,10 +874,18 @@ const postEditAppartment = async (req, res, next) => {
       });
   }
 
-  // generate salt to hash password
-  const salt = await bcrypt.genSalt(16);
-  // now we set user password to hashed password
-  const hashedPassword = await bcrypt.hash(loginPassword, salt);
+  let salt=null;
+  let hashedPassword=null;
+  if (loginPassword.length > 0) {
+
+    // generate salt to hash password
+    salt = await bcrypt.genSalt(16);
+    // now we set user password to hashed password
+    hashedPassword = await bcrypt.hash(loginPassword, salt);
+
+  } else {
+    hashedPassword = oldLoginPassword;
+  }
 
   try {
     const appart = await Appartments.findById(appartId);
@@ -968,64 +981,85 @@ const postDeleteAppartmentGalleryImage = (req, res) => {
 };
 
 // Rooms
-const addRoom = (req, res, next) => {
-  Areas.find()
-    .then((areas) => {
-      if (!areas) {
-        console.log("no area found");
-        return res.redirect("/");
-      }
-      return Hotels.find().then((hotels) => {
-        if (!hotels) {
-          console.log("no hotels found");
-        }
-        return { areas: areas, hotels: hotels };
-      });
-    })
-    .then((data) => {
-      res.render("./pages/Rooms/addRoom", {
-        pageTitle: "Rooms",
-        path: "/Rooms/add-room",
-        data: data,
-      });
-    })
-    .catch((err) => console.log(err));
+const addRoom = async (req, res, next) => {
+
+  try {
+    const areas = await Areas.find();
+    const hotels = await Hotels.find();
+
+    res.render("./pages/Rooms/addRoom", {
+      pageTitle: "Rooms",
+      path: "/Rooms/add-room",
+      areas: areas,
+      hotels: hotels,
+      hotelId: '',
+      areaId: '',
+      oldInput: {
+        roomNo: '',
+        areaName: '',
+        beds: '',
+        hotWater: '',
+        balcony: '',
+        status: '',
+        location: '',
+        charges: '',
+        size: '',
+        occupency: '',
+        bedSize: '',
+        description: '',
+        features: '',
+        videoUrl: ''
+      },
+      flashMessage: req.flash("message"),
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-const roomList = (req, res, next) => {
-  Rooms.find()
-    .then((rooms) => {
-      res.render("./pages/Rooms/roomList", {
-        rooms: rooms,
-        pageTitle: "Room List",
-        path: "/Rooms/room-list",
-        flashMessage: req.flash("message"),
-      });
-    })
-    .catch((err) => console.log(err));
+const roomList = async (req, res, next) => {
+  
+  try {
+    const hotels = await Hotels.find();
+    const areas = await Areas.find();
+    const rooms = await Rooms.find();
+  
+    res.render("./pages/Rooms/roomList", {
+      rooms: rooms,
+      areas: areas,
+      hotels: hotels,
+      pageTitle: "Room List",
+      path: "/Rooms/room-list",
+      flashMessage: req.flash("message"),
+    });
+  } catch (err) {
+    console.log(err);
+    req.flash("message", "Something went wrong.");
+    res.redirect("/");
+  }
+  
 };
 
 const editRoom = async (req, res, next) => {
   const id = req.params.id;
-  const areas = await Areas.find();
-  const hotels = await Hotels.find();
 
-  if (areas && hotels) {
-    Rooms.findById(id)
-      .then((room) => {
-        if (!room) {
-          console.log("no room found");
-          return res.redirect("/");
-        }
-        res.render("./pages/Rooms/editRoom", {
-          areas: areas,
-          hotels: hotels,
-          room: room,
-        });
-      })
-      .catch((err) => console.log(err));
-  } else {
+  try {
+    const areas = await Areas.find();
+    const hotels = await Hotels.find();
+    const room = await Rooms.findById(id);
+
+    res.render("./pages/Rooms/editRoom", {
+      areas: areas,
+      hotels: hotels,
+      room: room,
+      flashMessage: req.flash('message')
+    });
+
+  } catch (err) {
+    console.log(err);
     console.log("something went wrong");
+    req.flash("message", "Something went wrong.");
+    res.redirect("/");
   }
 };
 
@@ -1054,10 +1088,10 @@ const editRoomGallery = (req, res, next) => {
 };
 
 // Room post requests
-const postAddRoom = (req, res) => {
+const postAddRoom = async (req, res) => {
   const roomNo = req.body.roomNo;
-  const hotel = JSON.parse(req.body.hotel);
-  const area = JSON.parse(req.body.area);
+  const hotel = req.body.hotel;
+  const area = req.body.area;
   const beds = req.body.beds;
   const hotWater = req.body.hotWater;
   const balcony = req.body.balcony;
@@ -1073,9 +1107,8 @@ const postAddRoom = (req, res) => {
 
   const room = new Rooms({
     roomNo: roomNo,
-    hotelId: hotel.hotelId,
-    hotelName: hotel.hotelName,
-    areaId: area.areaId,
+    hotelId: hotel,
+    areaId: area,
     areaName: area.areaName,
     beds: beds,
     hotWater: hotWater,
@@ -1091,24 +1124,57 @@ const postAddRoom = (req, res) => {
     videoUrl: videoUrl,
   });
 
-  room
-    .save()
-    .then((result) => {
-      // console.log(result);
-      console.log("Added Room");
-      req.flash("message", "Room Added Successfully");
-      res.redirect("/");
-    })
-    .catch((err) => {
-      console.log(err);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const areas = await Areas.find();
+    const hotels = await Hotels.find();
+    return res.status(422).render("../views/pages/Rooms/addRoom", {
+      path: "/Room/addRoom",
+      pageTitle: "Rooms",
+      areas: areas,
+      hotels: hotels,
+      flashMessage: errors.array()[0].msg,
+      hotelId: hotel,
+      areaId: area,
+      oldInput: {
+        roomNo: roomNo,
+        areaName: area.areaName,
+        beds: beds,
+        hotWater: hotWater,
+        balcony: balcony,
+        status: status,
+        location: location,
+        charges: charges,
+        size: size,
+        occupency: occupency,
+        bedSize: bedSize,
+        description: description,
+        features: features,
+        videoUrl: videoUrl,
+      },
+      validationErrors: errors.array(),
     });
+  }
+
+  try {
+    await room.save();
+    // console.log(result);
+    console.log("Added Room");
+    req.flash("message", "Room Added Successfully");
+    res.redirect("/");
+  } catch (err) {
+    console.log(err);
+    req.flash("message", "Something went wrong");
+    res.redirect("/");
+  }
 };
 
-const postEditRoom = (req, res) => {
+const postEditRoom = async (req, res) => {
+
   const roomId = req.body.roomId;
   const roomNo = req.body.roomNo;
-  const hotel = JSON.parse(req.body.hotel);
-  const area = JSON.parse(req.body.area);
+  const hotel = req.body.hotel;
+  const area = req.body.area;
   const beds = req.body.beds;
   const hotWater = req.body.hotWater;
   const balcony = req.body.balcony;
@@ -1122,13 +1188,49 @@ const postEditRoom = (req, res) => {
   const features = req.body.features;
   const videoUrl = req.body.videoUrl;
 
-  Rooms.findById(roomId)
-    .then((room) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    try {
+      const areas = await Areas.find();
+      const hotels = await Hotels.find();
+      return res.status(422).render("../views/pages/Rooms/editRoom", {
+        path: "/Room/addRoom",
+        pageTitle: "Rooms",
+        areas: areas,
+        hotels: hotels,
+        flashMessage: errors.array()[0].msg,
+        hotelId: hotel,
+        areaId: area,
+        room: {
+          id: roomId,
+          roomNo: roomNo,
+          areaName: area.areaName,
+          beds: beds,
+          hotWater: hotWater,
+          balcony: balcony,
+          status: status,
+          location: location,
+          charges: charges,
+          size: size,
+          occupency: occupency,
+          bedSize: bedSize,
+          description: description,
+          features: features,
+          videoUrl: videoUrl,
+        },
+        validationErrors: errors.array(),
+      });
+    } catch (err) {
+      console.log(err);
+      req.flash('message', 'Something went wrong.');
+    }
+  }
+
+    try {
+      const room = await Rooms.findById(roomId);
       room.roomNo = roomNo;
-      room.hotelId = hotel.hotelId;
-      room.hotelName = hotel.hotelName;
-      room.areaId = area.areaId;
-      room.areaName = area.areaName;
+      room.hotelId = hotel;
+      room.areaId = area;
       room.beds = beds;
       room.hotWater = hotWater;
       room.balcony = balcony;
@@ -1142,16 +1244,16 @@ const postEditRoom = (req, res) => {
       room.features = features;
       room.videoUrl = videoUrl;
 
-      return room.save();
-    })
-    .then((result) => {
+      await room.save();
+
       console.log("room updated");
       req.flash("message", "Room Data Updated Successfully");
       res.redirect("/Rooms/roomList");
-    })
-    .catch((err) => {
+    } catch (err) {
       console.log(err);
-    });
+      req.flash("message", "Something went wrong.");
+      res.redirect("/");
+    }
 };
 
 const postDeleteRoom = async (req, res) => {

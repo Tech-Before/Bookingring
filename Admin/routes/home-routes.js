@@ -216,7 +216,7 @@ router.post(
       .custom((val) => {
         if (val.trim().length === 0) {
           throw new Error();
-        }else{
+        } else {
           return true;
         }
       })
@@ -228,7 +228,7 @@ router.post(
       .custom((val) => {
         if (val.trim().length === 0) {
           throw new Error();
-        }else{
+        } else {
           return true;
         }
       })
@@ -254,7 +254,7 @@ router.post(
       .custom((val) => {
         if (val.trim().length === 0) {
           throw new Error();
-        }else{
+        } else {
           return true;
         }
       })
@@ -266,7 +266,7 @@ router.post(
       .custom((val) => {
         if (val.trim().length === 0) {
           throw new Error();
-        }else{
+        } else {
           return true;
         }
       })
@@ -369,13 +369,21 @@ router.post(
       .withMessage("Please enter a valid email.")
       .normalizeEmail()
       .toLowerCase(),
-    // body(
-    //   "loginPassword",
-    //   "Please enter a password with only numbers and text and at least 8 characters."
-    // )
-    //   .notEmpty()
-    //   .isLength({ min: 8 })
-    //   .isAlphanumeric(),
+    body(
+      "loginPassword",
+      "Please enter a password with only numbers and text and at least 8 characters."
+    )
+    .custom(val =>{
+      if(val.length> 0){
+        return body("loginPassword")
+          .notEmpty()
+          .isLength({ min: 8 })
+          .isAlphanumeric()
+          .trim();
+      }else{
+        return true;
+      }
+    })
   ],
   isAuth,
   postEditHotel
@@ -501,7 +509,10 @@ router.post(
     body(
       "loginPassword",
       "Please enter a password with only numbers and text and at least 8 characters."
-    ).isLength({ min: 8 }),
+    )
+    .isLength({ min: 8 })
+    .isAlphanumeric()
+    .trim(),
   ],
   isAuth,
   postAddAppartment
@@ -510,23 +521,120 @@ router.post(
 router.post(
   "/Appartments/editAppartmentHouse",
   [
-    body("loginEmail")
-      .isEmail()
-      .withMessage("Please enter a valid email.")
-      .normalizeEmail(),
-    body(
-      "loginPassword",
-      "Please enter a password with only numbers and text and at least 8 characters."
-    ).isLength({ min: 8 }),
-    body("contact", "Please enter valid Appartment contact number.")
+    body("appartName", "Please enter valid Appartment Name.")
+      .notEmpty()
+      .custom((val) => {
+        if (val.trim().length === 0) {
+          throw new Error();
+        } else {
+          return true;
+        }
+      })
+      .isLength({ min: 3, max: 50 })
+      .trim()
+      .escape(),
+    body("price", "Please enter valid price.").isNumeric().trim(),
+    body("contact", "Please enter valid Appartment Contact number.")
       .isLength({ min: 10, max: 11 })
-      .trim(),
-    body("ownerCNIC", "Please enter valid 13-digit CNIC Number without dashes.")
+      .isNumeric(),
+    body("parking", "Please enter valid parking value.").isBoolean(),
+    body("area", "Please enter valid location.")
+      .notEmpty()
+      .custom((val) => {
+        if (val.trim().length === 0) {
+          throw new Error();
+        } else {
+          return true;
+        }
+      })
+      .isLength({ min: 3, max: 50 })
+      .escape(),
+    body("appartType", "Please enter valid appartment type.")
+      .notEmpty()
+      .custom((val) => {
+        if (val.trim().length === 0) {
+          throw new Error();
+        } else {
+          return true;
+        }
+      })
+      .isLength({ min: 3, max: 50 })
+      .trim()
+      .escape(),
+    body("address", "Please enter valid address.")
+      .notEmpty()
+      .custom((val) => {
+        if (val.trim().length === 0) {
+          throw new Error();
+        } else {
+          return true;
+        }
+      })
+      .isLength({ min: 3, max: 200 })
+      .trim()
+      .escape(),
+    body("videoUrl", "Please enter valid URL.")
+    .isURL(),
+    body("description", "Please enter valid description")
+      .notEmpty()
+      .custom((val) => {
+        if (val.trim().length === 0) {
+          throw new Error();
+        } else {
+          return true;
+        }
+      })
+      .trim()
+      .escape(),
+    body("features", "Please enter valid features")
+      .notEmpty()
+      .custom((val) => {
+        if (val.trim().length === 0) {
+          throw new Error();
+        } else {
+          return true;
+        }
+      })
+      .trim()
+      .escape(),
+    body("ownerName", "Please enter valid Owner Name.")
+      .notEmpty()
+      .custom((val) => {
+        if (val.trim().length === 0) {
+          throw new Error();
+        } else {
+          return true;
+        }
+      })
+      .isLength({ min: 3, max: 50 })
+      .trim()
+      .escape(),
+    body("ownerCNIC", "Please enter valid 13-digit CNIC Number.")
       .isLength({ min: 13, max: 13 })
       .trim(),
     body("ownerContact", "Please enter valid owner contact Number.")
       .isLength({ min: 10, max: 11 })
+      .isNumeric()
       .trim(),
+    body("loginEmail")
+      .isEmail()
+      .withMessage("Please enter a valid email.")
+      .normalizeEmail()
+      .toLowerCase(),
+    body(
+      "loginPassword",
+      "Please enter a password with only numbers and text and at least 8 characters."
+    )
+    .custom(val =>{
+      if(val.length> 0){
+        return body("loginPassword")
+          .isLength({ min: 8 })
+          .isAlphanumeric()
+          .trim();
+      }else{
+        return true;
+      }
+    }),
   ],
   isAuth,
   postEditAppartment
@@ -545,8 +653,176 @@ router.get("/Rooms/roomList", isAuth, roomList);
 router.get("/Rooms/editRoom/:id", isAuth, editRoom);
 router.get("/Rooms/addGallery/:id", isAuth, addRoomGallery);
 router.get("/Rooms/editGallery/:id", isAuth, editRoomGallery);
-router.post("/Rooms/addRoom", isAuth, postAddRoom);
-router.post("/Rooms/editRoom", isAuth, postEditRoom);
+//post requests for rooms
+router.post(
+  "/Rooms/addRoom",
+  [
+    body("hotel", "invalid hotel input").notEmpty().trim(),
+    body("area", "invalid area input").notEmpty().trim(),
+    body("beds", "invalid beds input").isNumeric(),
+    body("hotWater", "invalid Hot water input").isBoolean(),
+    body("heater", "invalid heater input").isBoolean(),
+    body("balcony", "invalid balcony input").isBoolean(),
+    body("status", "invalid status input").isBoolean(),
+    body("location", "Please enter valid location")
+      .notEmpty()
+      .custom((val) => {
+        if (val.length === 0) {
+          return false;
+        } else {
+          return true;
+        }
+      })
+      .isLength({ min: 3, max: 200 })
+      .trim()
+      .escape(),
+    body("charges", "Please enter valid charges")
+      .notEmpty()
+      .isLength({ min: 1 })
+      .isNumeric()
+      .trim(),
+    body("roomNo", "Please valid Room No.")
+      .isNumeric()
+      .isLength({ min: 1 })
+      .trim(),
+    body("size", "Please enter valid size.")
+      .notEmpty()
+      .custom((val) => {
+        if (val.length === 0) {
+          return false;
+        } else {
+          return true;
+        }
+      })
+      .notEmpty()
+      .isLength({ min: 3 })
+      .trim()
+      .escape(),
+    body("occupency", "Please valid occupency.")
+      .notEmpty()
+      .custom((val) => {
+        if (val.length === 0) {
+          return false;
+        } else {
+          return true;
+        }
+      })
+      .isLength({ min: 1 })
+      .trim()
+      .escape(),
+    body("bedSize", "invalid bed Size.").notEmpty(),
+    body("videoUrl", "invalid video URL.").isURL(),
+    body("description", "Please enter valid description.")
+      .notEmpty()
+      .custom((val) => {
+        if (val.trim().length===0) {
+          return false;
+        } else {
+          return true;
+        }
+      })
+      .isLength({ min: 3 })
+      .trim()
+      .escape(),
+    body("features", "Please enter valid description.")
+      .notEmpty()
+      .custom((val) => {
+        if (val.trim().length===0) {
+          return false;
+        } else {
+          return true;
+        }
+      })
+      .isLength({ min: 3 })
+      .trim()
+      .escape(),
+  ],
+  isAuth,
+  postAddRoom
+);
+router.post("/Rooms/editRoom",
+[
+  body("hotel", "invalid hotel input").notEmpty().trim(),
+  body("area", "invalid area input").notEmpty().trim(),
+  body("beds", "invalid beds input").isNumeric(),
+  body("hotWater", "invalid Hot water input").isBoolean(),
+  body("heater", "invalid heater input").isBoolean(),
+  body("balcony", "invalid balcony input").isBoolean(),
+  body("status", "invalid status input").isBoolean(),
+  body("location", "Please enter valid location")
+    .notEmpty()
+    .custom((val) => {
+      if (val.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    })
+    .isLength({ min: 3, max: 200 })
+    .trim()
+    .escape(),
+  body("charges", "Please enter valid charges")
+    .notEmpty()
+    .isLength({ min: 1 })
+    .isNumeric()
+    .trim(),
+  body("roomNo", "Please valid Room No.")
+    .isNumeric()
+    .isLength({ min: 1 })
+    .trim(),
+  body("size", "Please enter valid size.")
+    .notEmpty()
+    .custom((val) => {
+      if (val.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    })
+    .notEmpty()
+    .isLength({ min: 3 })
+    .trim()
+    .escape(),
+  body("occupency", "Please valid occupency.")
+    .notEmpty()
+    .custom((val) => {
+      if (val.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    })
+    .isLength({ min: 1 })
+    .trim()
+    .escape(),
+  body("bedSize", "invalid bed Size.").notEmpty(),
+  body("videoUrl", "invalid video URL.").isURL(),
+  body("description", "Please enter valid description.")
+    .notEmpty()
+    .custom((val) => {
+      if (val.trim().length===0) {
+        return false;
+      } else {
+        return true;
+      }
+    })
+    .isLength({ min: 3 })
+    .trim()
+    .escape(),
+  body("features", "Please enter valid description.")
+    .notEmpty()
+    .custom((val) => {
+      if (val.trim().length===0) {
+        return false;
+      } else {
+        return true;
+      }
+    })
+    .isLength({ min: 3 })
+    .trim()
+    .escape(),
+],
+isAuth, postEditRoom);
 router.post("/Rooms/deleteRoom", isAuth, postDeleteRoom);
 router.post("/Rooms/addGallery", isAuth, postAddRoomGallery);
 router.post("/Rooms/deleteImage/", isAuth, postDeleteRoomGalleryImage);
@@ -681,10 +957,17 @@ router.post(
         });
       })
       .normalizeEmail(),
-    // body(
-    //   "password",
-    //   "Please enter a password with only numbers and text and at least 8 characters."
-    // ).isLength({ min: 8 }),
+    body(
+      "password",
+      "Please enter a password with only numbers and text and at least 8 characters."
+    )
+    .custom(val =>{
+      if(val.length> 0){
+        return body("password").isLength({ min: 8 }).isAlphanumeric();
+      }else{
+        return true;
+      }
+    }),
     body("contact", "Please enter valid contact number.")
       .isLength({ min: 10, max: 11 })
       .trim(),

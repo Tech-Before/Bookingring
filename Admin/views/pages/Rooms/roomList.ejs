@@ -60,7 +60,9 @@
                         <%= i + 1 %>
                       </td>
                       <td>
-                        <%= rooms[i].hotelName %>
+                        <% for(let j= 0; j< hotels.length; j++) { %> 
+                          <%= rooms[i].hotelId===hotels[j].id ? hotels[j].name : '' %>
+                        <% } %> 
                       </td>
                       <td>
                         <%= rooms[i].areaName %>

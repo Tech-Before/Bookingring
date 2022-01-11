@@ -25,6 +25,11 @@
 
   <!-- Main content -->
   <section class="content">
+    <% if(flashMessage.length> 0){ %>
+      <div class="alert alert-danger m-3 mt-2" style="z-index: 10001;" role="alert" id="flashMessage">
+        <%= flashMessage %>
+      </div>
+      <% } %>
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
@@ -41,7 +46,7 @@
                     <label>Select Hotel</label>
                     <select class="form-control select2" name="hotel">
                       <% for(let i=0; i<hotels.length; i++){ %>
-                        <option value="<%= JSON.stringify({hotelName: hotels[i].name, hotelId: hotels[i].id}) %>"
+                        <option value="<%= hotels[i].id %>"
                           <%=hotels[i].id==room.hotelId ? 'selected' : '' %> > <%= hotels[i].name %>
                         </option>
                         <% } %>
@@ -52,7 +57,7 @@
                     <label>Select Hotel Area</label>
                     <select class="form-control select2" name="area">
                       <% for(let i=0; i<areas.length; i++){ %>
-                        <option value="<%= JSON.stringify({areaName: areas[i].name, areaId: areas[i].id}) %>"
+                        <option value="<%= areas[i].id %>"
                           <%=areas[i].id==room.areaId ? 'selected' : '' %> ><%= areas[i].name %>
                         </option>
                         <% } %>

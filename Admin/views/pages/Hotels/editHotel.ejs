@@ -130,7 +130,7 @@
                   <input type="hidden" value="<%= hotel.id %>" name="hotelId" />
                   <div class="form-group col-md-6">
                     <label>Password</label>
-                    <input type="hidden" name="oldLoginPassword" value=""
+                    <input type="hidden" name="oldLoginPassword" value="<%= hotel.loginPassword %>"
                       placeholder="" class="form-control" required>
                       <input type="password" placeholder="New Password" name="loginPassword" class="form-control">
                   </div>

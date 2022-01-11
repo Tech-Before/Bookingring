@@ -165,9 +165,10 @@
                   </div>
 
                   <div class="form-group col-md-6">
-                    <label>Password</label>
-                    <input type="password" name="loginPassword" value="<%= appart.loginPassword %>"
-                      placeholder="Example: example@gmail.com" class="form-control" required>
+                    <label>Change Password</label>
+                    <input type="hidden" value="<%= appart.loginPassword %>" name="oldLoginPassword">
+                    <input type="password" name="loginPassword"
+                      placeholder="New Password" class="form-control" value="" >
                   </div>
                 </div>
 

@@ -27,6 +27,11 @@
 
   <!-- Main content -->
   <section class="content">
+    <% if(flashMessage.length> 0){ %>
+      <div class="alert alert-danger m-3 mt-2" style="z-index: 10001;" role="alert" id="flashMessage">
+        <%= flashMessage %>
+      </div>
+      <% } %>
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
@@ -42,10 +47,10 @@
                   <div class="form-group col-md-6">
                     <label>Select Hotel</label>
                     <select class="form-control select2" name="hotel">
-                      <% for(let i=0; i< data.hotels.length; i++) { %>
+                      <% for(let i=0; i< hotels.length; i++) { %>
                         <option
-                          value="<%= JSON.stringify({hotelName: data.hotels[i].name, hotelId: data.hotels[i].id}) %>">
-                          <%= data.hotels[i].name %>
+                          value="<%= hotels[i].id %>" <%= hotelId===hotels[i].id ? 'selected' : '' %> >
+                          <%= hotels[i].name %>
                         </option>
                         <% } %>
                     </select>
@@ -54,9 +59,9 @@
                   <div class="form-group col-md-6">
                     <label>Select Hotel Area</label>
                     <select class="form-control select2" name="area">
-                      <% for(let i=0; i< data.areas.length; i++){ %>
-                        <option value="<%= JSON.stringify({areaName: data.areas[i].name, areaId: data.areas[i].id}) %>">
-                          <%= data.areas[i].name %>
+                      <% for(let i=0; i< areas.length; i++){ %>
+                        <option value="<%= areas[i].id %>" <%= areaId===areas[i].id ? 'selected' : '' %> >
+                          <%= areas[i].name %>
                         </option>
                         <% } %>
                     </select>
@@ -70,98 +75,98 @@
                   <div class="form-group col-md-4">
                     <label>Select Beds</label>
                     <select class="form-control" name="beds">
-                      <option value="1">Single Bedded</option>
-                      <option value="2">2 Bedded</option>
-                      <option value="3">3 Bedded</option>
-                      <option value="4">4 Bedded</option>
-                      <option value="5">5 Bedded</option>
+                      <option value="1" <%= oldInput.beds==1 ? 'selected' : '' %> >Single Bedded</option>
+                      <option value="2" <%= oldInput.beds==2 ? 'selected' : '' %>>2 Bedded</option>
+                      <option value="3" <%= oldInput.beds==3 ? 'selected' : '' %>>3 Bedded</option>
+                      <option value="4" <%= oldInput.beds==4 ? 'selected' : '' %>>4 Bedded</option>
+                      <option value="5" <%= oldInput.beds==5 ? 'selected' : '' %>>5 Bedded</option>
                     </select>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label>Hot Water</label>
                     <select class="form-control" name="hotWater">
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
+                      <option value="true" <%= oldInput.hotWater ? 'selected' : '' %>>Yes</option>
+                      <option value="false" <%= oldInput.beds ? '' : 'selected' %>>No</option>
                     </select>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label>Heater</label>
                     <select class="form-control" name="heater">
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
+                      <option value="true" <%= oldInput.heater ? 'selected' : '' %> >Yes</option>
+                      <option value="false" <%= oldInput.heater ? '' : 'selected' %>>No</option>
                     </select>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label>Balcony</label>
                     <select class="form-control" name="balcony">
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
+                      <option value="true" <%= oldInput.balcony ? 'selected' : '' %> >Yes</option>
+                      <option value="false" <%= oldInput.heater ? '' : 'selected' %>>No</option>
                     </select>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label>Room Status</label>
                     <select class="form-control" name="status">
-                      <option value="true">Available</option>
-                      <option value="false">Not Available</option>
+                      <option value="true" <%= oldInput.status ? 'selected' : '' %>>Available</option>
+                      <option value="false" <%= oldInput.status ? '' : 'selected' %>>Not Available</option>
                     </select>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label>Location</label>
-                    <input type="text" name="location" placeholder="i.e: 3rd Floor" class="form-control" required>
+                    <input type="text" value="<%= oldInput.location %>" name="location" placeholder="i.e: 3rd Floor" class="form-control" required>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label>Room Charges</label>
-                    <input type="number" name="charges" placeholder="i.e: 5000" class="form-control" required>
+                    <input type="number" value="<%= oldInput.charges %>" name="charges" placeholder="i.e: 5000" class="form-control" required>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label>Room No</label>
-                    <input type="number" name="roomNo" placeholder="i.e: 5" class="form-control" required>
+                    <input type="number" value="<%= oldInput.roomNo %>" name="roomNo" placeholder="i.e: 5" class="form-control" required>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label>Room Size</label>
-                    <input type="text" name="size" placeholder="i.e: 47-52 sqft" class="form-control" required>
+                    <input type="text" value="<%= oldInput.size %>" name="size" placeholder="i.e: 47-52 sqft" class="form-control" required>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label>Room Occupency</label>
-                    <input type="text" name="occupency" placeholder="i.e: Upto 4 childrens" class="form-control"
+                    <input type="text" value="<%= oldInput.occupency %>" name="occupency" placeholder="i.e: Upto 4 childrens" class="form-control"
                       required>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label>Room Bed Size</label>
                     <select class="form-control select2" style="width: 100%;" name="bedSize">
-                      <option value="king">King Bed Only</option>
-                      <option value="regular">Regular Beds Only</option>
-                      <option value="king&regular">King &amp; Regular Beds</option>
+                      <option value="king" <%= oldInput.bedSize==='king' ? 'selected' : '' %> >King Bed Only</option>
+                      <option value="regular" <%= oldInput.bedSize==='regular' ? 'selected' : '' %> >Regular Beds Only</option>
+                      <option value="king&regular" <%= oldInput.bedSize==='king&regular' ? 'selected' : '' %> >King &amp; Regular Beds</option>
                     </select>
                   </div>
 
                   <!-- New Data -->
                   <div class="form-group col-md-4">
                     <label>Room Video</label>
-                    <input type="url" name="videoUrl" placeholder="i.e: https://www.youtube.com/embed/XV7OFsykBT0"
+                    <input type="url" value="<%= oldInput.videoUrl %>" name="videoUrl" placeholder="i.e: https://www.youtube.com/embed/XV7OFsykBT0"
                       class="form-control" required>
                   </div>
 
                   <div class="form-group col-md-6">
                     <label>Room Description</label>
                     <textarea name="description" id="" rows="5" class="form-control" placeholder="Room Description . . ."
-                      required></textarea>
+                      required><%= oldInput.description %></textarea>
                   </div>
 
                   <div class="form-group col-md-6">
                     <label>Room Features</label>
                     <textarea name="features" id="" rows="5" class="form-control" placeholder="Room Features . . ."
-                      required></textarea>
+                      required><%= oldInput.features %> </textarea>
                   </div>
                   <!-- /New Data --> 
 
