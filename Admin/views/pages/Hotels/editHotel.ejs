@@ -130,8 +130,9 @@
                   <input type="hidden" value="<%= hotel.id %>" name="hotelId" />
                   <div class="form-group col-md-6">
                     <label>Password</label>
-                    <input type="password" name="loginPassword" value="<%= hotel.loginPassword %>"
-                      placeholder="Example: example@gmail.com" class="form-control" required>
+                    <input type="hidden" name="oldLoginPassword" value=""
+                      placeholder="" class="form-control" required>
+                      <input type="password" placeholder="New Password" name="loginPassword" class="form-control">
                   </div>
                 </div>
 

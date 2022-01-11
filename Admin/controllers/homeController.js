@@ -417,9 +417,6 @@ const postAddHotel = async (req, res, next) => {
     });
   }
 
-  req.flash("message", "data is ok");
-  res.redirect("/Hotels/addHotel");
-
   // generate salt to hash password
   const salt = await bcrypt.genSalt(16);
   // now we set user password to hashed password
@@ -484,6 +481,7 @@ const postEditHotel = async (req, res, next) => {
   const ownerContact = req.body.ownerContact;
   const loginEmail = req.body.loginEmail;
   const loginPassword = req.body.loginPassword;
+  const oldLoginPassword = req.body.oldLoginPassword;
   const approvedStatus = req.body.status;
 
   const errors = validationResult(req);
@@ -512,10 +510,16 @@ const postEditHotel = async (req, res, next) => {
     });
   }
 
-  // generate salt to hash password
-  const salt = await bcrypt.genSalt(16);
-  // now we set user password to hashed password
-  const hashedPassword = await bcrypt.hash(loginPassword, salt);
+  const salt=null;
+  const hashedPassword=null;
+  if(!loginPassword.length===0){
+    // generate salt to hash password
+    salt = await bcrypt.genSalt(16);
+    // now we set user password to hashed password
+    hashedPassword = await bcrypt.hash(loginPassword, salt);
+  }else{
+    hashedPassword = oldLoginPassword;
+  }
 
   try {
     const hotel = await Hotels.findById(hotelId);
@@ -2099,6 +2103,7 @@ const postEditUser = async (req, res) => {
   const type = req.body.type;
   const email = req.body.email;
   const password = req.body.password;
+  const oldPassword = req.body.oldPassword;
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -2124,10 +2129,20 @@ const postEditUser = async (req, res) => {
     });
   }
 
-  // generate salt to hash password
-  const salt = await bcrypt.genSalt(5);
-  // now we set user password to hashed password
-  const hashedPassword = await bcrypt.hash(password, salt);
+  let salt=null;
+  let hashedPassword=null;
+  if (password.length > 0) {
+
+    // generate salt to hash password
+    salt = await bcrypt.genSalt(5);
+    // now we set user password to hashed password
+    hashedPassword = await bcrypt.hash(password, salt);
+
+  }else{
+
+    hashedPassword = oldPassword;
+
+  }
 
   try {
     const user = await Users.findById(userId);

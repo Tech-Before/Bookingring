@@ -158,6 +158,14 @@ router.post(
   "/Areas/addAreas",
   body("areaName", "Please enter valid Location.")
     .notEmpty()
+    .custom((val) => {
+      console.log(val.trim().length)
+      if (val.trim().length === 0) {
+        throw new Error();
+      }else{
+        return true;
+      }
+    })
     .isLength({ min: 3, max: 25 })
     .trim()
     .escape(),
@@ -168,6 +176,14 @@ router.post(
   "/Areas/editArea/",
   body("areaName", "Please enter valid Location.")
     .notEmpty()
+    .custom((val) => {
+      console.log(val.trim().length)
+      if (val.trim().length === 0) {
+        throw new Error();
+      }else{
+        return true;
+      }
+    })
     .isLength({ min: 3, max: 25 })
     .trim()
     .escape(),
@@ -200,9 +216,11 @@ router.post(
       .custom((val) => {
         if (val.trim().length === 0) {
           throw new Error();
+        }else{
+          return true;
         }
       })
-      .isLength({ min: 3, max: 25 })
+      .isLength({ min: 3, max: 200 })
       .trim()
       .escape(),
     body("contact", "Please enter valid Hotel contact number.")
@@ -210,6 +228,8 @@ router.post(
       .custom((val) => {
         if (val.trim().length === 0) {
           throw new Error();
+        }else{
+          return true;
         }
       })
       .isLength({ min: 10, max: 11 })
@@ -217,7 +237,7 @@ router.post(
     body("parking", "Please enter valid value for parking.").isBoolean(),
     body("area", "Please enter valid Hotel Location.")
       .notEmpty()
-      .isLength({ min: 3, max: 25 })
+      .isLength({ min: 3, max: 100 })
       .trim()
       .escape(),
     body(
@@ -234,9 +254,11 @@ router.post(
       .custom((val) => {
         if (val.trim().length === 0) {
           throw new Error();
+        }else{
+          return true;
         }
       })
-      .isLength({ min: 3, max: 25 })
+      .isLength({ min: 3, max: 100 })
       .trim()
       .escape(),
     body("ownerCNIC", "Please enter valid 13-digit CNIC Number.")
@@ -244,6 +266,8 @@ router.post(
       .custom((val) => {
         if (val.trim().length === 0) {
           throw new Error();
+        }else{
+          return true;
         }
       })
       .isLength({ min: 13, max: 13 })
@@ -288,9 +312,11 @@ router.post(
       .custom((val) => {
         if (val.trim().length === 0) {
           throw new Error();
+        }else{
+          return true;
         }
       })
-      .isLength({ min: 3, max: 25 })
+      .isLength({ min: 3, max: 100 })
       .trim()
       .escape(),
     body("contact", "Please enter valid Hotel contact number.")
@@ -300,11 +326,11 @@ router.post(
     body("parking", "Please enter valid value for parking.").isBoolean(),
     body("area", "Please enter valid Hotel Location.")
       .notEmpty()
-      .isLength({ min: 3, max: 25 })
+      .isLength({ min: 3, max: 100 })
       .trim()
       .escape(),
     body(
-      "roomService",
+      "roomServices",
       "Please enter valid value for room Service."
     ).isBoolean(),
     body("address", "Please enter valid Hotel Address.")
@@ -312,6 +338,8 @@ router.post(
       .custom((val) => {
         if (val.trim().length === 0) {
           throw new Error();
+        }else{
+          return true;
         }
       })
       .isLength({ min: 3, max: 200 })
@@ -322,9 +350,11 @@ router.post(
       .custom((val) => {
         if (val.trim().length === 0) {
           throw new Error();
+        }else{
+          return true;
         }
       })
-      .isLength({ min: 3, max: 25 })
+      .isLength({ min: 3, max: 100 })
       .trim()
       .escape(),
     body("ownerCNIC", "Please enter valid 13-digit CNIC Number.")
@@ -337,24 +367,15 @@ router.post(
     body("loginEmail")
       .isEmail()
       .withMessage("Please enter a valid email.")
-      .custom((value, { req }) => {
-        return Hotels.findOne({ loginEmail: value }).then((userHotel) => {
-          if (userHotel) {
-            return Promise.reject(
-              "Hotel associated with E-Mail exists already, please pick a different one."
-            );
-          }
-        });
-      })
       .normalizeEmail()
       .toLowerCase(),
-    body(
-      "loginPassword",
-      "Please enter a password with only numbers and text and at least 8 characters."
-    )
-      .isLength({ min: 8 })
-      .isAlphanumeric()
-      .trim(),
+    // body(
+    //   "loginPassword",
+    //   "Please enter a password with only numbers and text and at least 8 characters."
+    // )
+    //   .notEmpty()
+    //   .isLength({ min: 8 })
+    //   .isAlphanumeric(),
   ],
   isAuth,
   postEditHotel
@@ -377,35 +398,110 @@ router.get("/Appartments/editGalleryHouses", isAuth, editGalleryHouses);
 router.post(
   "/Appartments/addAppartment",
   [
-    body("loginEmail")
-      .isEmail()
-      .withMessage("Please enter a valid email.")
-      .custom((value, { req }) => {
-        return Hotels.findOne({ loginEmail: value }).then((userHotel) => {
-          if (userHotel) {
-            return Promise.reject(
-              "Appartment associated with E-Mail exists already, please pick a different one."
-            );
-          }
-        });
+    body("appartName", "Please enter valid Appartment Name.")
+      .notEmpty()
+      .custom((val) => {
+        if (val.trim().length === 0) {
+          throw new Error();
+        } else {
+          return true;
+        }
       })
-      .normalizeEmail(),
-    body(
-      "loginPassword",
-      "Please enter a password with only numbers and text and at least 8 characters."
-    )
-      .isLength({ min: 8 })
-      .isAlphanumeric()
-      .trim(),
-    body("contact", "Please enter valid Appartment contact number.")
+      .isLength({ min: 3, max: 50 })
+      .trim()
+      .escape(),
+    body("price", "Please enter valid price.").isNumeric().trim(),
+    body("contact", "Please enter valid Appartment Contact number.")
       .isLength({ min: 10, max: 11 })
-      .trim(),
-    body("ownerCNIC", "Please enter valid 13-digit CNIC Number without dashes.")
+      .isNumeric(),
+    body("parking", "Please enter valid parking value.").isBoolean(),
+    body("area", "Please enter valid location.")
+      .notEmpty()
+      .custom((val) => {
+        if (val.trim().length === 0) {
+          throw new Error();
+        } else {
+          return true;
+        }
+      })
+      .isLength({ min: 3, max: 50 })
+      .escape(),
+    body("appartType", "Please enter valid appartment type.")
+      .notEmpty()
+      .custom((val) => {
+        if (val.trim().length === 0) {
+          throw new Error();
+        } else {
+          return true;
+        }
+      })
+      .isLength({ min: 3, max: 50 })
+      .trim()
+      .escape(),
+    body("address", "Please enter valid address.")
+      .notEmpty()
+      .custom((val) => {
+        if (val.trim().length === 0) {
+          throw new Error();
+        } else {
+          return true;
+        }
+      })
+      .isLength({ min: 3, max: 200 })
+      .trim()
+      .escape(),
+    body("videoUrl", "Please enter valid URL.")
+    .isURL(),
+    body("description", "Please enter valid description")
+      .notEmpty()
+      .custom((val) => {
+        if (val.trim().length === 0) {
+          throw new Error();
+        } else {
+          return true;
+        }
+      })
+      .trim()
+      .escape(),
+    body("features", "Please enter valid features")
+      .notEmpty()
+      .custom((val) => {
+        if (val.trim().length === 0) {
+          throw new Error();
+        } else {
+          return true;
+        }
+      })
+      .trim()
+      .escape(),
+    body("ownerName", "Please enter valid Owner Name.")
+      .notEmpty()
+      .custom((val) => {
+        if (val.trim().length === 0) {
+          throw new Error();
+        } else {
+          return true;
+        }
+      })
+      .isLength({ min: 3, max: 50 })
+      .trim()
+      .escape(),
+    body("ownerCNIC", "Please enter valid 13-digit CNIC Number.")
       .isLength({ min: 13, max: 13 })
       .trim(),
     body("ownerContact", "Please enter valid owner contact Number.")
       .isLength({ min: 10, max: 11 })
+      .isNumeric()
       .trim(),
+    body("loginEmail")
+      .isEmail()
+      .withMessage("Please enter a valid email.")
+      .normalizeEmail()
+      .toLowerCase(),
+    body(
+      "loginPassword",
+      "Please enter a password with only numbers and text and at least 8 characters."
+    ).isLength({ min: 8 }),
   ],
   isAuth,
   postAddAppartment
@@ -585,10 +681,10 @@ router.post(
         });
       })
       .normalizeEmail(),
-    body(
-      "password",
-      "Please enter a password with only numbers and text and at least 8 characters."
-    ).isLength({ min: 8 }),
+    // body(
+    //   "password",
+    //   "Please enter a password with only numbers and text and at least 8 characters."
+    // ).isLength({ min: 8 }),
     body("contact", "Please enter valid contact number.")
       .isLength({ min: 10, max: 11 })
       .trim(),
