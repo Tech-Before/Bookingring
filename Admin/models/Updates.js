@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const UpdatesSchema = new Schema({
+    blogNo: {
+        type: Number,
+        required: true
+    },
     heading: {
         type: String,
         required: true

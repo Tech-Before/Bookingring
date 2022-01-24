@@ -646,6 +646,7 @@
     <script>
       $(function () {
         $("#tableData").DataTable({
+          "pageLength": 10,
           "responsive": true, "lengthChange": false, "autoWidth": false,
           "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
         }).buttons().container().appendTo('#tableData .col-md-6:eq(0)');

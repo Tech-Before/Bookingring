@@ -70,7 +70,11 @@ const postLogin = (req, res, next) => {
           res.redirect("/login");
         });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      req.flash('message', 'Something went wrong Please try Again.');
+      res.redirect('/login');
+    });
 };
 
 const logout = (req, res, next) => {
@@ -790,6 +794,7 @@ const postAddAppartment = async (req, res, next) => {
   const hashedPassword = await bcrypt.hash(loginPassword, salt);
 
   const approvedStatus = req.body.status;
+  
   const appartment = new Appartments({
     name: name,
     contact: contact,
@@ -1020,14 +1025,9 @@ const addRoom = async (req, res, next) => {
 const roomList = async (req, res, next) => {
   
   try {
-    const hotels = await Hotels.find();
-    const areas = await Areas.find();
     const rooms = await Rooms.find();
-  
     res.render("./pages/Rooms/roomList", {
       rooms: rooms,
-      areas: areas,
-      hotels: hotels,
       pageTitle: "Room List",
       path: "/Rooms/room-list",
       flashMessage: req.flash("message"),
@@ -1089,9 +1089,10 @@ const editRoomGallery = (req, res, next) => {
 
 // Room post requests
 const postAddRoom = async (req, res) => {
+
   const roomNo = req.body.roomNo;
-  const hotel = req.body.hotel;
-  const area = req.body.area;
+  const hotel = JSON.parse(req.body.hotel);
+  const area = JSON.parse(req.body.area);
   const beds = req.body.beds;
   const hotWater = req.body.hotWater;
   const balcony = req.body.balcony;
@@ -1107,9 +1108,10 @@ const postAddRoom = async (req, res) => {
 
   const room = new Rooms({
     roomNo: roomNo,
-    hotelId: hotel,
-    areaId: area,
-    areaName: area.areaName,
+    hotelId: hotel.id,
+    hotelName: hotel.name,
+    areaId: area.id,
+    areaName: area.name,
     beds: beds,
     hotWater: hotWater,
     balcony: balcony,
@@ -1173,8 +1175,8 @@ const postEditRoom = async (req, res) => {
 
   const roomId = req.body.roomId;
   const roomNo = req.body.roomNo;
-  const hotel = req.body.hotel;
-  const area = req.body.area;
+  const hotel = JSON.parse(req.body.hotel);
+  const area = JSON.parse(req.body.area);
   const beds = req.body.beds;
   const hotWater = req.body.hotWater;
   const balcony = req.body.balcony;
@@ -1196,8 +1198,10 @@ const postEditRoom = async (req, res) => {
       return res.status(422).render("../views/pages/Rooms/editRoom", {
         path: "/Room/addRoom",
         pageTitle: "Rooms",
-        areas: areas,
-        hotels: hotels,
+        areaId: area.id,
+        areaName: area.name,
+        hotelId: hotel.id,
+        hotelName: hotel.name,
         flashMessage: errors.array()[0].msg,
         hotelId: hotel,
         areaId: area,
@@ -1229,8 +1233,10 @@ const postEditRoom = async (req, res) => {
     try {
       const room = await Rooms.findById(roomId);
       room.roomNo = roomNo;
-      room.hotelId = hotel;
-      room.areaId = area;
+      room.hotelId = hotel.id;
+      room.hotelName = hotel.name;
+      room.areaId = area.id;
+      room.areaName = area.name;
       room.beds = beds;
       room.hotWater = hotWater;
       room.balcony = balcony;
@@ -1324,6 +1330,7 @@ const postDeleteRoomGalleryImage = async (req, res) => {
 // Vehicle Category (New Data)
 const addCategory = (req, res, next) => {
   res.render("./pages/VehiclesCategory/addCategory", {
+    name: '',
     flashMessage: req.flash("message"),
   });
 };
@@ -1358,6 +1365,7 @@ const editCategory = (req, res, next) => {
           cat: cat,
           pageTitle: "edit category",
           path: "/VehiclesCategory/vehicleCategory",
+          flashMessage: req.flash('message')
         });
       }
     })
@@ -1366,6 +1374,20 @@ const editCategory = (req, res, next) => {
 
 const postAddVehicleCategory = (req, res) => {
   const name = req.body.name;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(422)
+      .render("../views/pages/vehiclesCategory/addCategory", {
+        path: "/VehicleCategory/addCategory",
+        pageTitle: "Vehicles Category",
+        flashMessage: errors.array()[0].msg,
+        name: name,
+        validationErrors: errors.array(),
+      });
+  }
+
   const vehicleCat = new vehicleCategory({
     name: name,
   });
@@ -1375,7 +1397,7 @@ const postAddVehicleCategory = (req, res) => {
       // console.log(result);
       console.log("Added category");
       req.flash("message", "Vehicle Category Added Successfully");
-      res.redirect("/VehiclesCategory/addCategory");
+      res.redirect("/");
     })
     .catch((err) => {
       console.log(err);
@@ -1385,6 +1407,23 @@ const postAddVehicleCategory = (req, res) => {
 const postEditVehicleCategory = (req, res) => {
   const catId = req.body.id;
   const name = req.body.name;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(422)
+      .render("../views/pages/vehiclesCategory/editCategory", {
+        path: "/VehicleCategory/addCategory",
+        pageTitle: "Vehicles Category",
+        flashMessage: errors.array()[0].msg,
+        cat: {
+          id: catId,
+          name: name
+        },
+        validationErrors: errors.array(),
+      });
+  }
+
   vehicleCategory
     .findById(catId)
     .then((cat) => {
@@ -1496,6 +1535,7 @@ const editVehicleGallery = (req, res, next) => {
 };
 
 const postAddVehicle = async (req, res) => {
+
   const category = JSON.parse(req.body.category);
   const vehicleNo = req.body.vehicleNo;
   const model = req.body.model;
@@ -1698,8 +1738,23 @@ const postDeleteVehiclesGalleryImage = async (req, res) => {
 };
 
 // Updates / Blog
-const addUpdates = (req, res, next) => {
-  res.render("./pages/Updates/addUpdates");
+const addUpdates = async (req, res, next) => {
+  try{
+    const blogNo = await Updates.countDocuments({}).exec();
+    res.render("./pages/Updates/addUpdates", {
+      flashMessage: req.flash("message"),
+      oldInput: {
+        blogNo: blogNo + 1,
+        heading: "",
+        author: "",
+        date: "",
+        media: "",
+        description: "",
+      },
+    });
+  } catch(err){
+    console.log(err)
+  }
 };
 
 const updateList = (req, res, next) => {
@@ -1723,6 +1778,7 @@ const editBlog = (req, res, next) => {
         return res.redirect("/");
       }
       res.render("./pages/Updates/editUpdate", {
+        flashMessage: req.flash('message'),
         update: update,
       });
     })
@@ -1734,6 +1790,7 @@ const deleteBlog = (req, res, next) => {
 };
 
 const postAddUpdate = (req, res) => {
+  const blogNo = req.body.blogNo;
   const heading = req.body.heading;
   const author = req.body.author;
   const date = new Date();
@@ -1742,38 +1799,98 @@ const postAddUpdate = (req, res) => {
   const uploads = req.files;
   const media = uploads[0].filename;
 
-  // for (let i = 0; i < uploads.length; i++) {
-  //     media.push(uploads[i].filename)
-  // }
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
 
-  const update = new Updates({
-    heading: heading,
-    author: author,
-    date: date,
-    media: media,
-    description: desc,
-  });
-
-  update
-    .save()
-    .then((result) => {
-      // console.log(result);
-      console.log("Added update");
-      res.redirect("/");
-    })
-    .catch((err) => {
-      console.log(err);
+    return res.status(422).render("../views/pages/Updates/addUpdates", {
+      path: "/Updates/addUpdate",
+      pageTitle: "Updates",
+      flashMessage: errors.array()[0].msg,
+      oldInput: {
+        blogNo: blogNo,
+        heading: heading,
+        author: author,
+        date: date,
+        media: media,
+        description: desc,
+      },
+      validationErrors: errors.array(),
     });
+  }
+
+  for(let i= 0; i< 200; i++){
+    const update = new Updates({
+      blogNo: i + 1,
+      heading: heading + i,
+      author: author,
+      date: date,
+      media: 'update.jpg',
+      description: desc,
+    });
+  
+    update
+      .save()
+      .then((result) => {
+        // console.log(result);
+        console.log("Added update" + i);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  // const update = new Updates({
+  //   blogNo: blogNo,
+  //   heading: heading,
+  //   author: author,
+  //   date: date,
+  //   media: media,
+  //   description: desc,
+  // });
+
+  // update
+  //   .save()
+  //   .then((result) => {
+  //     // console.log(result);
+  //     console.log("Added update");
+  //     res.redirect("/");
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
 };
 
 const postEditUpdate = (req, res) => {
+
   const id = req.body.id;
+  blogNo = req.body.blogNo;
   const heading = req.body.heading;
   const author = req.body.author;
   const date = new Date();
   const oldImage = req.body.oldImage;
   let media;
   const desc = req.body.desc;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+
+    return res.status(422).render("../views/pages/Updates/editUpdate", {
+      path: "/Updates/editUpdate",
+      pageTitle: "Updates",
+      flashMessage: errors.array()[0].msg,
+      update: {
+        id: id,
+        blogNo: blogNo,
+        heading: heading,
+        author: author,
+        date: date,
+        media: media,
+        description: desc,
+      },
+      validationErrors: errors.array(),
+    });
+  }
+
 
   const uploads = req.files;
   if (uploads.length === 0) {
@@ -1824,8 +1941,23 @@ const addTour = async (req, res, next) => {
     res.render("./pages/Tours/addTours", {
       areas: areas,
       hotels: hotels,
-      pageTitle: "Add tour",
-      path: "/Tours/tour-list",
+      flashMessage: req.flash('message'),
+      oldInput: {
+        tourType: '',
+        startDate: '',
+        endDate: '',
+        fromPlace: '',
+        toPlace: '',
+        pickupLocation: '',
+        dropoffLocation: '',
+        stayHotel: '',
+        days: '',
+        nights: '',
+        availableSeats: '',
+        chargesPerHead: '',
+        description: '',
+        videoUrl: '',
+      }
     });
   } catch (err) {
     console.log(err);
@@ -1880,7 +2012,7 @@ const editTour = async (req, res, next) => {
   }
 };
 
-const postAddTour = (req, res) => {
+const postAddTour = async (req, res) => {
   const tourType = req.body.tourType;
   const startDate = req.body.startDate;
   const endDate = req.body.endDate;
@@ -1895,6 +2027,36 @@ const postAddTour = (req, res) => {
   const chargesPerHead = req.body.charges;
   const description = req.body.desc;
   const videoUrl = req.body.videoUrl;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    
+    const areas = await Areas.find();
+    const hotels = await Hotels.find();
+    return res.status(422).render("../views/pages/Tours/addTours", {
+      flashMessage: errors.array()[0].msg,
+      areas: areas,
+      hotels: hotels,
+      oldInput: {
+        tourType: tourType,
+        startDate: startDate,
+        endDate: endDate,
+        fromPlace: fromPlace.areaName,
+        toPlace: toPlace.areaName,
+        pickupLocation: pickupLoc.areaName,
+        dropoffLocation: dropoffLoc.areaName,
+        stayHotel: stayHotel.hotelName,
+        days: days,
+        nights: nights,
+        availableSeats: availableSeats,
+        chargesPerHead: chargesPerHead,
+        description: description,
+        videoUrl: videoUrl,
+      },
+      validationErrors: errors.array(),
+    });
+  }
+
   const tour = new Tours({
     tourType: tourType,
     startDate: startDate,
@@ -1997,7 +2159,9 @@ const sliderImages = (req, res, next) => {
     .findOne()
     .then((gallery) => {
       if (!gallery) {
-        res.redirect("/SliderImages/addSliderImages/none");
+        // res.redirect("/SliderImages/addSliderImages/none");
+        const error = new Error('some thing went wrong');
+        next(error)
       }
       res.render("./pages/SliderImages/sliderImagesList", {
         gallery: gallery,

@@ -46,7 +46,7 @@
                     <label>Select Hotel</label>
                     <select class="form-control select2" name="hotel">
                       <% for(let i=0; i<hotels.length; i++){ %>
-                        <option value="<%= hotels[i].id %>"
+                        <option value="<%= JSON.stringify({ id: hotels[i].id, name: hotels[i].name}) %>"
                           <%=hotels[i].id==room.hotelId ? 'selected' : '' %> > <%= hotels[i].name %>
                         </option>
                         <% } %>
@@ -57,7 +57,7 @@
                     <label>Select Hotel Area</label>
                     <select class="form-control select2" name="area">
                       <% for(let i=0; i<areas.length; i++){ %>
-                        <option value="<%= areas[i].id %>"
+                        <option value="<%= JSON.stringify({ id: areas[i].id, name: areas[i].name }) %>"
                           <%=areas[i].id==room.areaId ? 'selected' : '' %> ><%= areas[i].name %>
                         </option>
                         <% } %>

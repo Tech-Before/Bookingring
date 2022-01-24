@@ -41,7 +41,7 @@
                         <% for(let i=0; i< updates.length; i++) { %>
                           <tr id="<%= updates[i].id %>">
                             <td><%= i + 1 %> </td>
-                            <td>Blog#001</td>
+                            <td>Blog#<%= updates[i].blogNo %></td>
                             <td><%= updates[i].heading %> </td>
                             <td><%= updates[i].date %> </td>
                             <td align="center">

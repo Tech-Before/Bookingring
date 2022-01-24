@@ -12,9 +12,17 @@ const RoomsSchema = new Schema({
         ref: 'Hotels',
         required: true
     },
+    hotelName: {
+        type: String,
+        required: true
+    },
     areaId: {
         type: Schema.Types.ObjectId,
         ref: 'Locations',
+        required: true
+    },
+    areaName: {
+        type: String,
         required: true
     },
     beds: {

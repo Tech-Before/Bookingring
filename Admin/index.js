@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
@@ -67,6 +67,11 @@ app.use(express.static(path.join(__dirname, './public')));
 app.use('images', express.static(path.join(__dirname, './public/images')));
 
 app.use(homeRoutes.routes)
+
+app.use((error, req, res, next) => {
+  // res.status(error.httpStatusCode).render(...);
+  res.render('./pages/Errors/error', { desc: error});
+});
 
 mongoose
   .connect(

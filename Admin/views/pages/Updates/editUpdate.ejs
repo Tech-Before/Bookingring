@@ -25,6 +25,11 @@
 
     <!-- Main content -->
     <section class="content">
+      <% if(flashMessage.length> 0){ %>
+        <div class="alert alert-danger m-3 mt-2" style="z-index: 10001;" role="alert" id="flashMessage">
+          <%= flashMessage %>
+        </div>
+        <% } %>
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-12">
@@ -37,7 +42,7 @@
                     <div class="row">
                         <div class="form-group col-md-2" style="border-right: 1px solid #e0e0e0;">
                             <label>Blog No. </label>
-                            <input type="text" style="border: none;" readonly name="" value="<%= update.id %>" class="form-control" required>
+                            <input type="text" style="border: none;" readonly name="blogNo" value="<%= 'blog#' + update.blogNo %>" class="form-control" required>
                         </div>
                         
                         <div class="form-group col-md-10">
