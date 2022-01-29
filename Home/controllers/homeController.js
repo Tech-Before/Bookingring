@@ -1,30 +1,79 @@
+const AreasModel = require('../models/locationsModel');
+const AppartmentModel = require('../models/appartmentsModel');
+const HotelsModel = require('../models/hotelsModel');
+const VehiclesModel = require('../models/vehiclesModel');
+const ToursModel = require('../models/toursModel');
+const NewsModel = require('../models/newsModel');
+
 // HomePage
 const home = (req, res, next) => res.render('./pages/HomePage/home');
 
 // Services (Appartments)
 const appartments = (req, res, next) => res.render('./pages/Appartments/appartments');
-const allappartments = (req, res, next) => res.render('./pages/Appartments/allappartments');
+const allappartments = async (req, res, next) => {
+    //areas
+    const areas = await AreasModel.fetchAreas();
+    //fetch appartments
+    const appartments = await AppartmentModel.fetchAppartments();
+    res.render('./pages/Appartments/allappartments', {
+        areas: areas,
+        appartments: appartments
+    });
+}
 const apartmentBooking = (req, res, next) => res.render('./pages/Appartments/apartmentBooking');
 
 const appartmentGallery = (req, res, next) => res.render('./pages/Appartments/appartmentGallery');
-const hotels = (req, res, next) => res.render('./pages/Appartments/hotels');
+const hotels = async (req, res, next) => {
+    //areas
+    const areas = await AreasModel.fetchAreas();
+    //hotels
+    const hotels = await HotelsModel.fetchHotels();
+    res.render('./pages/Appartments/hotels', {
+        hotels: hotels,
+        areas: areas
+    });
+    
+}
 const hotelGallery = (req, res, next) => res.render('./pages/Appartments/hotelGallery');
 const hotelRooms = (req, res, next) => res.render('./pages/Appartments/hotelRooms');
-const vehicles = (req, res, next) => res.render('./pages/Appartments/vehicles');
+const vehicles = async (req, res, next) => {
+    //areas
+    const areas = await AreasModel.fetchAreas();
+    //vehicles
+    const vehicles = await VehiclesModel.fetchVehicles();
+    res.render('./pages/Appartments/vehicles', {
+        areas: areas,
+        vehicles: vehicles
+    });
+}
 const vehicleBooking = (req, res, next) => res.render('./pages/Appartments/vehicleBooking');
 const galleryAppRoom = (req, res, next) => res.render('./pages/Appartments/galleryAppRoom');
 const roomBooking = (req, res, next) => res.render('./pages/Appartments/roomBooking');
 
 // Tours 
-const tours = (req, res, next) => res.render('./pages/Tours/tours');
+const tours = async (req, res, next) => {
+    const areas = await AreasModel.fetchAreas();
+    const tours = await ToursModel.fetchTours();
+    const hikes = await ToursModel.fetchHikes();
+    res.render('./pages/Tours/tours', {
+        areas: areas,
+        tours: tours,
+        hikes: hikes
+    });
+}
 const hike = (req, res, next) => res.render('./pages/Tours/hike');
 const booking = (req, res, next) => res.render('./pages/Tours/booking');
 
 const gallerytandh = (req, res, next) => res.render('./pages/Tours/gallerytandh');
 
 // News
-const news = (req, res, next) => res.render('./pages/News/news');
-const exploreNews = (req, res, next) => res.render('./pages/News/exploreNews');
+const news = async (req, res, next) => {
+    const news = await NewsModel.fetchNews();
+    res.render('./pages/News/news', {news: news});
+}
+const exploreNews = (req, res, next) => {
+    res.render('./pages/News/exploreNews');
+}
 
 // About Us
 const about = (req, res, next) => res.render('./pages/About/about');

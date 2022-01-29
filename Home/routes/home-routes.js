@@ -55,7 +55,7 @@ router.get('/Tours/gallerytandh', gallerytandh)
 
 // News
 router.get('/News/news', news)
-router.get('/News/exploreNews', exploreNews)
+router.get('/News/exploreNews/:id', exploreNews)
 
 // About Us
 router.get('/About/about', about)
