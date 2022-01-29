@@ -33,6 +33,9 @@ const news = mongoose.model('Updates', UpdatesSchema);
 
 module.exports = {
     fetchNews: ()=> {
-        return news.find();
+        return news.find().limit(20);
+    },
+    fetchOne: (id)=> {
+        return news.findById(id);
     }
 }

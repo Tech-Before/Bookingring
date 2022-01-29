@@ -71,8 +71,16 @@ const news = async (req, res, next) => {
     const news = await NewsModel.fetchNews();
     res.render('./pages/News/news', {news: news});
 }
-const exploreNews = (req, res, next) => {
-    res.render('./pages/News/exploreNews');
+const exploreNews = async (req, res, next) => {
+    const id = req.params.id;
+    try {
+      const post = await NewsModel.fetchOne(id);
+      res.render("./pages/News/exploreNews", { post: post });
+    } catch (err) {
+      console.log(err);
+      res.redirect("/");
+    }
+    
 }
 
 // About Us
