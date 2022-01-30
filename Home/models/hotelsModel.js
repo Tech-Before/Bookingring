@@ -62,6 +62,9 @@ const hotels = mongoose.model('Hotels', HotelsSchema);
         
 module.exports = {
   fetchHotels: () => {
-    return hotels.find();
-  }
+    return hotels.find().limit(20);
+  },
+//   searchHotels: ()=>{
+//       return hotels.
+//   }
 };

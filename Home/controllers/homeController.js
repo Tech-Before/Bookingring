@@ -1,3 +1,4 @@
+const HomeModel = require('../models/homeModel');
 const AreasModel = require('../models/locationsModel');
 const AppartmentModel = require('../models/appartmentsModel');
 const HotelsModel = require('../models/hotelsModel');
@@ -6,7 +7,12 @@ const ToursModel = require('../models/toursModel');
 const NewsModel = require('../models/newsModel');
 
 // HomePage
-const home = (req, res, next) => res.render('./pages/HomePage/home');
+const home = async (req, res, next) => {
+    const areas = await HomeModel.fetchAreas();
+    res.render('./pages/HomePage/home', {
+        areas: areas
+    });
+}
 
 // Services (Appartments)
 const appartments = (req, res, next) => res.render('./pages/Appartments/appartments');

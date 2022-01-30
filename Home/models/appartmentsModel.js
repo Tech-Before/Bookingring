@@ -77,6 +77,6 @@ const appartments = mongoose.model('Appartments', AppartmentsSchema);
 
 module.exports = {
     fetchAppartments: () => {
-      return appartments.find();
+      return appartments.find().limit(20);
     }
   };

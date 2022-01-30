@@ -66,6 +66,6 @@ const vehicles = mongoose.model('Vehicles', VehiclesSchema);
 
 module.exports = {
     fetchVehicles: () => {
-      return vehicles.find();
+      return vehicles.find().limit(20);
     }
   };

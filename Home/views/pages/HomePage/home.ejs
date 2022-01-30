@@ -101,12 +101,9 @@
 						<!-- <select class="wide nice-select select2"> -->
 						<select class="wide nice-select">
 							<option data-display="Please Select Location"></option>
-							<option value="Kalam">Kalam</option>
-							<option value="Malamjabba">Malamjabba</option>
-							<option value="Bahrain">Bahrain</option>
-							<option value="Madyan">Madyan</option>
-							<option value="Utror">Utror</option>
-							<option value="GabinJabba">GabinJabba</option>
+							<% for(let i= 0; i< areas.length; i++){ %> 
+							<option value="<%= areas[i].id %>"><%= areas[i].name %></option>
+							<% } %> 
 						</select>
 					</div>
 

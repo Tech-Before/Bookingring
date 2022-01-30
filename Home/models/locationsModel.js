@@ -13,6 +13,6 @@ const areas = mongoose.model('Locations', LocationsSchema);
 
 module.exports = {
     fetchAreas: () => {
-      return areas.find();
+      return areas.find().limit(20);
     }
   };
