@@ -1,13 +1,23 @@
 require('dotenv').config();
 const express = require('express');
+const bodyParser = require('body-parser');
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
 const homeRoutes = require('./routes/home-routes');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
 
 const mongoose = require('mongoose');
 
-
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.raw());
+
+app.use(cookieParser('SecretStringForCookies'));
+app.use(flash());
 
 app.use(expressLayouts);
 app.set('view engine', 'ejs');

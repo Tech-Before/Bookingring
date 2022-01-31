@@ -1,3 +1,6 @@
+const bcrypt = require("bcrypt");
+const { validationResult } = require("express-validator");
+
 const HomeModel = require('../models/homeModel');
 const AreasModel = require('../models/locationsModel');
 const AppartmentModel = require('../models/appartmentsModel');
@@ -5,6 +8,7 @@ const HotelsModel = require('../models/hotelsModel');
 const VehiclesModel = require('../models/vehiclesModel');
 const ToursModel = require('../models/toursModel');
 const NewsModel = require('../models/newsModel');
+const UsersModel = require('../models/usersModel');
 
 // HomePage
 const home = async (req, res, next) => {
@@ -97,11 +101,63 @@ const contact = (req, res, next) => res.render('./pages/Contact/contact');
 
 // User
 const login = (req, res, next) => res.render('./pages/User/login');
-const signup = (req, res, next) => res.render('./pages/User/signup');
+const signup = (req, res, next) => {
+    res.render('./pages/User/signup', {
+        oldInput: {
+            name: '',
+            phoneNo: '',
+            email: '',
+            password: ''
+        }
+    });
+}
 const verification = (req, res, next) => res.render('./pages/User/verification');
 const forgotPassword = (req, res, next) => res.render('./pages/User/forgotPassword');
 const passwordReset = (req, res, next) => res.render('./pages/User/passwordReset');
 
+const postSignUp = async (req, res) => {
+
+    const name = req.body.name;
+    const contact = req.body.phoneNo;
+    const email = req.body.email;
+    const password = req.body.password;
+  
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(errors);
+      return res.status(422).render("../views/pages/User/signup", {
+        path: "/Users/addUser",
+        pageTitle: "Add User",
+        oldInput: {
+          name: name,
+          phoneNo: contact,
+          email: email,
+          password: password,
+        },
+        validationErrors: errors.array(),
+      });
+    }
+    
+  // generate salt to hash password
+  const salt = await bcrypt.genSalt(16);
+  // now we set user password to hashed password
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  const user = new UsersModel({
+    name: name,
+    phoneNo: contact,
+    email: email,
+    password: hashedPassword,
+  });
+
+  try {
+    await user.save();
+    console.log("Added user");
+    res.redirect("/");
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 // Terms And Conditions
 const termsAndCondition = (req, res, next) => res.render('./pages/TermsConditions/termsAndCondition');
@@ -129,7 +185,7 @@ module.exports = {
     contact,
 
     // User
-    login, signup, verification, forgotPassword, passwordReset,
+    login, signup, verification, forgotPassword, passwordReset, postSignUp,
 
     // Terms And Conditions
     termsAndCondition,

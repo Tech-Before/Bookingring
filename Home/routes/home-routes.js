@@ -20,7 +20,7 @@ const {
     contact,
 
     // User
-    login, signup, verification, forgotPassword, passwordReset,
+    login, signup, verification, forgotPassword, passwordReset, postSignUp,
 
     // Terms And Conditions
     termsAndCondition,
@@ -30,6 +30,8 @@ const {
 
 } = require('../controllers/homeController');
 const router = express.Router();
+const { body } = require("express-validator");
+const UsersModel = require('../models/usersModel');
 
 // HomePage
 router.get('/', home)
@@ -69,6 +71,46 @@ router.get('/User/signup', signup)
 router.get('/User/verification', verification)
 router.get('/User/forgotPassword', forgotPassword)
 router.get('/User/passwordReset', passwordReset)
+router.post(
+  "/signUp",
+  [
+    body("name", "Please enter valid name.")
+      .notEmpty()
+      .custom((val) => {
+        if (val.trim().length === 0) {
+          return false;
+        } else {
+          return true;
+        }
+      })
+      .trim()
+      .escape(),
+    body("phoneNo", "Please enter valid phone number.")
+      .isLength({ min: 10, max: 13})
+      .trim(),
+    body("email")
+      .isEmail()
+      .withMessage("Please enter a valid email.")
+      .custom((value, { req }) => {
+        return UsersModel.findOne({ email: value }).then((user) => {
+          if (user) {
+            return Promise.reject(
+              "E-Mail exists already, please pick a different one."
+            );
+          }
+        });
+      })
+      .normalizeEmail(),
+    body(
+      "password",
+      "Please enter a password with only numbers and text and at least 8 characters."
+    )
+      .isLength({ min: 8 })
+      .isAlphanumeric()
+      .trim(),
+  ],
+  postSignUp
+);
 
 // Terms And Conditions
 router.get('/TermsConditions/termsAndCondition', termsAndCondition)
