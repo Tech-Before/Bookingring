@@ -1063,8 +1063,9 @@ const editRoom = async (req, res, next) => {
 };
 
 const addRoomGallery = (req, res, next) => {
-  const roomId = req.params.id;
-  res.render("./pages/Rooms/addRoomGallery", { roomId: roomId });
+  const hotelId = req.params.id;
+  const roomIndex = req.query.i;
+  res.render("./pages/Rooms/addRoomGallery", { hotelId: hotelId, roomIndex });
 };
 
 const editRoomGallery = (req, res, next) => {
@@ -1088,8 +1089,6 @@ const editRoomGallery = (req, res, next) => {
 
 // Room post requests
 const postAddRoom = async (req, res) => {
-
-  // select hotel associated with id and update the rooms array
 
   const roomNo = req.body.roomNo;
   const hotelId = req.body.hotel;
@@ -1168,7 +1167,7 @@ const postAddRoom = async (req, res) => {
 
 const postEditRoom = async (req, res) => {
   //hotel and room id info
-  const roomIndex = req.body.roomId;
+  const roomIndex = req.body.roomIndex;
   const hotelId = req.body.hotel;
 
   //room data
@@ -1260,7 +1259,6 @@ const postEditRoom = async (req, res) => {
 const postDeleteRoom = async (req, res) => {
   const hotelId = req.body.id;
   const roomIndex = req.body.index;
-  console.log(hotelId, roomIndex)
   try {
     const hotel = await Hotels.findById(hotelId);
     // const gallery = hotel.rooms[roomIndex].gallery;
@@ -1276,8 +1274,10 @@ const postDeleteRoom = async (req, res) => {
 };
 
 const postAddRoomGallery = async (req, res) => {
+
   const uploads = req.files;
-  const roomId = req.body.roomId;
+  const hotelId = req.body.hotelId;
+  const roomIndex = req.body.roomIndex;
   const gallery = [];
 
   for (let i = 0; i < uploads.length; i++) {
@@ -1285,20 +1285,20 @@ const postAddRoomGallery = async (req, res) => {
   }
 
   try {
-    const room = await Rooms.findById(roomId);
-    if (room.gallery.length === 0) {
-      room.gallery = gallery;
-      room.save();
+    const hotel = await Hotels.findById(hotelId);
+    if (hotel.rooms[roomIndex].gallery.length === 0) {
+      hotel.rooms[roomIndex].gallery = gallery;
+      await hotel.save();
       console.log("added gallery to room");
       req.flash("message", "Gallery Added To Room");
-      res.redirect("/Rooms/editGallery/" + roomId);
+      res.redirect("/Rooms/editGallery/" + hotel.id + '?i=' + roomIndex);
     } else {
-      updatedGallery = room.gallery.concat(gallery);
-      room.gallery = updatedGallery;
-      room.save();
+      updatedGallery = hotel.rooms[roomIndex].gallery.concat(gallery);
+      hotel.rooms[roomIndex].gallery = updatedGallery;
+      hotel.save();
       console.log("gallery updated");
       req.flash("message", "Room Gallery Updated");
-      res.redirect("/Rooms/editGallery/" + roomId);
+      res.redirect("/Rooms/editGallery/" + hotel.id + '?i=' + roomIndex);
     }
   } catch (err) {
     console.log(err);
