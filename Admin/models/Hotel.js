@@ -54,6 +54,10 @@ const HotelsSchema = new Schema({
     gallery:{
         type: [String],
         required: false
+    },
+    rooms: {
+        type: [Object],
+        required: false
     }
 });
 

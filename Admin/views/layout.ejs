@@ -613,6 +613,29 @@
         }
       }
 
+      function deleteRoomHandler(url, id, index) {
+        if (confirm('The selected Item will be deleted Permanantly')) {
+          fetch(url, {
+            method: "POST",
+            body: JSON.stringify({
+              id: id,
+              index: index
+            }),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            }
+          })
+            // Checking Status
+            .then(response => {
+              if (response.status === 200) {
+                $('#' + index).remove();
+              } else {
+                alert('something went wrong')
+              }
+            })
+        }
+      }
+
       function deleteImageHandler(url, id, image, elemId) {
         if (confirm('The selected Item will be deleted Permanantly')) {
           fetch(url, {

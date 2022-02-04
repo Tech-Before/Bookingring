@@ -671,7 +671,6 @@ router.post(
   "/Rooms/addRoom",
   [
     body("hotel", "invalid hotel input").notEmpty().trim(),
-    body("area", "invalid area input").notEmpty().trim(),
     body("beds", "invalid beds input").isNumeric(),
     body("hotWater", "invalid Hot water input").isBoolean(),
     body("heater", "invalid heater input").isBoolean(),
@@ -756,7 +755,6 @@ router.post(
 router.post("/Rooms/editRoom",
 [
   body("hotel", "invalid hotel input").notEmpty().trim(),
-  body("area", "invalid area input").notEmpty().trim(),
   body("beds", "invalid beds input").isNumeric(),
   body("hotWater", "invalid Hot water input").isBoolean(),
   body("heater", "invalid heater input").isBoolean(),

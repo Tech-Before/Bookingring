@@ -2,11 +2,11 @@ const { delImg, delMultImages } = require("../util/file");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
 
+//models
 const Areas = require("../models/Location");
 const Tours = require("../models/Tour");
 const Hotels = require("../models/Hotel");
 const Appartments = require("../models/Appartment");
-const Rooms = require("../models/Room");
 const Vehicles = require("../models/Vehicles");
 const sliderGallery = require("../models/SliderGallery");
 const Users = require("../models/SystemUsers");
@@ -1025,9 +1025,9 @@ const addRoom = async (req, res, next) => {
 const roomList = async (req, res, next) => {
   
   try {
-    const rooms = await Rooms.find();
+    const hotels = await Hotels.find();
     res.render("./pages/Rooms/roomList", {
-      rooms: rooms,
+      hotels: hotels,
       pageTitle: "Room List",
       path: "/Rooms/room-list",
       flashMessage: req.flash("message"),
@@ -1042,16 +1042,15 @@ const roomList = async (req, res, next) => {
 
 const editRoom = async (req, res, next) => {
   const id = req.params.id;
+  const index = req.query.i;
 
   try {
-    const areas = await Areas.find();
-    const hotels = await Hotels.find();
-    const room = await Rooms.findById(id);
+    const hotel = await Hotels.findById(id);
 
     res.render("./pages/Rooms/editRoom", {
-      areas: areas,
-      hotels: hotels,
-      room: room,
+      room: hotel.rooms[index],
+      hotelId: hotel.id,
+      roomIndex: index,
       flashMessage: req.flash('message')
     });
 
@@ -1090,9 +1089,10 @@ const editRoomGallery = (req, res, next) => {
 // Room post requests
 const postAddRoom = async (req, res) => {
 
+  // select hotel associated with id and update the rooms array
+
   const roomNo = req.body.roomNo;
-  const hotel = JSON.parse(req.body.hotel);
-  const area = JSON.parse(req.body.area);
+  const hotelId = req.body.hotel;
   const beds = req.body.beds;
   const hotWater = req.body.hotWater;
   const balcony = req.body.balcony;
@@ -1106,12 +1106,8 @@ const postAddRoom = async (req, res) => {
   const features = req.body.features;
   const videoUrl = req.body.videoUrl;
 
-  const room = new Rooms({
+  const room = {
     roomNo: roomNo,
-    hotelId: hotel.id,
-    hotelName: hotel.name,
-    areaId: area.id,
-    areaName: area.name,
     beds: beds,
     hotWater: hotWater,
     balcony: balcony,
@@ -1124,23 +1120,20 @@ const postAddRoom = async (req, res) => {
     description: description,
     features: features,
     videoUrl: videoUrl,
-  });
+    gallery: []
+  };
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    const areas = await Areas.find();
     const hotels = await Hotels.find();
     return res.status(422).render("../views/pages/Rooms/addRoom", {
       path: "/Room/addRoom",
       pageTitle: "Rooms",
-      areas: areas,
       hotels: hotels,
       flashMessage: errors.array()[0].msg,
-      hotelId: hotel,
-      areaId: area,
+      hotelId: hotelId,
       oldInput: {
         roomNo: roomNo,
-        areaName: area.areaName,
         beds: beds,
         hotWater: hotWater,
         balcony: balcony,
@@ -1159,7 +1152,9 @@ const postAddRoom = async (req, res) => {
   }
 
   try {
-    await room.save();
+    const hotel = await Hotels.findById(hotelId);
+    hotel.rooms.push(room);
+    await hotel.save();
     // console.log(result);
     console.log("Added Room");
     req.flash("message", "Room Added Successfully");
@@ -1172,11 +1167,12 @@ const postAddRoom = async (req, res) => {
 };
 
 const postEditRoom = async (req, res) => {
+  //hotel and room id info
+  const roomIndex = req.body.roomId;
+  const hotelId = req.body.hotel;
 
-  const roomId = req.body.roomId;
+  //room data
   const roomNo = req.body.roomNo;
-  const hotel = JSON.parse(req.body.hotel);
-  const area = JSON.parse(req.body.area);
   const beds = req.body.beds;
   const hotWater = req.body.hotWater;
   const balcony = req.body.balcony;
@@ -1193,9 +1189,9 @@ const postEditRoom = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     try {
-      const areas = await Areas.find();
       const hotels = await Hotels.find();
       return res.status(422).render("../views/pages/Rooms/editRoom", {
+        hotels: hotels,
         path: "/Room/addRoom",
         pageTitle: "Rooms",
         areaId: area.id,
@@ -1226,49 +1222,51 @@ const postEditRoom = async (req, res) => {
       });
     } catch (err) {
       console.log(err);
-      req.flash('message', 'Something went wrong.');
+      req.flash("message", "Something went wrong.");
     }
   }
 
-    try {
-      const room = await Rooms.findById(roomId);
-      room.roomNo = roomNo;
-      room.hotelId = hotel.id;
-      room.hotelName = hotel.name;
-      room.areaId = area.id;
-      room.areaName = area.name;
-      room.beds = beds;
-      room.hotWater = hotWater;
-      room.balcony = balcony;
-      room.status = status;
-      room.location = location;
-      room.charges = charges;
-      room.size = size;
-      room.occupency = occupency;
-      room.bedSize = bedSize;
-      room.description = description;
-      room.features = features;
-      room.videoUrl = videoUrl;
+  try {
+    const hotel = await Hotels.findById(hotelId);
+    const room = {
+      roomNo: roomNo,
+      beds: beds,
+      hotWater: hotWater,
+      balcony: balcony,
+      status: status,
+      location: location,
+      charges: charges,
+      size: size,
+      occupency: occupency,
+      bedSize: bedSize,
+      description: description,
+      features: features,
+      videoUrl: videoUrl,
+    };
+    hotel.rooms.splice(roomIndex, 1);
+    hotel.rooms.push(room);
+    await hotel.save();
 
-      await room.save();
-
-      console.log("room updated");
-      req.flash("message", "Room Data Updated Successfully");
-      res.redirect("/Rooms/roomList");
-    } catch (err) {
-      console.log(err);
-      req.flash("message", "Something went wrong.");
-      res.redirect("/");
-    }
+    console.log("room updated");
+    req.flash("message", "Room Data Updated Successfully");
+    res.redirect("/Rooms/roomList");
+  } catch (err) {
+    console.log(err);
+    req.flash("message", "Something went wrong.");
+    res.redirect("/");
+  }
 };
 
 const postDeleteRoom = async (req, res) => {
-  const roomId = req.body.id;
+  const hotelId = req.body.id;
+  const roomIndex = req.body.index;
+  console.log(hotelId, roomIndex)
   try {
-    const room = await Rooms.findById(roomId);
-    const gallery = room.gallery;
-    await Rooms.findByIdAndDelete(roomId);
-    delMultImages(gallery);
+    const hotel = await Hotels.findById(hotelId);
+    // const gallery = hotel.rooms[roomIndex].gallery;
+    hotel.rooms.splice(roomIndex, 1);
+    await hotel.save();
+    // delMultImages(gallery);
     res.sendStatus(200);
     console.log("room deleted");
   } catch (err) {
